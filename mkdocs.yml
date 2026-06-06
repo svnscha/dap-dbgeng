@@ -1,0 +1,93 @@
+site_name: Debug Adapter for WinDbg
+site_description: >-
+  User guide for dap-dbgeng - a Windows Debug Adapter Protocol server backed by
+  the Windows debug engine (dbgeng). Configure VS Code to debug native programs,
+  attach to processes, debug remotely, and debug Windows drivers.
+site_author: Sven Scharmentke
+site_url: https://svnscha.github.io/dap-dbgeng/
+repo_url: https://github.com/svnscha/dap-dbgeng
+repo_name: svnscha/dap-dbgeng
+copyright: Copyright &copy; svnscha - MIT License
+
+docs_dir: docs
+
+extra_css:
+  - assets/extra.css
+
+extra_javascript:
+  - assets/mermaid.js
+
+validation:
+  links:
+    anchors: warn
+
+theme:
+  name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    # Light is the default (listed first, no media query). The toggle is remembered.
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - toc.follow
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.keys
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid-diagram
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Use cases:
+      - Overview: scenarios/index.md
+      - Debug a local program: scenarios/local-debugging.md
+      - Debug a running process: scenarios/attach.md
+      - Debug a remote process: scenarios/remote-debugging.md
+      - Debug a Windows driver: scenarios/driver-debugging.md
+  - Configuration reference:
+      - Overview: reference/index.md
+      - launch attributes: reference/launch.md
+      - attach attributes: reference/attach.md
+      - Supported features: reference/features.md
+  - Troubleshooting: troubleshooting.md
+
+plugins:
+  - search

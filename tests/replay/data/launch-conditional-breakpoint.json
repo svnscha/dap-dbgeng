@@ -1,0 +1,797 @@
+{
+  "version": 1,
+  "messages": [
+    {
+      "direction": "in",
+      "message": {
+        "command": "initialize",
+        "arguments": {
+          "clientID": "vscode",
+          "clientName": "Visual Studio Code",
+          "adapterID": "windbg",
+          "pathFormat": "path",
+          "linesStartAt1": true,
+          "columnsStartAt1": true,
+          "supportsVariableType": true,
+          "supportsVariablePaging": true,
+          "supportsRunInTerminalRequest": true,
+          "locale": "en",
+          "supportsProgressReporting": true,
+          "supportsInvalidatedEvent": true,
+          "supportsMemoryReferences": true,
+          "supportsArgsCanBeInterpretedByShell": true,
+          "supportsMemoryEvent": true,
+          "supportsStartDebuggingRequest": true,
+          "supportsANSIStyling": true
+        },
+        "type": "request",
+        "seq": 1
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "supportsConfigurationDoneRequest": true,
+          "supportsFunctionBreakpoints": false,
+          "supportsConditionalBreakpoints": true,
+          "supportsHitConditionalBreakpoints": false,
+          "supportsEvaluateForHovers": false,
+          "supportsStepBack": false,
+          "supportsSetVariable": true,
+          "supportsRestartFrame": false,
+          "supportsModulesRequest": true,
+          "supportsRestartRequest": true,
+          "supportsValueFormattingOptions": true,
+          "supportTerminateDebuggee": true,
+          "supportSuspendDebuggee": false,
+          "supportsDelayedStackTraceLoading": true,
+          "supportsLogPoints": false,
+          "supportsSetExpression": false,
+          "supportsTerminateRequest": true,
+          "supportsReadMemoryRequest": true,
+          "supportsWriteMemoryRequest": true,
+          "supportsDisassembleRequest": true,
+          "supportsClipboardContext": true,
+          "supportsSteppingGranularity": true,
+          "supportsInstructionBreakpoints": false,
+          "supportsSingleThreadExecutionRequests": false
+        },
+        "request_seq": 1,
+        "success": true,
+        "command": "initialize",
+        "seq": 1,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "initialized",
+        "seq": 2,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "launch",
+        "arguments": {
+          "name": "Debug",
+          "type": "windbg",
+          "request": "launch",
+          "dbgengPath": "${dbgEngPath}",
+          "target": "${workspaceFolder}/build/windows-x64/test-targets/test_launch.exe",
+          "workingDir": "${workspaceFolder}/build/windows-x64/test-targets",
+          "sources": [
+            "${workspaceFolder}\\test-targets\\testapp"
+          ],
+          "symbolPath": [
+            "${workspaceFolder}/build/windows-x64/test-targets"
+          ],
+          "stopAtEntry": false,
+          "__configurationTarget": 6,
+          "__sessionId": "33257350-c2cb-4155-80c4-ca7422866f87"
+        },
+        "type": "request",
+        "seq": 2
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource search path is: ${workspaceFolder}\\test-targets\\testapp\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\\test-targets\\testapp\n\n************* Preparing the environment for Debugger Extensions Gallery repositories **************\n   ExtensionRepository : Implicit\n   UseExperimentalFeatureForNugetShare : true\n   AllowNugetExeUpdate : true\n   NonInteractiveNuget : true\n   AllowNugetMSCredentialProviderInstall : true\n   AllowParallelInitializationOfLocalRepositories : true\n\n   EnableRedirectToV8JsProvider : false\n\n   -- Configuring repositories\n      ----\u003E Repository : LocalInstalled, Enabled: true\n      ----\u003E Repository : UserExtensions, Enabled: true\n\n\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds\n\n************* Waiting for Debugger Extensions Gallery to Initialize **************\n\n\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds\n   ----\u003E Repository : UserExtensions, Enabled: true, Packages count: 0\n   ----\u003E Repository : LocalInstalled, Enabled: true, Packages count: 29\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.6584 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: ${workspaceFolder}/build/windows-x64/test-targets/test_launch.exe\nStarting directory: ${workspaceFolder}/build/windows-x64/test-targets\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nSymbol search path is: ${workspaceFolder}/build/windows-x64/test-targets\nExecutable search path is: \nModLoad: 00007ff6\u00605cc70000 00007ff6\u00605cc84000   test_launch.exe\n"
+        },
+        "event": "output",
+        "seq": 44,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "request_seq": 2,
+        "success": true,
+        "command": "launch",
+        "seq": 45,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "name": "${workspaceFolder}/build/windows-x64/test-targets/test_launch.exe",
+          "isLocalProcess": true,
+          "startMethod": "launch"
+        },
+        "event": "process",
+        "seq": 46,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "entry",
+          "description": "Paused at process entry.",
+          "threadId": 39872,
+          "allThreadsStopped": true
+        },
+        "event": "stopped",
+        "seq": 47,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "setBreakpoints",
+        "arguments": {
+          "source": {
+            "name": "main.cpp",
+            "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+          },
+          "lines": [
+            13
+          ],
+          "breakpoints": [
+            {
+              "line": 13,
+              "condition": "sum == 15"
+            }
+          ],
+          "sourceModified": false
+        },
+        "type": "request",
+        "seq": 3
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": [
+            {
+              "id": 0,
+              "verified": true,
+              "source": {
+                "name": "main.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+              },
+              "line": 13
+            }
+          ]
+        },
+        "request_seq": 3,
+        "success": true,
+        "command": "setBreakpoints",
+        "seq": 48,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "type": "request",
+        "seq": 4
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 39872,
+              "name": "Thread 39872 (current)"
+            }
+          ]
+        },
+        "request_seq": 4,
+        "success": true,
+        "command": "threads",
+        "seq": 49,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "configurationDone",
+        "type": "request",
+        "seq": 5
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "request_seq": 5,
+        "success": true,
+        "command": "configurationDone",
+        "seq": 50,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threadId": 39872,
+          "allThreadsContinued": true
+        },
+        "event": "continued",
+        "seq": 51,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007ffb\u006069540000 00007ffb\u0060697a7000   ntdll.dll\nModLoad: 00007ffb\u0060680e0000 00007ffb\u0060681a9000   C:\\WINDOWS\\System32\\KERNEL32.DLL\nModLoad: 00007ffb\u006065ea0000 00007ffb\u006066294000   C:\\WINDOWS\\System32\\KERNELBASE.dll\nModLoad: 00007ffb\u0060623f0000 00007ffb\u00606248f000   C:\\WINDOWS\\SYSTEM32\\apphelp.dll\nModLoad: 00007ffa\u0060f56c0000 00007ffa\u0060f57a1000   C:\\WINDOWS\\SYSTEM32\\MSVCP140D.dll\nModLoad: 00007ffb\u00603bf10000 00007ffb\u00603bf1f000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140_1D.dll\nModLoad: 00007ffa\u0060f5a60000 00007ffa\u0060f5a90000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140D.dll\nModLoad: 00007ffa\u0060f54b0000 00007ffa\u0060f56b4000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\nModLoad: 00007ffb\u00602bbf0000 00007ffb\u00602bd8e000   C:\\Program Files (x86)\\Citrix\\ICA Client\\ctxapclient64.dll\nModLoad: 00007ffb\u006069230000 00007ffb\u0060693f5000   C:\\WINDOWS\\System32\\USER32.dll\nModLoad: 00007ffb\u0060671e0000 00007ffb\u006067207000   C:\\WINDOWS\\System32\\win32u.dll\n"
+        },
+        "event": "output",
+        "seq": 62,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "stackTrace",
+        "arguments": {
+          "threadId": 39872,
+          "startFrame": 0,
+          "levels": 1
+        },
+        "type": "request",
+        "seq": 6
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007ffb\u006067350000 00007ffb\u00606737b000   C:\\WINDOWS\\System32\\GDI32.dll\nModLoad: 00007ffb\u006067000000 00007ffb\u00606712b000   C:\\WINDOWS\\System32\\gdi32full.dll\nModLoad: 00007ffb\u006067130000 00007ffb\u0060671d3000   C:\\WINDOWS\\System32\\msvcp_win.dll\nModLoad: 00007ffb\u006066d30000 00007ffb\u006066e7b000   C:\\WINDOWS\\System32\\ucrtbase.dll\nModLoad: 00007ffb\u006067750000 00007ffb\u006067ad2000   C:\\WINDOWS\\System32\\combase.dll\nModLoad: 00007ffb\u006069110000 00007ffb\u006069228000   C:\\WINDOWS\\System32\\RPCRT4.dll\nModLoad: 00007ffb\u006065d00000 00007ffb\u006065d2a000   C:\\WINDOWS\\SYSTEM32\\bcrypt.dll\nModLoad: 00007ffb\u0060682a0000 00007ffb\u006068347000   C:\\WINDOWS\\System32\\sechost.dll\nModLoad: 00007ffb\u00605f5c0000 00007ffb\u00605f5cb000   C:\\WINDOWS\\SYSTEM32\\VERSION.dll\nModLoad: 00007ffb\u006069450000 00007ffb\u0060694f9000   C:\\WINDOWS\\System32\\msvcrt.dll\nModLoad: 00007ffb\u006067710000 00007ffb\u006067742000   C:\\WINDOWS\\System32\\IMM32.DLL\nModLoad: 00007ffb\u006068cd0000 00007ffb\u006068d86000   C:\\WINDOWS\\System32\\ADVAPI32.dll\nModLoad: 00007ffb\u006064da0000 00007ffb\u006064dd6000   C:\\WINDOWS\\SYSTEM32\\ntmarta.dll\nModLoad: 0000026b\u00605c0f0000 0000026b\u00605c195000   C:\\WINDOWS\\System32\\bcryptprimitives.dll\n"
+        },
+        "event": "output",
+        "seq": 76,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 31884
+        },
+        "event": "thread",
+        "seq": 77,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 31108
+        },
+        "event": "thread",
+        "seq": 78,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "Breakpoint 0 hit\n"
+        },
+        "event": "output",
+        "seq": 79,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "breakpoint",
+          "description": "Paused on breakpoint 0.",
+          "threadId": 39872,
+          "allThreadsStopped": true,
+          "hitBreakpointIds": [
+            0
+          ]
+        },
+        "event": "stopped",
+        "seq": 80,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "id": 485678637,
+              "name": "testapp!main\u002B0x51",
+              "source": {
+                "name": "main.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+              },
+              "line": 13,
+              "column": 1,
+              "instructionPointerReference": "0x7FF65CC71591"
+            }
+          ],
+          "totalFrames": 1
+        },
+        "request_seq": 6,
+        "success": true,
+        "command": "stackTrace",
+        "seq": 81,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "type": "request",
+        "seq": 7
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 39872,
+              "name": "Thread 39872 (current)"
+            },
+            {
+              "id": 31884,
+              "name": "Thread 31884"
+            },
+            {
+              "id": 31108,
+              "name": "Thread 31108"
+            }
+          ]
+        },
+        "request_seq": 7,
+        "success": true,
+        "command": "threads",
+        "seq": 82,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "type": "request",
+        "seq": 8
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 39872,
+              "name": "Thread 39872 (current)"
+            },
+            {
+              "id": 31884,
+              "name": "Thread 31884"
+            },
+            {
+              "id": 31108,
+              "name": "Thread 31108"
+            }
+          ]
+        },
+        "request_seq": 8,
+        "success": true,
+        "command": "threads",
+        "seq": 83,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "stackTrace",
+        "arguments": {
+          "threadId": 39872,
+          "startFrame": 0,
+          "levels": 1
+        },
+        "type": "request",
+        "seq": 9
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "id": 485678637,
+              "name": "testapp!main\u002B0x51",
+              "source": {
+                "name": "main.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+              },
+              "line": 13,
+              "column": 1,
+              "instructionPointerReference": "0x7FF65CC71591"
+            }
+          ],
+          "totalFrames": 1
+        },
+        "request_seq": 9,
+        "success": true,
+        "command": "stackTrace",
+        "seq": 84,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "type": "request",
+        "seq": 10
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 39872,
+              "name": "Thread 39872 (current)"
+            },
+            {
+              "id": 31884,
+              "name": "Thread 31884"
+            },
+            {
+              "id": 31108,
+              "name": "Thread 31108"
+            }
+          ]
+        },
+        "request_seq": 10,
+        "success": true,
+        "command": "threads",
+        "seq": 85,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "scopes",
+        "arguments": {
+          "frameId": 485678637
+        },
+        "type": "request",
+        "seq": 11
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "scopes": [
+            {
+              "name": "Locals",
+              "presentationHint": "locals",
+              "variablesReference": 1,
+              "namedVariables": 5,
+              "expensive": false,
+              "source": {
+                "name": "main.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+              },
+              "line": 13,
+              "column": 1
+            },
+            {
+              "name": "Registers",
+              "presentationHint": "registers",
+              "variablesReference": 2,
+              "namedVariables": 25,
+              "expensive": false
+            }
+          ]
+        },
+        "request_seq": 11,
+        "success": true,
+        "command": "scopes",
+        "seq": 86,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "stackTrace",
+        "arguments": {
+          "threadId": 39872,
+          "startFrame": 1,
+          "levels": 19
+        },
+        "type": "request",
+        "seq": 12
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "id": -161508874,
+              "name": "testapp!invoke_main\u002B0x39",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              },
+              "line": 79,
+              "column": 1,
+              "instructionPointerReference": "0x7FF65CC725E9"
+            },
+            {
+              "id": 1428327370,
+              "name": "testapp!__scrt_common_main_seh\u002B0x132",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              },
+              "line": 288,
+              "column": 1,
+              "instructionPointerReference": "0x7FF65CC72492"
+            },
+            {
+              "id": 82920050,
+              "name": "testapp!__scrt_common_main\u002B0xe",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              },
+              "line": 331,
+              "column": 1,
+              "instructionPointerReference": "0x7FF65CC7234E"
+            },
+            {
+              "id": 495243194,
+              "name": "testapp!mainCRTStartup\u002B0xe",
+              "source": {
+                "name": "exe_main.cpp",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
+              },
+              "line": 17,
+              "column": 1,
+              "instructionPointerReference": "0x7FF65CC7267E"
+            },
+            {
+              "id": -1808456971,
+              "name": "KERNEL32!BaseThreadInitThunk\u002B0x17",
+              "line": 0,
+              "column": 0,
+              "instructionPointerReference": "0x7FFB6810E8D7"
+            },
+            {
+              "id": 727241897,
+              "name": "ntdll!RtlUserThreadStart\u002B0x2c",
+              "line": 0,
+              "column": 0,
+              "instructionPointerReference": "0x7FFB695CC3FC"
+            }
+          ],
+          "totalFrames": 7
+        },
+        "request_seq": 12,
+        "success": true,
+        "command": "stackTrace",
+        "seq": 87,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "variables",
+        "arguments": {
+          "variablesReference": 1
+        },
+        "type": "request",
+        "seq": 13
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "variables": [
+            {
+              "name": "argc",
+              "value": "1",
+              "evaluateName": "argc",
+              "variablesReference": 0
+            },
+            {
+              "name": "argv",
+              "value": "0x0000026b\u00605a67b650",
+              "evaluateName": "argv",
+              "variablesReference": 0
+            },
+            {
+              "name": "b",
+              "value": "10",
+              "evaluateName": "b",
+              "variablesReference": 0
+            },
+            {
+              "name": "sum",
+              "value": "15",
+              "evaluateName": "sum",
+              "variablesReference": 0
+            },
+            {
+              "name": "a",
+              "value": "5",
+              "evaluateName": "a",
+              "variablesReference": 0
+            }
+          ]
+        },
+        "request_seq": 13,
+        "success": true,
+        "command": "variables",
+        "seq": 88,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "continue",
+        "arguments": {
+          "threadId": 39872
+        },
+        "type": "request",
+        "seq": 14
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true
+        },
+        "request_seq": 14,
+        "success": true,
+        "command": "continue",
+        "seq": 89,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threadId": 39872,
+          "allThreadsContinued": true
+        },
+        "event": "continued",
+        "seq": 90,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "exited",
+          "threadId": 31884
+        },
+        "event": "thread",
+        "seq": 91,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007ffb\u006064b50000 00007ffb\u006064b6b000   C:\\WINDOWS\\SYSTEM32\\kernel.appcore.dll\n"
+        },
+        "event": "output",
+        "seq": 92,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "exitCode": 0
+        },
+        "event": "exited",
+        "seq": 93,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "terminated",
+        "seq": 94,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "disconnect",
+        "arguments": {
+          "restart": false,
+          "terminateDebuggee": false
+        },
+        "type": "request",
+        "seq": 15
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "request_seq": 15,
+        "success": true,
+        "command": "disconnect",
+        "seq": 95,
+        "type": "response"
+      }
+    }
+  ]
+}

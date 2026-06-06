@@ -1,0 +1,160 @@
+{
+    "name": "vscode-dap-dbgeng",
+    "displayName": "Debug Adapter for WinDbg",
+    "version": "0.1.0",
+    "publisher": "svnscha",
+    "description": "Debug Adapter for WinDbg, a Windows native debugger. Provides support for debugging native applications and kernel drivers on Windows using the Debug Adapter Protocol.",
+    "author": {
+        "name": "Sven Scharmentke",
+        "email": "sven.scharmentke@liasoft.de"
+    },
+    "icon": "icon.png",
+    "license": "MIT",
+    "engines": {
+        "vscode": "^1.12.1"
+    },
+    "categories": [
+        "Debuggers"
+    ],
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/svnscha/dap-dbgeng.git"
+    },
+    "bugs": {
+        "url": "https://github.com/svnscha/dap-dbgeng/issues"
+    },
+    "scripts": {
+        "build": "vsce package --out vscode-dap-dbgeng.vsix"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@vscode/vsce": "^3.7.1"
+    },
+    "contributes": {
+        "debuggers": [
+            {
+                "type": "windbg",
+                "label": "WinDbg Debug",
+                "program": "${workspaceFolder}/build/windows-x64/src/dap-dbgeng.exe",
+                "variables": {
+                    "FileBasenameNoExt": "code-debug.getFileBasenameNoExt",
+                    "FileNameNoExt": "code-debug.getFileNameNoExt"
+                },
+                "configurationAttributes": {
+                    "launch": {
+                        "required": [
+                            "target",
+                            "dbgengPath"
+                        ],
+                        "properties": {
+                            "target": {
+                                "type": "string",
+                                "description": "Specifies the path to the executable to launch."
+                            },
+                            "args": {
+                                "type": "string",
+                                "description": "Specifies the command-line arguments to pass to the executable."
+                            },
+                            "dbgengPath": {
+                                "type": "string",
+                                "description": "Specifies the path to the dbgeng.dll library.",
+                                "default": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+                            },
+                            "workingDir": {
+                                "type": "string",
+                                "description": "Specifies the working directory for the debugged process.",
+                                "default": "${workspaceRoot}"
+                            },
+                            "verbosity": {
+                                "type": "string",
+                                "description": "Specifies the verbosity level for debugger output. Valid values are debug, info, warn, error, and fatal.",
+                                "default": "info"
+                            },
+                            "sources": {
+                                "type": "array",
+                                "description": "Specifies the list of source directory paths to include when resolving source files.",
+                                "default": [
+                                    "${workspaceRoot}/src"
+                                ]
+                            },
+                            "stopAtEntry": {
+                                "type": "boolean",
+                                "description": "Break at the program entry point after launch. When false (the default), the adapter resumes the target after configurationDone.",
+                                "default": false
+                            },
+                            "trace": {
+                                "type": "string",
+                                "description": "Optional path to record the DAP session to, for creating replay fixtures, e.g. '${workspaceFolder}/recordings/session.json'. Omit to disable tracing."
+                            }
+                        }
+                    },
+                    "attach": {
+                        "required": [
+                            "dbgengPath"
+                        ],
+                        "properties": {
+                            "processId": {
+                                "type": "number",
+                                "description": "The system process ID to attach to. For remote attach this is the PID on the machine running dbgsrv."
+                            },
+                            "connectionString": {
+                                "type": "string",
+                                "description": "Remote connection string. For user-mode remote attach (with 'processId'), a dbgsrv process-server string, e.g. 'tcp:port=5005,server=HOST' (run 'dbgsrv -t tcp:port=5005' on the target). When 'kernel' is true, a kernel transport instead, e.g. 'net:port=50000,key=...' or 'com:pipe,port=\\\\.\\pipe\\kd,resets=0,reconnect'. Omit for local attach."
+                            },
+                            "kernel": {
+                                "type": "boolean",
+                                "description": "Set to true for kernel debugging; 'connectionString' is then interpreted as the kernel transport. Requires a target configured for kernel debugging (e.g. 'bcdedit /debug on').",
+                                "default": false
+                            },
+                            "dbgengPath": {
+                                "type": "string",
+                                "description": "Specifies the path to the dbgeng.dll library.",
+                                "default": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+                            },
+                            "workingDir": {
+                                "type": "string",
+                                "description": "Specifies the working directory to use for the debug session.",
+                                "default": "${workspaceRoot}"
+                            },
+                            "verbosity": {
+                                "type": "string",
+                                "description": "Specifies the verbosity level for debugger output. Valid values are debug, info, warn, error, and fatal.",
+                                "default": "info"
+                            },
+                            "sources": {
+                                "type": "array",
+                                "description": "Specifies the list of source directory paths to include when resolving source files.",
+                                "default": [
+                                    "${workspaceRoot}/src"
+                                ]
+                            },
+                            "symbolPath": {
+                                "type": "array",
+                                "description": "Specifies the list of symbol file paths to use when loading PDB files.",
+                                "default": []
+                            },
+                            "stopAtEntry": {
+                                "type": "boolean",
+                                "description": "Break in immediately after attaching. When false, the adapter resumes the target after configurationDone instead of forcing a stop.",
+                                "default": true
+                            },
+                            "trace": {
+                                "type": "string",
+                                "description": "Optional path to record the DAP session to, for creating replay fixtures, e.g. '${workspaceFolder}/recordings/attach.session.json'. Omit to disable tracing."
+                            }
+                        }
+                    }
+                },
+                "initialConfigurations": [
+                    {
+                        "name": "Debug",
+                        "type": "windbg",
+                        "request": "launch",
+                        "target": "./bin/executable"
+                    }
+                ]
+            }
+        ]
+    }
+}

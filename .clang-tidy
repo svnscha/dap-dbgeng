@@ -1,0 +1,41 @@
+# clang-tidy configuration for dap-dbgeng. Run locally against the compile
+# database CMake emits (build/windows-x64/compile_commands.json), e.g.
+#   clang-tidy -p build/windows-x64 src/service/dap_server.cpp
+# The generated protocol (src/protocol) and third-party headers are excluded via
+# HeaderFilterRegex below.
+Checks: >
+  -*,
+  bugprone-*,
+  performance-*,
+  readability-*,
+  modernize-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -modernize-use-trailing-return-type,
+  -modernize-avoid-c-arrays,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -readability-function-cognitive-complexity,
+  -readability-braces-around-statements,
+  -readability-implicit-bool-conversion
+
+# Only lint our own headers; skip generated protocol and vcpkg/third-party.
+HeaderFilterRegex: '.*[\\/](src|tests)[\\/](?!protocol[\\/]).*'
+
+WarningsAsErrors: ''
+
+CheckOptions:
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.ClassCase
+    value: lower_case
+  - key: readability-identifier-naming.StructCase
+    value: lower_case
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: _
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE

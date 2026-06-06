@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "messages": [
+    {
+      "direction": "in",
+      "message": {
+        "command": "initialize",
+        "arguments": {
+          "clientID": "vscode",
+          "clientName": "Visual Studio Code",
+          "adapterID": "windbg",
+          "pathFormat": "path",
+          "linesStartAt1": true,
+          "columnsStartAt1": true,
+          "supportsVariableType": true,
+          "supportsVariablePaging": true,
+          "supportsRunInTerminalRequest": true,
+          "locale": "en",
+          "supportsProgressReporting": true,
+          "supportsInvalidatedEvent": true,
+          "supportsMemoryReferences": true,
+          "supportsArgsCanBeInterpretedByShell": true,
+          "supportsMemoryEvent": true,
+          "supportsStartDebuggingRequest": true,
+          "supportsANSIStyling": true
+        },
+        "type": "request",
+        "seq": 1
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "supportsConfigurationDoneRequest": true,
+          "supportsEvaluateForHovers": true,
+          "supportTerminateDebuggee": true,
+          "supportsDelayedStackTraceLoading": true,
+          "supportsTerminateRequest": true,
+          "supportsSingleThreadExecutionRequests": false
+        },
+        "request_seq": 1,
+        "success": true,
+        "command": "initialize",
+        "seq": 1,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "initialized",
+        "seq": 2,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "launch",
+        "arguments": {
+          "name": "Debug",
+          "type": "windbg",
+          "request": "launch",
+          "dbgengPath": "${dbgEngPath}",
+          "target": "${workspaceFolder}/build/windows-x64/test-targets/test_launch.exe",
+          "workingDir": "${workspaceFolder}/build/windows-x64/test-targets",
+          "sources": [
+            "${workspaceFolder}\\test-targets\\testapp"
+          ],
+          "symbolPath": [
+            "${workspaceFolder}/build/windows-x64/test-targets"
+          ],
+          "stopAtEntry": true,
+          "__configurationTarget": 6,
+          "__sessionId": "b02bf27d-63bf-44e0-8234-49f15f11ff89"
+        },
+        "type": "request",
+        "seq": 2
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource search path is: ${workspaceFolder}\\test-targets\\testapp\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\\test-targets\\testapp\n\n************* Preparing the environment for Debugger Extensions Gallery repositories **************\n   ExtensionRepository : Implicit\n   UseExperimentalFeatureForNugetShare : true\n   AllowNugetExeUpdate : true\n   NonInteractiveNuget : true\n   AllowNugetMSCredentialProviderInstall : true\n   AllowParallelInitializationOfLocalRepositories : true\n\n   EnableRedirectToV8JsProvider : false\n\n   -- Configuring repositories\n      ----\u003E Repository : LocalInstalled, Enabled: true\n      ----\u003E Repository : UserExtensions, Enabled: true\n\n\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds\n\n************* Waiting for Debugger Extensions Gallery to Initialize **************\n\n\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.015 seconds\n   ----\u003E Repository : UserExtensions, Enabled: true, Packages count: 0\n   ----\u003E Repository : LocalInstalled, Enabled: true, Packages count: 29\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.6584 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: ${workspaceFolder}/build/windows-x64/test-targets/test_launch.exe\nStarting directory: ${workspaceFolder}/build/windows-x64/test-targets\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nSymbol search path is: ${workspaceFolder}/build/windows-x64/test-targets\nExecutable search path is: \nModLoad: 00007ff6\u00605cc70000 00007ff6\u00605cc84000   test_launch.exe\n"
+        },
+        "event": "output",
+        "seq": 44,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "request_seq": 2,
+        "success": true,
+        "command": "launch",
+        "seq": 45,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "name": "${workspaceFolder}/build/windows-x64/test-targets/test_launch.exe",
+          "isLocalProcess": true,
+          "startMethod": "launch"
+        },
+        "event": "process",
+        "seq": 46,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "entry",
+          "description": "Paused at process entry.",
+          "threadId": 27652,
+          "allThreadsStopped": true
+        },
+        "event": "stopped",
+        "seq": 47,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "configurationDone",
+        "type": "request",
+        "seq": 3
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "request_seq": 3,
+        "success": true,
+        "command": "configurationDone",
+        "seq": 48,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "type": "request",
+        "seq": 4
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 27652,
+              "name": "Thread 27652 (current)"
+            }
+          ]
+        },
+        "request_seq": 4,
+        "success": true,
+        "command": "threads",
+        "seq": 49,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "type": "request",
+        "seq": 5
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 27652,
+              "name": "Thread 27652 (current)"
+            }
+          ]
+        },
+        "request_seq": 5,
+        "success": true,
+        "command": "threads",
+        "seq": 50,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "stackTrace",
+        "arguments": {
+          "threadId": 27652,
+          "startFrame": 0,
+          "levels": 1
+        },
+        "type": "request",
+        "seq": 6
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "id": -408319307,
+              "name": "0x00007ffb\u0060695cc3d0",
+              "line": 0,
+              "column": 0,
+              "instructionPointerReference": "0x7FFB695CC3D0"
+            }
+          ],
+          "totalFrames": 1
+        },
+        "request_seq": 6,
+        "success": true,
+        "command": "stackTrace",
+        "seq": 51,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "stackTrace",
+        "arguments": {
+          "threadId": 27652,
+          "startFrame": 1,
+          "levels": 19
+        },
+        "type": "request",
+        "seq": 7
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [],
+          "totalFrames": 1
+        },
+        "request_seq": 7,
+        "success": true,
+        "command": "stackTrace",
+        "seq": 52,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "terminate",
+        "arguments": {
+          "restart": false
+        },
+        "type": "request",
+        "seq": 8
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "terminated",
+        "seq": 54,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "request_seq": 8,
+        "success": true,
+        "command": "terminate",
+        "seq": 53,
+        "type": "response"
+      }
+    }
+  ]
+}

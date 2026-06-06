@@ -1,0 +1,65 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 21,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "windows-x64",
+            "displayName": "Windows x64 (Ninja, Debug)",
+            "description": "Windows x64 configure using Ninja and the default vcpkg triplet. Run from a VS developer environment (or via scripts/With-DevEnv.ps1) so the MSVC toolchain is on PATH.",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/windows-x64",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "VCPKG_TARGET_TRIPLET": "x64-windows"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "windows-x64-release",
+            "inherits": "windows-x64",
+            "displayName": "Windows x64 (Ninja, Release)",
+            "binaryDir": "${sourceDir}/build/windows-x64-release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "windows-debug",
+            "displayName": "Windows Debug",
+            "configurePreset": "windows-x64"
+        },
+        {
+            "name": "windows-release",
+            "displayName": "Windows Release",
+            "configurePreset": "windows-x64-release"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "windows-debug",
+            "displayName": "Windows Debug",
+            "configurePreset": "windows-x64",
+            "output": {
+                "outputOnFailure": true
+            }
+        },
+        {
+            "name": "windows-release",
+            "displayName": "Windows Release",
+            "configurePreset": "windows-x64-release",
+            "output": {
+                "outputOnFailure": true
+            }
+        }
+    ]
+}

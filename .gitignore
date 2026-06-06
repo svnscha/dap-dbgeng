@@ -1,0 +1,29 @@
+build/
+out/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CMakeUserPresets.json
+Testing/
+.cache/
+vcpkg_installed/
+vcpkg/
+.vs/
+.idea/
+
+# Node / VS Code extension
+node_modules/
+*.vsix
+vscode/bin/
+
+# Generated protocol output staging (generator writes into src/protocol, which IS tracked)
+protgen/__pycache__/
+
+# DAP session captures from the "trace" config option are local artifacts.
+recordings/
+
+# MkDocs rendered output (docs site is built on demand; only sources are tracked)
+site/

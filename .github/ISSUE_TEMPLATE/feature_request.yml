@@ -1,0 +1,57 @@
+name: Feature request
+description: Propose a capability or a DAP request the adapter should support
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The adapter deliberately exposes a focused subset of the Debug Adapter Protocol
+        (see [Supported features](https://github.com/svnscha/dap-dbgeng/blob/main/docs/reference/features.md)).
+        Use this form to propose extending that surface or to suggest other improvements.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / use case
+      description: What are you trying to do, and where does the adapter fall short today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: The capability or behavior you'd like. If it maps to a DAP request, name it.
+    validations:
+      required: false
+  - type: dropdown
+    id: capability
+    attributes:
+      label: Related DAP capability
+      description: If this is about an unsupported capability, pick the closest one.
+      options:
+        - Function breakpoints
+        - Hit-conditional breakpoints
+        - Data breakpoints (watchpoints)
+        - Instruction breakpoints
+        - Logpoints
+        - Read / write memory
+        - Set expression
+        - Modules view
+        - Evaluate on hover
+        - Value formatting options
+        - Other / not a specific DAP request
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds you've tried (e.g. native commands in the Debug Console).
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true

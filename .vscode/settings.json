@@ -1,0 +1,7 @@
+{
+    "C_Cpp.default.forcedInclude": [
+        "${workspaceFolder}/src/stdafx.h",
+        "${workspaceFolder}/src/protocol/dap_service.h"
+    ],
+    "C_Cpp.default.cppStandard": "c++20"
+}

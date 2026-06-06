@@ -1,0 +1,25 @@
+{
+  "name": "dap-dbgeng",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Task runner for the dap-dbgeng workspace. The project is C++ (CMake/Ninja/vcpkg) with a Python protocol generator and a VS Code extension; this package.json only provides convenient `npm run` entry points from the repo root.",
+  "scripts": {
+    "generate": "python protgen/protogen.py --output src/protocol",
+    "configure": "pwsh scripts/With-DevEnv.ps1 cmake --preset windows-x64",
+    "configure:release": "pwsh scripts/With-DevEnv.ps1 cmake --preset windows-x64-release",
+    "build": "pwsh scripts/With-DevEnv.ps1 cmake --build --preset windows-debug",
+    "build:release": "pwsh scripts/With-DevEnv.ps1 cmake --build --preset windows-release",
+    "test": "pwsh scripts/With-DevEnv.ps1 ctest --preset windows-debug",
+    "test:release": "pwsh scripts/With-DevEnv.ps1 ctest --preset windows-release",
+    "test:replay": "pwsh scripts/With-DevEnv.ps1 ctest --preset windows-debug -R Replay",
+    "test:all": "npm run configure && npm run build && npm run test",
+    "check": "npm run format:check && npm run configure && npm run build && npm run test",
+    "format": "pwsh scripts/Format.ps1",
+    "format:check": "pwsh scripts/Format.ps1 -Check",
+    "matrix": "pwsh scripts/Get-DapRequestMatrix.ps1",
+    "docs": "mkdocs serve",
+    "docs:build": "mkdocs build",
+    "build:sys": "pwsh scripts/With-DevEnv.ps1 cmake -S test-targets/sys -B test-targets/sys/build -G \"Visual Studio 17 2022\" -A x64 && pwsh scripts/With-DevEnv.ps1 cmake --build test-targets/sys/build --config Debug",
+    "build:vsix": "npm --prefix vscode install && npm --prefix vscode run build"
+  }
+}

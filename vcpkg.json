@@ -1,0 +1,11 @@
+{
+    "name": "dap-dbgeng",
+    "version-string": "0.1.0",
+    "builtin-baseline": "e5a4f54c0d562059e9ccc6f7e7150667da58fe41",
+    "dependencies": [
+        "fmt",
+        "gtest",
+        "nlohmann-json",
+        "spdlog"
+    ]
+}

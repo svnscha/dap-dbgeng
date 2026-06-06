@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Windows x64 (${{ matrix.preset }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - preset: debug
+            configure: configure
+            build: build
+            test: test
+          - preset: release
+            configure: configure:release
+            build: build:release
+            test: test:release
+    env:
+      # The runner's preinstalled vcpkg is a full clone, so manifest mode can
+      # check out the pinned builtin-baseline commit (a shallow clone cannot).
+      VCPKG_ROOT: ${{ github.workspace }}/.vcpkg-root-placeholder
+      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Point VCPKG_ROOT at the preinstalled vcpkg
+        shell: pwsh
+        run: "echo \"VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT\" >> $env:GITHUB_ENV"
+
+      # Expose the GitHub Actions cache endpoint to vcpkg's x-gha binary cache.
+      - name: Enable vcpkg binary caching
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Check formatting
+        if: matrix.preset == 'debug'
+        shell: pwsh
+        run: npm run format:check
+
+      - name: Configure
+        shell: pwsh
+        run: npm run ${{ matrix.configure }}
+
+      - name: Build
+        shell: pwsh
+        run: npm run ${{ matrix.build }}
+
+      # dbgeng.dll and the native debuggees may be absent on the runner; the
+      # live/replay tests skip cleanly in that case, leaving the unit and
+      # integration coverage.
+      - name: Test
+        shell: pwsh
+        run: npm run ${{ matrix.test }}

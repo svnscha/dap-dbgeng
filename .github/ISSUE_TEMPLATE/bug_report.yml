@@ -1,0 +1,90 @@
+name: Bug report
+description: Something the adapter does wrong (wrong behavior, crash, hang, error response)
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please fill in as much as you can — a
+        clear repro and the environment details are what make a bug fixable.
+
+        For configuration questions ("how do I attach remotely?"), see the
+        [documentation](https://github.com/svnscha/dap-dbgeng/tree/main/docs) first.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened
+      description: A clear description of the problem and how it differs from what you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Exact steps, including the relevant launch/attach configuration (redact secrets).
+      placeholder: |
+        1. launch.json config: ...
+        2. Set a breakpoint at ...
+        3. Start debugging
+        4. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: false
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Debug mode
+      description: Which debugging mode triggers this?
+      options:
+        - launch (local process)
+        - attach (running process)
+        - attach (remote via dbgsrv)
+        - kernel
+        - not applicable / unsure
+    validations:
+      required: true
+  - type: input
+    id: client
+    attributes:
+      label: DAP client
+      description: e.g. VS Code 1.x with the dap-dbgeng extension, or another DAP client.
+      placeholder: VS Code 1.95.0
+    validations:
+      required: false
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Fill in the versions you have.
+      value: |
+        - Windows version:
+        - Visual Studio / Windows SDK:
+        - dbgeng.dll version (or Debugging Tools for Windows version):
+        - dap-dbgeng commit / build (Debug or Release):
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and/or trace
+      description: >
+        Adapter logs go to stderr; raise the level (logLevel "debug") and paste the
+        relevant lines. A session trace (set a "trace" path in the launch/attach
+        config) attached as a file is even better.
+      render: text
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: I can reproduce this on the latest `main`.
+          required: false
