@@ -1,8 +1,17 @@
 # Changelog
 
-All notable changes to the Debug Adapter for WinDbg extension are documented here.
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this
-project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+All notable changes to the Native Windows Debugging (dbgeng) extension are documented
+here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
+this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.1.1] - 2026-06-07
+
+### Changed
+
+- Renamed the extension to **Native Windows Debugging (dbgeng)** (from "Debug Adapter for
+  WinDbg"), which better describes what it does: debug native Windows code (C and C++
+  programs, services, and the Windows kernel) from VS Code using the same engine that
+  powers WinDbg. No functional changes.
 
 ## [0.1.0] - 2026-06-07
 
@@ -27,4 +36,5 @@ Initial release.
   host.
 - `dap-dbgeng.adapterPath` setting to override the bundled adapter.
 
+[0.1.1]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.1
 [0.1.0]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.0

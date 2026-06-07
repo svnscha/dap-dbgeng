@@ -19,7 +19,7 @@ For a full record of the DAP conversation, set a
 
 VS Code doesn't have the extension that provides the `dbgeng` debug type.
 
-**Fix:** install the **Debug Adapter for WinDbg** extension (it bundles the
+**Fix:** install the **Native Windows Debugging (dbgeng)** extension (it bundles the
 adapter - see [Getting started](getting-started.md)), make sure it's enabled, and
 reload the window. Your configuration's `type` must be `dbgeng`.
 

@@ -1,8 +1,8 @@
-site_name: Debug Adapter for WinDbg
+site_name: Native Windows Debugging (dbgeng)
 site_description: >-
-  User guide for dap-dbgeng - a Windows Debug Adapter Protocol server backed by
-  the Windows debug engine (dbgeng). Configure VS Code to debug native programs,
-  attach to processes, debug remotely, and debug Windows drivers.
+  Debug native Windows code - C and C++ programs, services, and even the Windows
+  kernel - straight from Visual Studio Code, using the same engine that powers
+  WinDbg.
 site_author: Sven Scharmentke
 site_url: https://svnscha.github.io/dap-dbgeng/
 repo_url: https://github.com/svnscha/dap-dbgeng

@@ -1,11 +1,11 @@
-# Debug Adapter for WinDbg
+# Native Windows Debugging (dbgeng)
 
-Native Windows debugging in VS Code, powered by the Windows debug engine (`dbgeng`).
+Debug **native Windows code** - C and C++ programs, services, and even the Windows
+**kernel** - straight from Visual Studio Code, using the same engine that powers WinDbg.
 
-Debug native user-mode programs and Windows kernel targets through the Debug Adapter
-Protocol: launch or attach, set breakpoints, step, inspect the call stack, locals,
-registers, and disassembly, and evaluate expressions through the engine, with no fragile
-text scraping of WinDbg output.
+Launch or attach, set breakpoints, step, inspect the call stack, locals, registers, and
+disassembly, and evaluate expressions - all through the Windows debug engine (`dbgeng`),
+with no fragile text scraping of WinDbg output.
 
 [Documentation and guides](https://svnscha.github.io/dap-dbgeng/) | [Getting started](https://svnscha.github.io/dap-dbgeng/getting-started/)
 

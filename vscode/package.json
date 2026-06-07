@@ -1,9 +1,9 @@
 {
     "name": "vscode-dap-dbgeng",
-    "displayName": "Debug Adapter for WinDbg",
-    "version": "0.1.0",
+    "displayName": "Native Windows Debugging (dbgeng)",
+    "version": "0.1.1",
     "publisher": "svnscha",
-    "description": "Debug Adapter for WinDbg, a Windows native debugger. Provides support for debugging native applications and kernel drivers on Windows using the Debug Adapter Protocol.",
+    "description": "Debug native Windows code - C and C++ programs, services, and even the Windows kernel - straight from VS Code, using the same engine that powers WinDbg.",
     "author": {
         "name": "Sven Scharmentke",
         "email": "sven.scharmentke@liasoft.de"
@@ -37,7 +37,7 @@
     },
     "contributes": {
         "configuration": {
-            "title": "Debug Adapter for WinDbg",
+            "title": "Native Windows Debugging (dbgeng)",
             "properties": {
                 "dap-dbgeng.adapterPath": {
                     "type": "string",
@@ -49,7 +49,7 @@
         "debuggers": [
             {
                 "type": "dbgeng",
-                "label": "WinDbg Debug",
+                "label": "Native Windows Debugging (dbgeng)",
                 "variables": {
                     "FileBasenameNoExt": "code-debug.getFileBasenameNoExt",
                     "FileNameNoExt": "code-debug.getFileNameNoExt"

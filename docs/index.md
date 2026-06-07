@@ -1,4 +1,4 @@
-# Debug Adapter for WinDbg
+# Native Windows Debugging (dbgeng)
 
 Debug **native Windows code** - C and C++ programs, services, and even the
 Windows **kernel** - straight from Visual Studio Code, using the same engine
@@ -59,7 +59,7 @@ writing that file for each scenario.
 | --- | --- |
 | **Windows** (x64) | The adapter drives `dbgeng.dll`, which is Windows-only. |
 | **Visual Studio Code** | The editor that hosts the debugging UI. |
-| **The Debug Adapter for WinDbg extension** | Bundles the adapter, so there's nothing extra to build or install. See [Getting started](getting-started.md). |
+| **The Native Windows Debugging (dbgeng) extension** | Bundles the adapter, so there's nothing extra to build or install. See [Getting started](getting-started.md). |
 | **Debugging Tools for Windows** | Provides `dbgeng.dll` (and `dbgsrv.exe` for remote debugging). Installed with the Windows SDK / WDK, or as a standalone component. |
 | **PDB symbols for your target** | So the debugger can map addresses back to your source and variables. |
 

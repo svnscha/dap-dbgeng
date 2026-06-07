@@ -9,7 +9,7 @@ remote, and driver debugging) - but the setup here applies to all of them.
 You need a 64-bit Windows machine with:
 
 - **Visual Studio Code** installed.
-- **The Debug Adapter for WinDbg extension** - it bundles the adapter, so there's
+- **The Native Windows Debugging (dbgeng) extension** - it bundles the adapter, so there's
   nothing separate to build or download. You install it in step 2.
 - **Debugging Tools for Windows**, which ships `dbgeng.dll`. The usual location is:
 
@@ -32,7 +32,7 @@ You need a 64-bit Windows machine with:
 
 ## 2. Install the VS Code extension
 
-Install the **Debug Adapter for WinDbg** extension. The adapter executable is
+Install the **Native Windows Debugging (dbgeng)** extension. The adapter executable is
 **bundled inside it**, so there's nothing else to download, build, or point at -
 once the extension is installed, you're ready to debug.
 
