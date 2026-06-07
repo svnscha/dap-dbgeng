@@ -120,8 +120,8 @@
         "command": "setBreakpoints",
         "arguments": {
           "source": {
-            "name": "main.cpp",
-            "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+            "name": "launch.cpp",
+            "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
           },
           "lines": [
             8
@@ -144,10 +144,10 @@
           "breakpoints": [
             {
               "verified": false,
-              "message": "Unable to resolve breakpoint at '${workspaceFolder}\\test-targets\\testapp\\main.cpp:8'.",
+              "message": "Unable to resolve breakpoint at '${workspaceFolder}\\test-targets\\testapp\\launch.cpp:8'.",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 8,
               "reason": "failed"
@@ -316,8 +316,8 @@
               "id": -355398700,
               "name": "testapp!main+0xe",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 8,
               "column": 1,
@@ -423,8 +423,8 @@
               "id": -355398700,
               "name": "testapp!main+0xe",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 8,
               "column": 1,
@@ -497,8 +497,8 @@
               "namedVariables": 5,
               "expensive": false,
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 8,
               "column": 1
@@ -751,8 +751,8 @@
               "id": -355398700,
               "name": "testapp!main+0x31",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 10,
               "column": 1,
@@ -791,8 +791,8 @@
               "namedVariables": 5,
               "expensive": false,
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 10,
               "column": 1

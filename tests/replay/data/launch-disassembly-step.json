@@ -138,8 +138,8 @@
         "command": "setBreakpoints",
         "arguments": {
           "source": {
-            "name": "main.cpp",
-            "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+            "name": "launch.cpp",
+            "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
           },
           "lines": [
             3
@@ -164,8 +164,8 @@
               "id": 0,
               "verified": true,
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 3
             }
@@ -321,8 +321,8 @@
               "id": -414979202,
               "name": "testapp!main",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 4,
               "column": 1,
@@ -428,8 +428,8 @@
               "id": -414979202,
               "name": "testapp!main",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 4,
               "column": 1,
@@ -469,8 +469,8 @@
               "address": "0x7FF7EA6A150E",
               "instruction": "<invalid instruction>",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "presentationHint": "invalid"
             },
@@ -725,8 +725,8 @@
               "instruction": "mov     qword ptr [rsp+10h],rdx",
               "symbol": "testapp!main",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 4,
               "column": 1
@@ -1060,8 +1060,8 @@
               "instruction": "mov     qword ptr [rsp+10h],rdx",
               "symbol": "testapp!main",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 4,
               "column": 1
@@ -1512,8 +1512,8 @@
               "namedVariables": 5,
               "expensive": false,
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 4,
               "column": 1
@@ -1692,8 +1692,8 @@
               "id": -414979202,
               "name": "testapp!main+0xe",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 8,
               "column": 1,
@@ -1733,8 +1733,8 @@
               "address": "0x7FF7EA6A1512",
               "instruction": "<invalid instruction>",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "presentationHint": "invalid"
             },
@@ -1993,8 +1993,8 @@
               "instruction": "lea     rdx,[testapp!__xt_z+0x110 (00007ff7`ea6aabb0)]",
               "symbol": "testapp!main+0xE",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 8,
               "column": 1
@@ -2328,8 +2328,8 @@
               "instruction": "lea     rdx,[testapp!__xt_z+0x110 (00007ff7`ea6aabb0)]",
               "symbol": "testapp!main+0xE",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 8,
               "column": 1
@@ -2660,8 +2660,8 @@
               "namedVariables": 5,
               "expensive": false,
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 8,
               "column": 1
@@ -2926,8 +2926,8 @@
               "id": -414979202,
               "name": "testapp!main+0x31",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 10,
               "column": 1,
@@ -2967,8 +2967,8 @@
               "address": "0x7FF7EA6A1518",
               "instruction": "<invalid instruction>",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "presentationHint": "invalid"
             },
@@ -3233,8 +3233,8 @@
               "instruction": "mov     dword ptr [rsp+20h],5",
               "symbol": "testapp!main+0x31",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 10,
               "column": 1
@@ -3568,8 +3568,8 @@
               "instruction": "mov     dword ptr [rsp+20h],5",
               "symbol": "testapp!main+0x31",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 10,
               "column": 1
@@ -3980,8 +3980,8 @@
               "id": -414979202,
               "name": "testapp!main+0x39",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 11,
               "column": 1,
@@ -4021,8 +4021,8 @@
               "address": "0x7FF7EA6A1519",
               "instruction": "<invalid instruction>",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "presentationHint": "invalid"
             },
@@ -4288,8 +4288,8 @@
               "instruction": "mov     dword ptr [rsp+24h],0Ah",
               "symbol": "testapp!main+0x39",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 11,
               "column": 1
@@ -4623,8 +4623,8 @@
               "instruction": "mov     dword ptr [rsp+24h],0Ah",
               "symbol": "testapp!main+0x39",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 11,
               "column": 1
@@ -5035,8 +5035,8 @@
               "id": -414979202,
               "name": "testapp!main+0x41",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 12,
               "column": 1,
@@ -5076,8 +5076,8 @@
               "address": "0x7FF7EA6A151A",
               "instruction": "<invalid instruction>",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "presentationHint": "invalid"
             },
@@ -5344,8 +5344,8 @@
               "instruction": "mov     eax,dword ptr [rsp+24h]",
               "symbol": "testapp!main+0x41",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 12,
               "column": 1
@@ -5679,8 +5679,8 @@
               "instruction": "mov     eax,dword ptr [rsp+24h]",
               "symbol": "testapp!main+0x41",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 12,
               "column": 1
@@ -6091,8 +6091,8 @@
               "id": -414979202,
               "name": "testapp!main+0x51",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 13,
               "column": 1,
@@ -6132,8 +6132,8 @@
               "address": "0x7FF7EA6A151F",
               "instruction": "<invalid instruction>",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "presentationHint": "invalid"
             },
@@ -6405,8 +6405,8 @@
               "instruction": "lea     rdx,[testapp!__xt_z+0x138 (00007ff7`ea6aabd8)]",
               "symbol": "testapp!main+0x51",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 13,
               "column": 1
@@ -6740,8 +6740,8 @@
               "instruction": "lea     rdx,[testapp!__xt_z+0x138 (00007ff7`ea6aabd8)]",
               "symbol": "testapp!main+0x51",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 13,
               "column": 1
@@ -7160,8 +7160,8 @@
               "id": -414979202,
               "name": "testapp!main+0xc8",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 15,
               "column": 1,
@@ -7201,8 +7201,8 @@
               "address": "0x7FF7EA6A1537",
               "instruction": "<invalid instruction>",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "presentationHint": "invalid"
             },
@@ -7498,8 +7498,8 @@
               "instruction": "xor     eax,eax",
               "symbol": "testapp!main+0xC8",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 15,
               "column": 1
@@ -7833,8 +7833,8 @@
               "instruction": "xor     eax,eax",
               "symbol": "testapp!main+0xC8",
               "location": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 15,
               "column": 1
@@ -8165,8 +8165,8 @@
               "namedVariables": 5,
               "expensive": false,
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 15,
               "column": 1

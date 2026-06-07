@@ -138,8 +138,8 @@
         "command": "setBreakpoints",
         "arguments": {
           "source": {
-            "name": "main.cpp",
-            "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+            "name": "launch.cpp",
+            "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
           },
           "lines": [
             13
@@ -165,8 +165,8 @@
               "id": 0,
               "verified": true,
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 13
             }
@@ -322,8 +322,8 @@
               "id": -1903795622,
               "name": "testapp!main+0x51",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 13,
               "column": 1,
@@ -429,8 +429,8 @@
               "id": -1903795622,
               "name": "testapp!main+0x51",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 13,
               "column": 1,
@@ -1461,8 +1461,8 @@
               "namedVariables": 5,
               "expensive": false,
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 13,
               "column": 1

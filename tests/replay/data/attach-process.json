@@ -199,8 +199,8 @@
         "command": "setBreakpoints",
         "arguments": {
           "source": {
-            "name": "main.cpp",
-            "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+            "name": "launch.cpp",
+            "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
           },
           "lines": [
             8
@@ -223,10 +223,10 @@
           "breakpoints": [
             {
               "verified": false,
-              "message": "Unable to resolve breakpoint at \u0027${workspaceFolder}\\test-targets\\testapp\\main.cpp:8\u0027.",
+              "message": "Unable to resolve breakpoint at \u0027${workspaceFolder}\\test-targets\\testapp\\launch.cpp:8\u0027.",
               "source": {
-                "name": "main.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
+                "name": "launch.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
               },
               "line": 8,
               "reason": "failed"

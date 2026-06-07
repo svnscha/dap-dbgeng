@@ -4,7 +4,7 @@
 
 # Spawned under the debugger by launch-based fixtures; its source must stay
 # stable so recorded sessions keep matching.
-add_executable(test_launch main.cpp)
+add_executable(test_launch launch.cpp)
 
 # A keepalive process that attach-based fixtures attach to.
 add_executable(test_attach attach.cpp)

@@ -111,7 +111,7 @@ std::string resolve_launch_target_source()
 {
     if (auto root = find_repository_root())
     {
-        const fs::path source = *root / "test-targets" / "testapp" / "main.cpp";
+        const fs::path source = *root / "test-targets" / "testapp" / "launch.cpp";
         if (fs::exists(source))
         {
             return source.string();

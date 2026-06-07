@@ -25,7 +25,7 @@ std::string resolve_launch_target_path();
 // Directory holding the launch target, or empty when the target is unavailable.
 std::string resolve_launch_target_directory();
 
-// Resolves the launch target's source (test-targets/testapp/main.cpp). Empty
+// Resolves the launch target's source (test-targets/testapp/launch.cpp). Empty
 // when unavailable.
 std::string resolve_launch_target_source();
 } // namespace dap_dbgeng::test_support

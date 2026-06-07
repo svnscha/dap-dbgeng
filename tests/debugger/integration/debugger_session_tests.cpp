@@ -112,7 +112,7 @@ TEST(DebuggerSessionIntegration, LaunchWithBreakpointHitReturnsSourceBackedStack
     const std::string target = resolve_launch_target_path();
     DAP_REQUIRE_OR_SKIP(target, "test_launch.exe not found (build test-targets/testapp or set DAP_DBGENG_NATIVE_APP).");
     const std::string source = resolve_launch_target_source();
-    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/main.cpp not found.");
+    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/launch.cpp not found.");
 
     std::unique_ptr<debugger_session> session;
     try
@@ -135,7 +135,7 @@ TEST(DebuggerSessionIntegration, LaunchWithBreakpointHitReturnsSourceBackedStack
         // another tree). Validating the filename + line is what actually proves
         // source-line resolution works; the absolute path is a build artifact.
         EXPECT_EQ(fs::path(source).filename(), fs::path(frames[0].source->path).filename())
-            << "Expected stack frame source file to be main.cpp.";
+            << "Expected stack frame source file to be launch.cpp.";
         EXPECT_EQ(10, frames[0].source->line) << "Expected source line to match the breakpoint line.";
     }
     catch (...)
@@ -177,7 +177,7 @@ TEST(DebuggerSessionIntegration, LaunchGetLocalsAtSourceBreakpointReturnsNamedVa
     const std::string target = resolve_launch_target_path();
     DAP_REQUIRE_OR_SKIP(target, "test_launch.exe not found (build test-targets/testapp or set DAP_DBGENG_NATIVE_APP).");
     const std::string source = resolve_launch_target_source();
-    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/main.cpp not found.");
+    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/launch.cpp not found.");
 
     std::unique_ptr<debugger_session> session;
     try
