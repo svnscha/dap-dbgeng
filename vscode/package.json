@@ -56,13 +56,10 @@
                 },
                 "configurationAttributes": {
                     "launch": {
-                        "required": [
-                            "target"
-                        ],
                         "properties": {
                             "target": {
                                 "type": "string",
-                                "description": "Path to the executable to launch."
+                                "description": "Path to the executable to launch. Optional when the CMake Tools extension is installed and a launch target is selected - the adapter then uses CMake Tools' launch target."
                             },
                             "args": {
                                 "type": [

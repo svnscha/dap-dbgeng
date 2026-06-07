@@ -4,13 +4,14 @@ These attributes apply when `"request": "launch"` - the debugger **starts** a
 program for you. See [Debug a local program](../scenarios/local-debugging.md) for
 a guided walkthrough.
 
-**Required:** `target`.
+**Required:** `target`, unless the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
+extension is installed and a launch target is selected (then it is used automatically).
 
 ## Attributes
 
 | Attribute | Required | Description |
 | --- | --- | --- |
-| [`target`](#target) | Yes | Path to the executable to launch. |
+| [`target`](#target) | Yes* | Path to the executable to launch (*optional with CMake Tools). |
 | [`args`](#args) | - | Command-line arguments (string or array). |
 | [`workingDir`](#workingdir) | - | Working directory for the program. |
 | [`dbgengPath`](#dbgengpath) | - | Path to `dbgeng.dll`; auto-resolved when omitted. |
@@ -23,13 +24,20 @@ a guided walkthrough.
 
 ### `target`
 
-- **Type:** string · **Required**
+- **Type:** string · Required (see below)
 
 The path to the executable to launch under the debugger.
 
 ```json
 "target": "${workspaceFolder}/build/Debug/myapp.exe"
 ```
+
+`target` is optional when the **CMake Tools** extension (`ms-vscode.cmake-tools`)
+is installed: if you omit it, the adapter uses CMake Tools' selected **launch
+target** (the same one its status bar shows). If no `target` is set and no launch
+target can be resolved, the session fails with a message telling you to select a
+CMake launch target or set `target` explicitly. Without CMake Tools installed,
+`target` is required.
 
 ---
 

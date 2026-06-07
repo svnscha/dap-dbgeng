@@ -31,16 +31,30 @@ function activate(context) {
     );
 
     // Apply config defaults that VS Code does not inject from the schema (schema
-    // "default" values are only editor hints). Runs before variable substitution,
-    // so ${workspaceFolder} is expanded normally.
+    // "default" values are only editor hints), and resolve a launch target from
+    // CMake Tools when none is given. Runs before variable substitution, so
+    // ${workspaceFolder} is expanded normally.
     context.subscriptions.push(
         vscode.debug.registerDebugConfigurationProvider(DEBUG_TYPE, {
-            resolveDebugConfiguration(folder, config) {
-                if (config && config.type === DEBUG_TYPE) {
-                    if (!Array.isArray(config.sources) || config.sources.length === 0) {
-                        config.sources = ["${workspaceFolder}"];
-                    }
+            async resolveDebugConfiguration(folder, config) {
+                if (!config || config.type !== DEBUG_TYPE) {
+                    return config;
                 }
+
+                if (!Array.isArray(config.sources) || config.sources.length === 0) {
+                    config.sources = ["${workspaceFolder}"];
+                }
+
+                // target is optional: fall back to the CMake Tools launch target.
+                if (config.request === "launch" && (typeof config.target !== "string" || !config.target.trim())) {
+                    const resolved = await resolveLaunchTargetFromCMake();
+                    if (!resolved.path) {
+                        vscode.window.showErrorMessage(resolved.message);
+                        return undefined; // abort the session; the user has been told why
+                    }
+                    config.target = resolved.path;
+                }
+
                 return config;
             },
         })
@@ -79,6 +93,48 @@ function activate(context) {
 function deactivate() {}
 
 module.exports = { activate, deactivate };
+
+// ---------------------------------------------------------------------------
+// CMake Tools launch-target resolution (optional integration)
+// ---------------------------------------------------------------------------
+// Returns { path } when a launch target is resolved, or { message } describing
+// how to fix it. CMake Tools is optional: the message differs depending on
+// whether it is installed. Uses the on-demand command query (the same command
+// CMake Tools exposes for launch.json variable substitution) rather than the
+// event-based typed API, so there is no hard dependency on the extension.
+async function resolveLaunchTargetFromCMake() {
+    const ext = vscode.extensions.getExtension("ms-vscode.cmake-tools");
+    if (!ext) {
+        return {
+            message:
+                "No 'target' is set. Set 'target' to the executable to debug, or install the CMake Tools " +
+                "extension (ms-vscode.cmake-tools) and select a launch target.",
+        };
+    }
+
+    try {
+        if (!ext.isActive) {
+            await ext.activate();
+        }
+        const path = await vscode.commands.executeCommand("cmake.launchTargetPath");
+        if (typeof path === "string" && path.trim()) {
+            return { path: path.trim() };
+        }
+    } catch (err) {
+        return {
+            message:
+                "No 'target' is set and the CMake launch target could not be resolved" +
+                (err && err.message ? ` (${err.message})` : "") +
+                ". Run 'CMake: Set Launch/Debug Target', or set 'target' explicitly.",
+        };
+    }
+
+    return {
+        message:
+            "No 'target' is set and no CMake launch target is selected. Run 'CMake: Set Launch/Debug Target' " +
+            "to choose one, or set 'target' in the launch configuration.",
+    };
+}
 
 // ---------------------------------------------------------------------------
 // Process picker
