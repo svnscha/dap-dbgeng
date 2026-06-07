@@ -4,6 +4,18 @@ All notable changes to the Native Windows Debugging (dbgeng) extension are docum
 here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-06-08
+
+### Changed
+
+- Redesigned the extension icon: a Windows four-pane window with the top-left pane as a
+  red breakpoint dot, in the brand blue.
+- Reworked the Marketplace listing to be user-facing - it follows the getting-started
+  guide, shows the most common `launch.json` configurations, and embeds the promo and
+  scenario demo videos.
+
+No functional changes.
+
 ## [0.1.1] - 2026-06-07
 
 ### Changed
@@ -36,5 +48,6 @@ Initial release.
   host.
 - `dap-dbgeng.adapterPath` setting to override the bundled adapter.
 
+[0.1.2]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.2
 [0.1.1]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.1
 [0.1.0]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.0

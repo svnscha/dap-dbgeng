@@ -1,6 +1,6 @@
 {
   "name": "dap-dbgeng",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Task runner for the dap-dbgeng workspace. The project is C++ (CMake/Ninja/vcpkg) with a Python protocol generator and a VS Code extension; this package.json only provides convenient `npm run` entry points from the repo root.",
   "scripts": {

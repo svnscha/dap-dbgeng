@@ -1,7 +1,7 @@
 {
     "name": "vscode-dap-dbgeng",
     "displayName": "Native Windows Debugging (dbgeng)",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "svnscha",
     "description": "Debug native Windows code - C and C++ programs, services, and even the Windows kernel - straight from VS Code, using the same engine that powers WinDbg.",
     "author": {
