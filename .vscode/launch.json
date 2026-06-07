@@ -1,0 +1,40 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        /*
+            Launchs the target process directly.
+            Omitting the "target" attribute and using the CMake Tools extension to set the active target to the desired test target will allow the debugger to automatically find the executable to launch.
+        */
+        {
+            "name": "Debug Test Target (Launch)",
+            "type": "dbgeng",
+            "request": "launch",
+        },
+        /*
+            Requires launching the target process separately, e.g. by running the following command in a terminal:
+            cd build\windows-x64\test-targets; .\test_attach.exe
+        */
+        {
+            "name": "Debug Test Target (Attach)",
+            "type": "dbgeng",
+            "request": "attach",
+            "processId": "${command:dap-dbgeng.pickProcess}",
+        },
+        /*
+            Requires starting the dbgsrv process separately, for example by running this command in a terminal:
+            dbgsrv -t tcp:port=5005
+            Also start the target process separately, for example by running this command in a terminal:
+            cd build\windows-x64\test-targets; .\test_attach.exe --remote-debugging-port=5005
+        */
+        {
+            "name": "Debug Test Target (Remote Attach)",
+            "type": "dbgeng",
+            "request": "attach",
+            "processId": "${command:dap-dbgeng.pickProcess}",
+            "connectionString": "tcp:port=5005,server=localhost",
+        }
+    ]
+}

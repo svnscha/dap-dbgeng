@@ -4,9 +4,8 @@
         "${workspaceFolder}/src/protocol/dap_service.h"
     ],
     "C_Cpp.default.cppStandard": "c++20",
-    /* CMake uses our debug configuration */
     "cmake.debugConfig": {
-        "type": "windbg",
+        "type": "dbgeng",
         "request": "launch",
     }
 }
