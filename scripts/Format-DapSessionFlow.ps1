@@ -1,3 +1,20 @@
+<#
+.SYNOPSIS
+    Print a compact, human-readable timeline of a recorded DAP session.
+
+.DESCRIPTION
+    Reads a trace produced by the adapter's "trace" config option (or a replay
+    fixture under tests/replay/data) - the `{ "version", "messages": [ { direction,
+    message } ] }` format - and prints one line per request, response, and event so
+    the protocol flow is easy to inspect before reasoning about code. Console
+    `output` events are hidden unless -IncludeOutput is given.
+
+.EXAMPLE
+    pwsh scripts/Format-DapSessionFlow.ps1 -Path .\recordings\session.json
+
+.EXAMPLE
+    pwsh scripts/Format-DapSessionFlow.ps1 -Path .\tests\replay\data\basic-debug.json -IncludeOutput
+#>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true, Position = 0)]
@@ -101,6 +118,9 @@ foreach ($entry in $session.messages) {
                 }
                 'exited' {
                     ' exitCode=' + $message.body.exitCode
+                }
+                'terminated' {
+                    ''
                 }
                 'output' {
                     ' category=' + $message.body.category + ' text=' + (Format-Preview -Text ([string]$message.body.output) -Limit $MaxOutputLength)
