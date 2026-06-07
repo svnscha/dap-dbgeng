@@ -46,16 +46,21 @@ coverage map.
 
 2. Map current coverage with the request matrix.
 
-	Run the matrix to see, per command, whether it is implemented and which replay
-	fixtures exercise it:
+	The matrix lives as a generated, committed documentation page,
+	`docs/development/request-coverage.md`, listing per command whether it is
+	implemented and which replay fixtures exercise it. Read that page first.
 
 	```powershell
-	npm run matrix        # pwsh scripts/Get-DapRequestMatrix.ps1
+	npm run matrix          # regenerate docs/development/request-coverage.md
+	npm run matrix:check    # verify the committed page is up to date (CI-enforced)
+	pwsh scripts/Get-DapRequestMatrix.ps1 -Stdout   # quick table view, no file write
 	```
 
-	It reads the generated dispatch (`src/protocol/dap_service.h`), the handler files,
-	and the fixtures under `tests/replay/data`, so it tracks the real surface without a
-	hand-maintained list.
+	The generator reads the generated dispatch (`src/protocol/dap_service.h`), the
+	handler files, and the fixtures under `tests/replay/data`, so it tracks the real
+	surface without a hand-maintained list. After you add a handler or a fixture,
+	regenerate the page and commit it (CI fails via `npm run matrix:check` if it is
+	stale).
 
 3. Read the relevant fixtures and assertions.
 

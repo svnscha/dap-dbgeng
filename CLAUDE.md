@@ -15,8 +15,14 @@ npm run configure     # cmake --preset windows-x64 (Ninja, auto-finds vcpkg)
 npm run build         # cmake --build --preset windows-debug
 npm test              # ctest --preset windows-debug  (unit + integration + replay)
 npm run generate      # regenerate src/protocol from the DAP schema
+npm run matrix        # regenerate the request coverage page (docs/development/request-coverage.md)
 pwsh scripts/Format.ps1   # clang-format changed files (git-aware)
 ```
+
+The request coverage matrix is generated, not hand-maintained: `npm run matrix` rewrites
+`docs/development/request-coverage.md` from the dispatch, handlers, and replay fixtures, and CI runs
+`npm run matrix:check` to fail if the committed page drifts. Regenerate and commit it after adding a
+handler or a replay fixture.
 
 Running `cmake`/`ctest` directly works too, but only from a VS developer environment (e.g. the
 "x64 Native Tools" prompt) so `cl`/`link` are on PATH. Windows-only (dbgeng). vcpkg deps

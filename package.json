@@ -17,6 +17,7 @@
     "format": "pwsh scripts/Format.ps1",
     "format:check": "pwsh scripts/Format.ps1 -Check",
     "matrix": "pwsh scripts/Get-DapRequestMatrix.ps1",
+    "matrix:check": "pwsh scripts/Get-DapRequestMatrix.ps1 -Check",
     "docs": "mkdocs serve",
     "docs:build": "mkdocs build",
     "build:sys": "pwsh scripts/With-DevEnv.ps1 cmake -S test-targets/sys -B test-targets/sys/build -G \"Visual Studio 17 2022\" -A x64 && pwsh scripts/With-DevEnv.ps1 cmake --build test-targets/sys/build --config Debug",

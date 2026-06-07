@@ -88,6 +88,8 @@ nav:
       - attach attributes: reference/attach.md
       - Supported features: reference/features.md
   - Troubleshooting: troubleshooting.md
+  - Development:
+      - Request coverage: development/request-coverage.md
 
 plugins:
   - search

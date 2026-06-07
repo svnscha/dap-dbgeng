@@ -53,6 +53,11 @@ jobs:
         shell: pwsh
         run: npm run format:check
 
+      - name: Check request coverage matrix is up to date
+        if: matrix.preset == 'debug'
+        shell: pwsh
+        run: npm run matrix:check
+
       - name: Configure
         shell: pwsh
         run: npm run ${{ matrix.configure }}
