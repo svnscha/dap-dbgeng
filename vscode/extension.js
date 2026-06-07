@@ -15,6 +15,9 @@ const path = require("path");
 const fs = require("fs");
 
 const DEBUG_TYPE = "windbg";
+const ADAPTER_NOT_FOUND =
+    "dap-dbgeng adapter not found. Reinstall the packaged extension (it bundles the adapter), or set the " +
+    "'dap-dbgeng.adapterPath' setting (or a launch 'program') to a built dap-dbgeng.exe.";
 let output;
 let extensionPath;
 
@@ -31,14 +34,13 @@ function activate(context) {
         vscode.debug.registerDebugAdapterDescriptorFactory(DEBUG_TYPE, {
             createDebugAdapterDescriptor(session) {
                 const adapterPath = resolveAdapterPath(session.configuration, session.workspaceFolder);
-                output.appendLine(`Starting adapter: ${adapterPath}`);
-                if (!fs.existsSync(adapterPath)) {
-                    const message = `dap-dbgeng adapter not found at ${adapterPath}. Build it (npm run build) or set "program" in the launch config.`;
-                    output.appendLine(message);
+                if (!adapterPath) {
+                    output.appendLine(ADAPTER_NOT_FOUND);
                     output.show(true);
-                    vscode.window.showErrorMessage(message);
-                    throw new Error(message);
+                    vscode.window.showErrorMessage(ADAPTER_NOT_FOUND);
+                    throw new Error(ADAPTER_NOT_FOUND);
                 }
+                output.appendLine(`Starting adapter: ${adapterPath}`);
                 return new vscode.DebugAdapterExecutable(adapterPath, []);
             },
         })
@@ -68,6 +70,10 @@ module.exports = { activate, deactivate };
 async function pickProcess(config) {
     config = config || {};
     const adapterPath = resolveAdapterPath(config, undefined);
+    if (!adapterPath) {
+        vscode.window.showErrorMessage(ADAPTER_NOT_FOUND);
+        return undefined;
+    }
     const dbgengPath = typeof config.dbgengPath === "string" ? config.dbgengPath : undefined;
     const connectionString =
         typeof config.connectionString === "string" && config.connectionString.trim()
@@ -108,8 +114,8 @@ async function pickProcess(config) {
 // Resolve the adapter executable, in precedence order:
 //   1. the "dap-dbgeng.adapterPath" setting (explicit override),
 //   2. a "program" in the launch configuration,
-//   3. the adapter bundled in the extension (vscode/bin, the default),
-//   4. a Ninja build output under the workspace (for repo development).
+//   3. the adapter bundled in the extension (vscode/bin, the default).
+// Returns undefined when none exist; callers surface ADAPTER_NOT_FOUND.
 function resolveAdapterPath(config, workspaceFolder) {
     const scope = workspaceFolder ? workspaceFolder.uri : undefined;
     const configured = vscode.workspace.getConfiguration("dap-dbgeng", scope).get("adapterPath");
@@ -128,21 +134,7 @@ function resolveAdapterPath(config, workspaceFolder) {
         }
     }
 
-    const relative = path.join("build", "windows-x64", "src", "dap-dbgeng.exe");
-    const folders = [];
-    if (workspaceFolder) {
-        folders.push(workspaceFolder.uri.fsPath);
-    }
-    for (const folder of vscode.workspace.workspaceFolders || []) {
-        folders.push(folder.uri.fsPath);
-    }
-    for (const base of folders) {
-        const candidate = path.join(base, relative);
-        if (fs.existsSync(candidate)) {
-            return candidate;
-        }
-    }
-    return folders.length ? path.join(folders[0], relative) : "dap-dbgeng.exe";
+    return undefined;
 }
 
 // Spawn `dap-dbgeng --list-processes` and parse its JSON output. Resolves to an
