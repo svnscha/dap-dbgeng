@@ -106,7 +106,7 @@ async function pickProcess(config) {
 
     const items = processes
         .map((p) => ({
-            label: p.name && p.name.length ? p.name : `(pid ${p.systemId})`,
+            label: p.name && p.name.length ? p.name : "<unknown>",
             description: `PID ${p.systemId}`,
             detail: p.description && p.description !== p.name ? p.description : undefined,
             pid: p.systemId,

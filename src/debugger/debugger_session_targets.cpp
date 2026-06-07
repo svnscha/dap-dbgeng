@@ -120,16 +120,18 @@ std::vector<process_info> debugger_session::list_processes()
         process_info info;
         info.system_id = id;
 
-        // NO_PATHS yields just the image basename; we deliberately ignore the
-        // verbose description (command line, services, session) so the remote
-        // picker matches the local one: name + pid only.
+        // Read the executable path (the verbose description - command line,
+        // services, session - is deliberately ignored) and reduce it to the
+        // basename ourselves. We take the full path rather than asking the engine
+        // for the basename (NO_PATHS), whose remote path-stripping truncates some
+        // names. This makes the remote picker match the local one: name + pid only.
         ULONG exe_size = 0;
-        if (SUCCEEDED(client_->GetRunningProcessDescription(process_server_handle_, id, DEBUG_PROC_DESC_NO_PATHS,
+        if (SUCCEEDED(client_->GetRunningProcessDescription(process_server_handle_, id, DEBUG_PROC_DESC_DEFAULT,
                                                             exe_name.data(), static_cast<ULONG>(exe_name.size()),
                                                             &exe_size, nullptr, 0, nullptr)) &&
             exe_size > 1)
         {
-            info.name = std::string(exe_name.data());
+            info.name = std::filesystem::path(std::string(exe_name.data())).filename().string();
         }
         result.push_back(std::move(info));
     }
