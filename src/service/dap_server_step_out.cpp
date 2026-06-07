@@ -8,17 +8,17 @@ void dap_server::handle_step_out_request(const protocol::StepOutRequest &request
     const bool single_thread = request.arguments.single_thread.value_or(false);
     const std::optional<protocol::SteppingGranularity> granularity = request.arguments.granularity;
 
-    if (is_execution_running_.load())
-    {
-        send_error_response(request.seq, request.command, "Cannot step while the debuggee is running.");
-        return;
-    }
     if (!require_positive_thread_id(request.seq, request.command, thread_id))
     {
         return;
     }
     if (!reject_single_thread(request.seq, request.command, single_thread))
     {
+        return;
+    }
+    if (is_execution_running_.load())
+    {
+        send_error_response(request.seq, request.command, "Cannot step while the debuggee is running.");
         return;
     }
 

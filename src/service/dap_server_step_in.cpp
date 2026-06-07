@@ -9,11 +9,6 @@ void dap_server::handle_step_in_request(const protocol::StepInRequest &request)
     const std::optional<int> target_id = request.arguments.target_id;
     const std::optional<protocol::SteppingGranularity> granularity = request.arguments.granularity;
 
-    if (is_execution_running_.load())
-    {
-        send_error_response(request.seq, request.command, "Cannot step while the debuggee is running.");
-        return;
-    }
     if (!require_positive_thread_id(request.seq, request.command, thread_id))
     {
         return;
@@ -24,6 +19,11 @@ void dap_server::handle_step_in_request(const protocol::StepInRequest &request)
     }
     if (!reject_target_id(request.seq, request.command, target_id.has_value()))
     {
+        return;
+    }
+    if (is_execution_running_.load())
+    {
+        send_error_response(request.seq, request.command, "Cannot step while the debuggee is running.");
         return;
     }
 

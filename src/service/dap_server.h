@@ -233,7 +233,6 @@ class dap_server : public protocol::dap_service
                                         const std::optional<debugger::source_location> &source);
 
     // ---- setBreakpoints helpers ---------------------------------------------
-    static bool has_unsupported_source_breakpoint_options(const protocol::SourceBreakpoint &breakpoint);
     static protocol::Breakpoint create_source_breakpoint_response(const protocol::Source &source,
                                                                   const protocol::SourceBreakpoint &breakpoint,
                                                                   bool verified, std::optional<std::string> message,

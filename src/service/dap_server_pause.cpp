@@ -6,9 +6,8 @@ void dap_server::handle_pause_request(const protocol::PauseRequest &request)
 {
     const int thread_id = request.arguments.thread_id;
 
-    if (thread_id <= 0)
+    if (!require_positive_thread_id(request.seq, request.command, thread_id))
     {
-        send_error_response(request.seq, request.command, "The pause request requires a positive threadId.");
         return;
     }
     if (!is_execution_running_.load())

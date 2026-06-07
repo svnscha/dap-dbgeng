@@ -43,12 +43,6 @@ std::vector<protocol::SourceBreakpoint> read_requested_source_breakpoints(
 }
 } // namespace
 
-bool dap_server::has_unsupported_source_breakpoint_options(const protocol::SourceBreakpoint &breakpoint)
-{
-    return breakpoint.column.has_value() || !util::is_blank(breakpoint.hit_condition) ||
-           !util::is_blank(breakpoint.log_message) || !util::is_blank(breakpoint.mode);
-}
-
 protocol::Breakpoint dap_server::create_source_breakpoint_response(const protocol::Source &source,
                                                                    const protocol::SourceBreakpoint &breakpoint,
                                                                    bool verified, std::optional<std::string> message,
@@ -127,14 +121,6 @@ void dap_server::handle_set_breakpoints_request(const protocol::SetBreakpointsRe
     const std::optional<int> source_reference = source.source_reference;
     const std::optional<std::string> &source_path = source.path;
 
-    std::vector<protocol::SourceBreakpoint> requested = read_requested_source_breakpoints(arguments);
-    std::vector<parsed_source_breakpoint> parsed;
-    parsed.reserve(requested.size());
-    for (const auto &breakpoint : requested)
-    {
-        parsed.push_back(parse_source_breakpoint(breakpoint));
-    }
-
     if (source_reference.has_value() && *source_reference > 0)
     {
         send_error_response(request.seq, request.command,
@@ -146,6 +132,14 @@ void dap_server::handle_set_breakpoints_request(const protocol::SetBreakpointsRe
     {
         send_error_response(request.seq, request.command, "The setBreakpoints request requires 'source.path'.");
         return;
+    }
+
+    std::vector<protocol::SourceBreakpoint> requested = read_requested_source_breakpoints(arguments);
+    std::vector<parsed_source_breakpoint> parsed;
+    parsed.reserve(requested.size());
+    for (const auto &breakpoint : requested)
+    {
+        parsed.push_back(parse_source_breakpoint(breakpoint));
     }
 
     debugger::debugger_session &session = require_debugger_session();

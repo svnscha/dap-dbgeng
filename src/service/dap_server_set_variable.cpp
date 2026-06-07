@@ -16,13 +16,13 @@ void dap_server::handle_set_variable_request(const protocol::SetVariableRequest 
                             "The setVariable request requires a positive variablesReference.");
         return;
     }
-    if (name.empty() || util::is_blank(name))
+    if (util::is_blank(name))
     {
         send_error_response(request.seq, request.command,
                             "The setVariable request requires a non-empty variable name.");
         return;
     }
-    if (value.empty() || util::is_blank(value))
+    if (util::is_blank(value))
     {
         send_error_response(request.seq, request.command,
                             "The setVariable request requires a non-empty value expression.");
