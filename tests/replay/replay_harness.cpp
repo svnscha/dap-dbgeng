@@ -824,7 +824,7 @@ std::optional<std::string> recorded_launch_target(const recorded_session &sessio
         {
             return std::nullopt;
         }
-        auto target = args->find("target");
+        auto target = args->find("program");
         if (target != args->end() && target->is_string())
         {
             return target->get<std::string>();

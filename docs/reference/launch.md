@@ -4,16 +4,16 @@ These attributes apply when `"request": "launch"` - the debugger **starts** a
 program for you. See [Debug a local program](../scenarios/local-debugging.md) for
 a guided walkthrough.
 
-**Required:** `target`, unless the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
+**Required:** `program`, unless the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
 extension is installed and a launch target is selected (then it is used automatically).
 
 ## Attributes
 
 | Attribute | Required | Description |
 | --- | --- | --- |
-| [`target`](#target) | Yes* | Path to the executable to launch (*optional with CMake Tools). |
+| [`program`](#program) | Yes* | Path to the executable to launch (*optional with CMake Tools). |
 | [`args`](#args) | - | Command-line arguments (string or array). |
-| [`workingDir`](#workingdir) | - | Working directory for the program. |
+| [`cwd`](#cwd) | - | Working directory for the program. |
 | [`dbgengPath`](#dbgengpath) | - | Path to `dbgeng.dll`; auto-resolved when omitted. |
 | [`stopAtEntry`](#stopatentry) | - | Break at the entry point (default `false`). |
 | [`sources`](#sources) | - | Folders searched for source files. |
@@ -22,22 +22,21 @@ extension is installed and a launch target is selected (then it is used automati
 
 ## Details
 
-### `target`
+### `program`
 
 - **Type:** string · Required (see below)
 
 The path to the executable to launch under the debugger.
 
 ```json
-"target": "${workspaceFolder}/build/Debug/myapp.exe"
+"program": "${workspaceFolder}/build/Debug/myapp.exe"
 ```
 
-`target` is optional when the **CMake Tools** extension (`ms-vscode.cmake-tools`)
+`program` is optional when the **CMake Tools** extension (`ms-vscode.cmake-tools`)
 is installed: if you omit it, the adapter defaults to CMake Tools' **launch
 target** via `${command:cmake.launchTargetPath}`, and VS Code resolves it - building
-the target and prompting you to pick one if none is selected yet. Without CMake
-Tools installed, `target` is required and the session fails with a message to set
-it.
+it and prompting you to pick one if none is selected yet. Without CMake Tools
+installed, `program` is required and the session fails with a message to set it.
 
 ---
 
@@ -55,18 +54,18 @@ arguments.
 
 ---
 
-### `workingDir`
+### `cwd`
 
 - **Type:** string · Optional
-- **Default:** the target executable's directory
+- **Default:** the program's directory
 
 The working directory (current directory) for the debugged program. When omitted,
-the engine uses the directory containing `target`. When the target is auto-resolved
+the engine uses the directory containing `program`. When the program is auto-resolved
 from CMake Tools, the working directory defaults to
 `${command:cmake.launchTargetDirectory}` (the launch target's directory).
 
 ```json
-"workingDir": "${workspaceFolder}/build/Debug"
+"cwd": "${workspaceFolder}/build/Debug"
 ```
 
 ---
@@ -167,7 +166,7 @@ recording is written in the adapter's `{version, messages}` trace format.
       "name": "Debug myapp",
       "type": "windbg",
       "request": "launch",
-      "target": "${workspaceFolder}/build/Debug/myapp.exe",
+      "program": "${workspaceFolder}/build/Debug/myapp.exe",
       "args": "--config dev input.txt",
       "stopAtEntry": true,
       "sources": ["${workspaceFolder}"]

@@ -64,8 +64,8 @@
           "type": "windbg",
           "request": "launch",
           "dbgengPath": "${dbgEngPath}",
-          "target": "${workspaceFolder}/build/windows-x64/test-targets/test_launch.exe",
-          "workingDir": "${workspaceFolder}/build/windows-x64/test-targets",
+          "program": "${workspaceFolder}/build/windows-x64/test-targets/test_launch.exe",
+          "cwd": "${workspaceFolder}/build/windows-x64/test-targets",
           "sources": [
             "${workspaceFolder}\\test-targets\\testapp"
           ],

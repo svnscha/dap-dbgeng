@@ -233,7 +233,7 @@ std::optional<std::string> try_get_command_line_arguments(const nlohmann::json &
 
 std::string resolve_working_directory(const nlohmann::json &arguments)
 {
-    const std::optional<std::string> working_directory = try_get_string(arguments, "workingDir");
+    const std::optional<std::string> working_directory = try_get_string(arguments, "cwd");
     if (!working_directory.has_value())
     {
         return std::string{};

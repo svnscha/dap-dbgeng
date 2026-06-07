@@ -94,8 +94,8 @@ TEST(DapServerLive, LaunchStopsAtEntryAndEnumeratesThreadsAndStack)
                                        {{"name", "live-launch-test"},
                                         {"request", "launch"},
                                         {"type", "windbg"},
-                                        {"target", target},
-                                        {"workingDir", working},
+                                        {"program", target},
+                                        {"cwd", working},
                                         {"dbgengPath", dbgeng},
                                         {"symbolPath", nlohmann::json::array({working})},
                                         {"stopAtEntry", true}}));

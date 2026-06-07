@@ -64,10 +64,10 @@ TEST(DapArgumentReader, TryGetCommandLineArgumentsQuotesTokensWithSpaces)
 
 TEST(DapArgumentReader, ResolveWorkingDirectory)
 {
-    const auto set = nlohmann::json::parse(R"({"workingDir":"C:\\work"})");
+    const auto set = nlohmann::json::parse(R"({"cwd":"C:\\work"})");
     EXPECT_EQ(reader::resolve_working_directory(set), "C:\\work");
 
-    const auto blank = nlohmann::json::parse(R"({"workingDir":"   "})");
+    const auto blank = nlohmann::json::parse(R"({"cwd":"   "})");
     EXPECT_EQ(reader::resolve_working_directory(blank), "");
 
     const auto missing = nlohmann::json::parse(R"({})");

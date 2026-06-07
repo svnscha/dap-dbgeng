@@ -40,7 +40,7 @@ Remember JSON path rules: forward slashes or doubled backslashes.
 
 ### “Invalid configuration” / a required field is missing
 
-`launch` requires `target`. `attach` requires one of `processId`, `dumpFile`, or
+`launch` requires `program`. `attach` requires one of `processId`, `dumpFile`, or
 `kernel` with a `connectionString`. `dbgengPath` is optional (auto-resolved when
 omitted).
 

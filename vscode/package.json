@@ -57,7 +57,7 @@
                 "configurationAttributes": {
                     "launch": {
                         "properties": {
-                            "target": {
+                            "program": {
                                 "type": "string",
                                 "description": "Path to the executable to launch. Optional when the CMake Tools extension is installed and a launch target is selected - the adapter then uses CMake Tools' launch target."
                             },
@@ -72,9 +72,9 @@
                                 "type": "string",
                                 "description": "Optional path to dbgeng.dll. When omitted, the adapter uses a dbgeng.dll bundled next to it or the installed Windows SDK Debugging Tools, and errors if none is found."
                             },
-                            "workingDir": {
+                            "cwd": {
                                 "type": "string",
-                                "description": "Working directory for the launched process. Defaults to the target executable's directory when omitted."
+                                "description": "Working directory for the launched process. Defaults to the program's directory when omitted."
                             },
                             "sources": {
                                 "type": "array",
@@ -154,7 +154,7 @@
                         "name": "Debug",
                         "type": "windbg",
                         "request": "launch",
-                        "target": "./bin/executable"
+                        "program": "${workspaceFolder}/build/windows-x64/myapp.exe"
                     }
                 ]
             }

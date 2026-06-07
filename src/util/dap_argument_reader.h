@@ -28,7 +28,7 @@ std::optional<std::vector<std::string>> try_get_string_list(const nlohmann::json
 // array is shell-quoted token-by-token and joined with spaces.
 std::optional<std::string> try_get_command_line_arguments(const nlohmann::json &arguments);
 
-// Read "workingDir", or "" when absent/blank.
+// Read "cwd" (the working directory), or "" when absent/blank.
 std::string resolve_working_directory(const nlohmann::json &arguments);
 } // namespace dap_argument_reader
 } // namespace dap_dbgeng::util

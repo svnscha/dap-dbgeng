@@ -22,7 +22,7 @@ void dap_server::handle_launch_request(const protocol::LaunchRequest &request)
         return;
     }
 
-    const std::optional<std::string> executable_path = reader::try_get_string(arguments, "target");
+    const std::optional<std::string> executable_path = reader::try_get_string(arguments, "program");
     const std::optional<std::string> command_line_arguments = reader::try_get_command_line_arguments(arguments);
     const std::string working_directory = reader::resolve_working_directory(arguments);
     const std::optional<std::string> dbgeng_path = reader::try_get_string(arguments, "dbgengPath");
@@ -32,11 +32,11 @@ void dap_server::handle_launch_request(const protocol::LaunchRequest &request)
 
     if (util::is_blank(executable_path))
     {
-        send_error_response(request.seq, request.command, "The launch request requires a 'target' argument.");
+        send_error_response(request.seq, request.command, "The launch request requires a 'program' argument.");
         return;
     }
 
-    // workingDir is optional: when omitted the engine defaults it to the target's
+    // cwd is optional: when omitted the engine defaults it to the program's
     // directory.
     std::string engine_path;
     if (!try_resolve_debugger_engine_path(dbgeng_path, engine_path))

@@ -58,7 +58,7 @@ In your project, open the **Run and Debug** view (++ctrl+shift+d++) and click
       "name": "Debug my program",
       "type": "windbg",
       "request": "launch",
-      "target": "${workspaceFolder}/build/Debug/myapp.exe",
+      "program": "${workspaceFolder}/build/Debug/myapp.exe",
       "stopAtEntry": true,
       "sources": [
         "${workspaceFolder}"
@@ -73,7 +73,7 @@ What each line means (full details in the [reference](reference/launch.md)):
 - **`type`** - always `windbg` for this adapter.
 - **`request`** - `launch` to start a new program, or `attach` to connect to one
   that's already running.
-- **`target`** - the program you want to debug.
+- **`program`** - the executable you want to debug.
 - **`stopAtEntry`** - `true` so the debugger pauses at the program's entry point,
   giving you a chance to set breakpoints before anything runs.
 - **`sources`** - folders the debugger searches to show your source code (defaults

@@ -45,23 +45,23 @@ function activate(context) {
                     config.sources = ["${workspaceFolder}"];
                 }
 
-                // target is optional: when omitted, default to the CMake Tools
+                // program is optional: when omitted, default to the CMake Tools
                 // launch target and let VS Code resolve it (it builds the target
                 // and prompts for a selection if none is set). We only inject this
                 // when CMake Tools is installed, so the ${command:...} variable is
                 // never left unresolved; otherwise fail with a clear message.
-                if (config.request === "launch" && (typeof config.target !== "string" || !config.target.trim())) {
+                if (config.request === "launch" && (typeof config.program !== "string" || !config.program.trim())) {
                     if (!vscode.extensions.getExtension("ms-vscode.cmake-tools")) {
                         vscode.window.showErrorMessage(
-                            "No 'target' is set. Set 'target' to the executable to debug, or install the CMake " +
+                            "No 'program' is set. Set 'program' to the executable to debug, or install the CMake " +
                                 "Tools extension (ms-vscode.cmake-tools) and select a launch target."
                         );
                         return undefined; // abort the session; the user has been told why
                     }
-                    config.target = "${command:cmake.launchTargetPath}";
+                    config.program = "${command:cmake.launchTargetPath}";
                     // Run from the launch target's directory unless the user set one.
-                    if (typeof config.workingDir !== "string" || !config.workingDir.trim()) {
-                        config.workingDir = "${command:cmake.launchTargetDirectory}";
+                    if (typeof config.cwd !== "string" || !config.cwd.trim()) {
+                        config.cwd = "${command:cmake.launchTargetDirectory}";
                     }
                 }
 
@@ -73,7 +73,7 @@ function activate(context) {
     context.subscriptions.push(
         vscode.debug.registerDebugAdapterDescriptorFactory(DEBUG_TYPE, {
             createDebugAdapterDescriptor(session) {
-                const adapterPath = resolveAdapterPath(session.configuration, session.workspaceFolder);
+                const adapterPath = resolveAdapterPath(session.workspaceFolder);
                 if (!adapterPath) {
                     output.appendLine(ADAPTER_NOT_FOUND);
                     output.show(true);
@@ -109,7 +109,7 @@ module.exports = { activate, deactivate };
 // ---------------------------------------------------------------------------
 async function pickProcess(config) {
     config = config || {};
-    const adapterPath = resolveAdapterPath(config, undefined);
+    const adapterPath = resolveAdapterPath(undefined);
     if (!adapterPath) {
         vscode.window.showErrorMessage(ADAPTER_NOT_FOUND);
         return undefined;
@@ -153,18 +153,14 @@ async function pickProcess(config) {
 
 // Resolve the adapter executable, in precedence order:
 //   1. the "dap-dbgeng.adapterPath" setting (explicit override),
-//   2. a "program" in the launch configuration,
-//   3. the adapter bundled in the extension (vscode/bin, the default).
+//   2. the adapter bundled in the extension (vscode/bin, the default).
 // Returns undefined when none exist; callers surface ADAPTER_NOT_FOUND.
-function resolveAdapterPath(config, workspaceFolder) {
+// (Note: a launch config's "program" is the debuggee, not the adapter.)
+function resolveAdapterPath(workspaceFolder) {
     const scope = workspaceFolder ? workspaceFolder.uri : undefined;
     const configured = vscode.workspace.getConfiguration("dap-dbgeng", scope).get("adapterPath");
     if (typeof configured === "string" && configured.trim() && fs.existsSync(configured.trim())) {
         return configured.trim();
-    }
-
-    if (config && typeof config.program === "string" && config.program && fs.existsSync(config.program)) {
-        return config.program;
     }
 
     if (extensionPath) {

@@ -6,7 +6,7 @@ variables) is identical. Pick the one that matches what you're doing:
 
 | Use case | `request` | Key fields | Use it when… |
 | --- | --- | --- | --- |
-| **[Debug a local program](local-debugging.md)** | `launch` | `target` | You want the debugger to **start** a program on this machine. |
+| **[Debug a local program](local-debugging.md)** | `launch` | `program` | You want the debugger to **start** a program on this machine. |
 | **[Debug a running process](attach.md)** | `attach` | `processId` | The program is **already running** on this machine. |
 | **[Debug a remote process](remote-debugging.md)** | `attach` | `processId` + `connectionString` | The program runs on **another machine** (via `dbgsrv`). |
 | **[Debug a Windows driver](driver-debugging.md)** | `attach` | `kernel: true` + `connectionString` | You're debugging **kernel-mode drivers** on a debug-enabled target. |
