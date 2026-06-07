@@ -39,34 +39,6 @@ Published at **[svnscha.github.io/dap-dbgeng](https://svnscha.github.io/dap-dbge
 Contributors: see [CONTRIBUTING.md](CONTRIBUTING.md) and [CLAUDE.md](CLAUDE.md) (architecture and
 conventions).
 
-## Layout
-
-```
-.
-├── CMakeLists.txt        # vcpkg toolchain detection, deps, subdirectories
-├── CMakePresets.json     # Ninja configure + debug/release build/test presets
-├── vcpkg.json            # Dependencies: fmt, nlohmann-json, spdlog, gtest
-├── package.json          # npm task runner (build/test/generate/...)
-├── src/
-│   ├── stdafx.h          # Precompiled header (windows.h, dbgeng, STL, fmt/json/spdlog)
-│   ├── main.cpp          # Entrypoint
-│   ├── core/             # Threading primitives: channel, task_queue, event_sink
-│   ├── protocol/         # Generated DAP types + dispatch (see Protocol below)
-│   ├── transport/        # stdio framing, trace recorder
-│   ├── service/          # dap_server + one file per DAP request handler
-│   ├── debugger/         # dbgeng COM wrapper (native DbgEng APIs), split by theme
-│   └── util/             # argument reader, dispatcher, factory, command classifier
-├── tests/                # GoogleTest; tests/replay drives recorded sessions out-of-process
-├── test-targets/         # native debuggees the tests use (testapp) + kernel driver (sys)
-├── protgen/              # Python generator that emits src/protocol from the DAP schema
-├── scripts/              # build-env, formatting, and trace tooling
-└── vscode/               # VS Code extension manifest
-```
-
-The single product target is `dap-dbgeng.exe`. Production code lives in an internal CMake
-`OBJECT` library so the test binary links the exact same objects without shipping a second
-artifact.
-
 ## Build
 
 The Ninja build needs the MSVC toolchain. The npm scripts enter the Visual Studio developer
