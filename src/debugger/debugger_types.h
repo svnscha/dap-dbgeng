@@ -72,4 +72,12 @@ struct breakpoint_state
     bool resolved = false;
     std::uint64_t offset = 0;
 };
+
+// A running process as reported by the engine (locally or over a process server).
+struct process_info
+{
+    std::uint32_t system_id = 0;
+    std::string name;
+    std::string description;
+};
 } // namespace dap_dbgeng::debugger

@@ -37,6 +37,11 @@ class debugger_session
     // Process server (dbgsrv) -------------------------------------------------
     void connect_process_server(const std::string &connection_string);
     void disconnect_process_server();
+
+    // Enumerate running processes via the engine. With no process server connected
+    // this lists local processes; after connect_process_server it lists processes
+    // on the remote (dbgsrv) host. Used by the adapter's --list-processes mode.
+    std::vector<process_info> list_processes();
     bool is_remote() const
     {
         return process_server_handle_ != 0;

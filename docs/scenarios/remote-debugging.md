@@ -35,7 +35,9 @@ dbgsrv -t tcp:port=5005
 }
 ```
 
-- `processId` is the PID **on the target machine**.
+- `processId` is the PID **on the target machine**. Set it to
+  `"${command:dap-dbgeng.pickProcess}"` to pick from the processes running on the
+  `dbgsrv` host at debug time.
 - `connectionString` is `tcp:port=<PORT>,server=<HOST>`, matching `dbgsrv` and the
   target's hostname/IP.
 

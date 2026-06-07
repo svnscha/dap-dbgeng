@@ -37,7 +37,7 @@ How the key fields combine determines the scenario:
 
 ### `processId`
 
-- **Type:** number · Optional
+- **Type:** number or string · Optional
 
 The system process ID to attach to. For **remote** attach, this is the PID on the
 machine running `dbgsrv`. Omit it for kernel debugging.
@@ -45,6 +45,15 @@ machine running `dbgsrv`. Omit it for kernel debugging.
 ```json
 "processId": 12345
 ```
+
+To pick the process interactively at debug time, use the built-in picker:
+
+```json
+"processId": "${command:dap-dbgeng.pickProcess}"
+```
+
+The picker lists local processes, or - when `connectionString` is set - the
+processes on the `dbgsrv` host, so the same setting covers local and remote attach.
 
 ---
 

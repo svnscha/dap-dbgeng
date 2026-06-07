@@ -17,6 +17,10 @@
         "Debuggers"
     ],
     "private": true,
+    "main": "./extension.js",
+    "activationEvents": [
+        "onDebugResolve:windbg"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/svnscha/dap-dbgeng.git"
@@ -95,8 +99,11 @@
                         ],
                         "properties": {
                             "processId": {
-                                "type": "number",
-                                "description": "The system process ID to attach to. For remote attach this is the PID on the machine running dbgsrv."
+                                "type": [
+                                    "integer",
+                                    "string"
+                                ],
+                                "description": "The system process ID to attach to (for remote attach, the PID on the machine running dbgsrv). Set to \"${command:dap-dbgeng.pickProcess}\" to choose interactively at debug time; the picker lists local processes, or processes on the dbgsrv host when 'connectionString' is set."
                             },
                             "connectionString": {
                                 "type": "string",

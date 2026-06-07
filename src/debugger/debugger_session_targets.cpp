@@ -40,6 +40,55 @@ void debugger_session::disconnect_process_server_core()
     process_server_handle_ = 0;
 }
 
+std::vector<process_info> debugger_session::list_processes()
+{
+    throw_if_disposed();
+
+    // process_server_handle_ is 0 for the local machine, or the connected dbgsrv
+    // handle for a remote host. Query the count first, then read the ids.
+    ULONG count = 0;
+    if (FAILED(client_->GetRunningProcessSystemIds(process_server_handle_, nullptr, 0, &count)) || count == 0)
+    {
+        return {};
+    }
+
+    std::vector<ULONG> ids(count);
+    check_hr(client_->GetRunningProcessSystemIds(process_server_handle_, ids.data(), count, &count),
+             "Could not enumerate running processes");
+    ids.resize(count);
+
+    std::vector<process_info> result;
+    result.reserve(ids.size());
+    std::vector<char> exe_name(kSymbolBufferBytes);
+    std::vector<char> description(kSymbolBufferBytes);
+    for (const ULONG id : ids)
+    {
+        process_info info;
+        info.system_id = id;
+
+        ULONG exe_size = 0;
+        ULONG description_size = 0;
+        if (SUCCEEDED(client_->GetRunningProcessDescription(process_server_handle_, id, DEBUG_PROC_DESC_DEFAULT,
+                                                            exe_name.data(), static_cast<ULONG>(exe_name.size()),
+                                                            &exe_size, description.data(),
+                                                            static_cast<ULONG>(description.size()), &description_size)))
+        {
+            // The engine writes null-terminated strings; sizes include the
+            // terminator (1 means empty).
+            if (exe_size > 1)
+            {
+                info.name = std::string(exe_name.data());
+            }
+            if (description_size > 1)
+            {
+                info.description = std::string(description.data());
+            }
+        }
+        result.push_back(std::move(info));
+    }
+    return result;
+}
+
 // ---------------------------------------------------------------------------
 // Targets
 // ---------------------------------------------------------------------------
