@@ -2,8 +2,56 @@
 
 #include "debugger/debugger_session_internal.h"
 
+#include <tlhelp32.h>
+
 namespace dap_dbgeng::debugger
 {
+namespace
+{
+std::string narrow_utf8(const wchar_t *wide)
+{
+    if (wide == nullptr || wide[0] == L'\0')
+    {
+        return {};
+    }
+    const int needed = WideCharToMultiByte(CP_UTF8, 0, wide, -1, nullptr, 0, nullptr, nullptr);
+    if (needed <= 1)
+    {
+        return {};
+    }
+    std::string out(static_cast<std::size_t>(needed - 1), '\0');
+    WideCharToMultiByte(CP_UTF8, 0, wide, -1, out.data(), needed, nullptr, nullptr);
+    return out;
+}
+
+// Local processes via a toolhelp snapshot: it yields an image name for every
+// process without opening it, which the engine's process-description API often
+// cannot do for an unelevated debugger (it returns empty names there).
+std::vector<process_info> snapshot_local_processes()
+{
+    std::vector<process_info> result;
+    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (snapshot == INVALID_HANDLE_VALUE)
+    {
+        return result;
+    }
+
+    PROCESSENTRY32W entry{};
+    entry.dwSize = sizeof(entry);
+    if (Process32FirstW(snapshot, &entry))
+    {
+        do
+        {
+            process_info info;
+            info.system_id = entry.th32ProcessID;
+            info.name = narrow_utf8(entry.szExeFile);
+            result.push_back(std::move(info));
+        } while (Process32NextW(snapshot, &entry));
+    }
+    CloseHandle(snapshot);
+    return result;
+}
+} // namespace
 // ---------------------------------------------------------------------------
 // Process server (dbgsrv)
 // ---------------------------------------------------------------------------
@@ -44,8 +92,15 @@ std::vector<process_info> debugger_session::list_processes()
 {
     throw_if_disposed();
 
-    // process_server_handle_ is 0 for the local machine, or the connected dbgsrv
-    // handle for a remote host. Query the count first, then read the ids.
+    // Local: the toolhelp snapshot reliably reports image names. Remote: only the
+    // engine can reach the dbgsrv host, so use its process-description API.
+    if (process_server_handle_ == 0)
+    {
+        return snapshot_local_processes();
+    }
+
+    // process_server_handle_ is the connected dbgsrv handle for a remote host.
+    // Query the count first, then read the ids.
     ULONG count = 0;
     if (FAILED(client_->GetRunningProcessSystemIds(process_server_handle_, nullptr, 0, &count)) || count == 0)
     {
