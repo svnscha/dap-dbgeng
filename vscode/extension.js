@@ -2,11 +2,12 @@
 //
 // Responsibilities:
 //   1. Launch the adapter executable for "windbg" debug sessions via a
-//      DebugAdapterDescriptorFactory (explicit and reliable; does not depend on
-//      the legacy contributes.debuggers "program" field resolving correctly).
-//   2. Log adapter lifecycle/errors to a "dap-dbgeng" output channel so a failed
+//      DebugAdapterDescriptorFactory, resolving its path from the
+//      "dap-dbgeng.adapterPath" setting or the bundled binary.
+//   2. Resolve config defaults (sources, and program/cwd from CMake Tools).
+//   3. Log adapter lifecycle/errors to a "dap-dbgeng" output channel so a failed
 //      session is visible instead of silently doing nothing.
-//   3. Provide the process picker command used as
+//   4. Provide the process picker command used as
 //        "processId": "${command:dap-dbgeng.pickProcess}"
 
 const vscode = require("vscode");
