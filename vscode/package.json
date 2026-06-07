@@ -36,6 +36,16 @@
         "@vscode/vsce": "^3.9.2"
     },
     "contributes": {
+        "configuration": {
+            "title": "Debug Adapter for WinDbg",
+            "properties": {
+                "dap-dbgeng.adapterPath": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "Absolute path to a `dap-dbgeng.exe` adapter to use instead of the one bundled with the extension. Leave empty to use the bundled adapter. A `program` set in a launch configuration takes precedence over this setting."
+                }
+            }
+        },
         "debuggers": [
             {
                 "type": "windbg",

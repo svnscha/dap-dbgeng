@@ -20,6 +20,7 @@
     "docs": "mkdocs serve",
     "docs:build": "mkdocs build",
     "build:sys": "pwsh scripts/With-DevEnv.ps1 cmake -S test-targets/sys -B test-targets/sys/build -G \"Visual Studio 17 2022\" -A x64 && pwsh scripts/With-DevEnv.ps1 cmake --build test-targets/sys/build --config Debug",
-    "build:vsix": "npm --prefix vscode install && npm --prefix vscode run build"
+    "bundle:adapter": "pwsh scripts/Bundle-Adapter.ps1",
+    "build:vsix": "npm run configure:release && npm run build:release && npm run bundle:adapter && npm --prefix vscode install && npm --prefix vscode run build"
   }
 }

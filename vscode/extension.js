@@ -16,8 +16,10 @@ const fs = require("fs");
 
 const DEBUG_TYPE = "windbg";
 let output;
+let extensionPath;
 
 function activate(context) {
+    extensionPath = context.extensionPath;
     output = vscode.window.createOutputChannel("dap-dbgeng");
     context.subscriptions.push(output);
 
@@ -103,12 +105,29 @@ async function pickProcess(config) {
 // Helpers
 // ---------------------------------------------------------------------------
 
-// The adapter executable: an explicit config.program if it exists, otherwise the
-// default Ninja build output under the session/workspace folder.
+// Resolve the adapter executable, in precedence order:
+//   1. the "dap-dbgeng.adapterPath" setting (explicit override),
+//   2. a "program" in the launch configuration,
+//   3. the adapter bundled in the extension (vscode/bin, the default),
+//   4. a Ninja build output under the workspace (for repo development).
 function resolveAdapterPath(config, workspaceFolder) {
+    const scope = workspaceFolder ? workspaceFolder.uri : undefined;
+    const configured = vscode.workspace.getConfiguration("dap-dbgeng", scope).get("adapterPath");
+    if (typeof configured === "string" && configured.trim() && fs.existsSync(configured.trim())) {
+        return configured.trim();
+    }
+
     if (config && typeof config.program === "string" && config.program && fs.existsSync(config.program)) {
         return config.program;
     }
+
+    if (extensionPath) {
+        const bundled = path.join(extensionPath, "bin", "dap-dbgeng.exe");
+        if (fs.existsSync(bundled)) {
+            return bundled;
+        }
+    }
+
     const relative = path.join("build", "windows-x64", "src", "dap-dbgeng.exe");
     const folders = [];
     if (workspaceFolder) {
