@@ -27,6 +27,8 @@ jobs:
       # Same vcpkg wiring as ci.yml so the Release build reuses the binary cache.
       VCPKG_ROOT: ${{ github.workspace }}/.vcpkg-root-placeholder
       VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+      # Hosted runners cannot do live cross-process attach; skip those replay tests.
+      DAP_DBGENG_SKIP_LIVE_ATTACH: "1"
     steps:
       - name: Checkout
         uses: actions/checkout@v4

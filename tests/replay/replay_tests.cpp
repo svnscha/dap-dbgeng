@@ -6,6 +6,8 @@
 
 #include "replay/replay_harness.h"
 
+#include "support/test_environment.h"
+
 namespace
 {
 using namespace dap_dbgeng::replay;
@@ -210,14 +212,31 @@ TEST(Replay, LaunchStepRestartRun)
     assert_positive_launch_replay(replay);
 }
 
+// Live cross-process attach (and the dbgsrv process server) cannot run on hosted
+// CI runners, which now ship dbgeng.dll (so these no longer skip on a missing
+// engine) but block one process from debugging another: the attach never
+// completes and the replay times out. The workflows set
+// DAP_DBGENG_SKIP_LIVE_ATTACH so these skip there; locally and on a self-hosted
+// runner with live debugging they run normally.
+#define SKIP_IF_LIVE_ATTACH_DISABLED()                                                                                 \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        if (::dap_dbgeng::test_support::env_var("DAP_DBGENG_SKIP_LIVE_ATTACH"))                                        \
+        {                                                                                                              \
+            GTEST_SKIP() << "DAP_DBGENG_SKIP_LIVE_ATTACH set: this host cannot perform live cross-process attach.";    \
+        }                                                                                                              \
+    } while (false)
+
 TEST(Replay, AttachToRunningProcess)
 {
+    SKIP_IF_LIVE_ATTACH_DISABLED();
     REPLAY_OR_SKIP(replay, "attach-process.json");
     assert_positive_attach_replay(replay);
 }
 
 TEST(Replay, AttachRemoteViaProcessServer)
 {
+    SKIP_IF_LIVE_ATTACH_DISABLED();
     REPLAY_OR_SKIP(replay, "attach-remote-process.json");
     assert_positive_attach_replay(replay);
 }

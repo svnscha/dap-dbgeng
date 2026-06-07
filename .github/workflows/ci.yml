@@ -33,6 +33,8 @@ jobs:
       # check out the pinned builtin-baseline commit (a shallow clone cannot).
       VCPKG_ROOT: ${{ github.workspace }}/.vcpkg-root-placeholder
       VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+      # Hosted runners cannot do live cross-process attach; skip those replay tests.
+      DAP_DBGENG_SKIP_LIVE_ATTACH: "1"
     steps:
       - uses: actions/checkout@v4
 
