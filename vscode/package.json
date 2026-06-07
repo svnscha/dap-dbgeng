@@ -40,7 +40,6 @@
             {
                 "type": "windbg",
                 "label": "WinDbg Debug",
-                "program": "${workspaceFolder}/build/windows-x64/src/dap-dbgeng.exe",
                 "variables": {
                     "FileBasenameNoExt": "code-debug.getFileBasenameNoExt",
                     "FileNameNoExt": "code-debug.getFileNameNoExt"
