@@ -30,8 +30,7 @@ dbgsrv -t tcp:port=5005
   "type": "windbg",
   "request": "attach",
   "processId": 4321,
-  "connectionString": "tcp:port=5005,server=TARGETPC",
-  "dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+  "connectionString": "tcp:port=5005,server=TARGETPC"
 }
 ```
 

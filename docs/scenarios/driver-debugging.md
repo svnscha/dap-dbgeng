@@ -36,8 +36,7 @@ bcdedit /dbgsettings net hostip:<HOST-IP> port:50005 key:1.2.3.4
   "type": "windbg",
   "request": "attach",
   "kernel": true,
-  "connectionString": "net:port=50005,key=1.2.3.4",
-  "dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+  "connectionString": "net:port=50005,key=1.2.3.4"
 }
 ```
 

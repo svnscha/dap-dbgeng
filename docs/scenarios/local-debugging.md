@@ -8,13 +8,13 @@ The debugger **starts** your program and debugs it from launch. Use
   "name": "Debug myapp",
   "type": "windbg",
   "request": "launch",
-  "target": "${workspaceFolder}/build/Debug/myapp.exe",
-  "dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+  "target": "${workspaceFolder}/build/Debug/myapp.exe"
 }
 ```
 
-`target` is the program to run; `dbgengPath` points at `dbgeng.dll`. Both are
-required - that's a complete launch configuration.
+`target` (the program to run) is the only required field - that's a complete launch
+configuration. The adapter finds `dbgeng.dll` automatically; set `dbgengPath` only
+to override it.
 
 To pass command-line arguments, set a working directory, or change any other
 behavior, see **[launch attributes](../reference/launch.md)**.

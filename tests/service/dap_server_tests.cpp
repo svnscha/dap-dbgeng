@@ -19,6 +19,24 @@ class capturing_writer : public dap_dbgeng::transport::dap_message_writer
     }
 };
 
+TEST(ServiceDapServer, ResolveEnginePathHonorsAnExistingExplicitPath)
+{
+    // try_resolve_debugger_engine_path only checks existence (not that the file is
+    // really dbgeng), so a guaranteed-present DLL exercises the explicit branch.
+    const std::string existing = "C:\\Windows\\System32\\kernel32.dll";
+    std::string resolved;
+    EXPECT_TRUE(dap_dbgeng::service::dap_server::try_resolve_debugger_engine_path(existing, resolved));
+    EXPECT_EQ(existing, resolved);
+}
+
+TEST(ServiceDapServer, ResolveEnginePathRejectsAMissingExplicitPath)
+{
+    std::string resolved = "unchanged";
+    EXPECT_FALSE(dap_dbgeng::service::dap_server::try_resolve_debugger_engine_path("C:\\does\\not\\exist\\dbgeng.dll",
+                                                                                   resolved));
+    EXPECT_TRUE(resolved.empty());
+}
+
 TEST(ServiceDapServer, InitializeRespondsWithCapabilitiesThenInitializedEvent)
 {
     capturing_writer writer;

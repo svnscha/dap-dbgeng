@@ -19,8 +19,9 @@ You need a 64-bit Windows machine with:
 
     If you don't have it, install it through the **Windows SDK** or **WDK**
     installer (tick *Debugging Tools for Windows*), or grab the standalone
-    package. Note down the full path to `dbgeng.dll` - you'll need it in every
-    configuration.
+    package. You normally don't need to note the path: the adapter finds
+    `dbgeng.dll` automatically from the installed SDK. Set `dbgengPath` only to use
+    a specific copy.
 
 !!! tip "Quick sanity check"
     Confirm `dbgeng.dll` exists before you start:
@@ -58,10 +59,9 @@ In your project, open the **Run and Debug** view (++ctrl+shift+d++) and click
       "type": "windbg",
       "request": "launch",
       "target": "${workspaceFolder}/build/Debug/myapp.exe",
-      "dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll",
       "stopAtEntry": true,
       "sources": [
-        "${workspaceFolder}/src"
+        "${workspaceFolder}"
       ]
     }
   ]
@@ -74,10 +74,12 @@ What each line means (full details in the [reference](reference/launch.md)):
 - **`request`** - `launch` to start a new program, or `attach` to connect to one
   that's already running.
 - **`target`** - the program you want to debug.
-- **`dbgengPath`** - the path to `dbgeng.dll` from step 1. **Required.**
 - **`stopAtEntry`** - `true` so the debugger pauses at the program's entry point,
   giving you a chance to set breakpoints before anything runs.
-- **`sources`** - folders the debugger searches to show your source code.
+- **`sources`** - folders the debugger searches to show your source code (defaults
+  to the workspace root).
+- **`dbgengPath`** - optional; the path to `dbgeng.dll`. Omit it to let the adapter
+  find the engine automatically (see the [reference](reference/launch.md#dbgengpath)).
 
 !!! tip "Use forward slashes or escaped backslashes"
     JSON treats `\` as an escape character. Write paths with forward slashes

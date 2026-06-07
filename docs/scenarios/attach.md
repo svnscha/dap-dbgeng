@@ -8,12 +8,12 @@ Connect to a process **already running** on this machine, by its process ID. Use
   "name": "Attach to myapp",
   "type": "windbg",
   "request": "attach",
-  "processId": 12345,
-  "dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+  "processId": 12345
 }
 ```
 
-That's a complete local attach. To choose the process at debug time, set
+That's a complete local attach (the adapter finds `dbgeng.dll` automatically). To
+choose the process at debug time, set
 `"processId": "${command:dap-dbgeng.pickProcess}"`. The picker lists local
 processes; when a `connectionString` is also set it lists processes on the
 `dbgsrv` host instead, so the same setting works for remote attach.

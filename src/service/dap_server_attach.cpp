@@ -28,8 +28,8 @@ void dap_server::handle_attach_request(const protocol::AttachRequest &request)
     if (!try_resolve_debugger_engine_path(engine_path_arg, engine_path))
     {
         send_error_response(request.seq, request.command,
-                            "The attach request requires a valid 'dbgengPath' argument or a bundled dbgeng.dll for "
-                            "the current process architecture.");
+                            "Could not locate dbgeng.dll. Set 'dbgengPath' to your dbgeng.dll, or install the "
+                            "Windows SDK Debugging Tools.");
         return;
     }
 

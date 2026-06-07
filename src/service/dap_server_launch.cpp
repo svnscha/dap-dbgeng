@@ -35,19 +35,15 @@ void dap_server::handle_launch_request(const protocol::LaunchRequest &request)
         send_error_response(request.seq, request.command, "The launch request requires a 'target' argument.");
         return;
     }
-    if (working_directory.empty())
-    {
-        send_error_response(request.seq, request.command,
-                            "The launch request requires a non-empty 'workingDir' argument.");
-        return;
-    }
 
+    // workingDir is optional: when omitted the engine defaults it to the target's
+    // directory.
     std::string engine_path;
     if (!try_resolve_debugger_engine_path(dbgeng_path, engine_path))
     {
         send_error_response(request.seq, request.command,
-                            "The launch request requires a valid 'dbgengPath' argument or a bundled dbgeng.dll for "
-                            "the current process architecture.");
+                            "Could not locate dbgeng.dll. Set 'dbgengPath' to your dbgeng.dll, or install the "
+                            "Windows SDK Debugging Tools.");
         return;
     }
 

@@ -4,19 +4,19 @@ These attributes apply when `"request": "launch"` - the debugger **starts** a
 program for you. See [Debug a local program](../scenarios/local-debugging.md) for
 a guided walkthrough.
 
-**Required:** `target`, `dbgengPath`.
+**Required:** `target`.
 
 ## Attributes
 
 | Attribute | Required | Description |
 | --- | --- | --- |
 | [`target`](#target) | Yes | Path to the executable to launch. |
-| [`dbgengPath`](#dbgengpath) | Yes | Path to `dbgeng.dll` (the debug engine). |
-| [`args`](#args) | - | Command-line arguments, as a single string. |
+| [`args`](#args) | - | Command-line arguments (string or array). |
 | [`workingDir`](#workingdir) | - | Working directory for the program. |
+| [`dbgengPath`](#dbgengpath) | - | Path to `dbgeng.dll`; auto-resolved when omitted. |
 | [`stopAtEntry`](#stopatentry) | - | Break at the entry point (default `false`). |
 | [`sources`](#sources) | - | Folders searched for source files. |
-| [`verbosity`](#verbosity) | - | Adapter log level (default `info`). |
+| [`symbolPath`](#symbolpath) | - | Symbol (PDB) search paths. |
 | [`trace`](#trace) | - | Record the DAP session to a file. |
 
 ## Details
@@ -33,26 +33,13 @@ The path to the executable to launch under the debugger.
 
 ---
 
-### `dbgengPath`
-
-- **Type:** string · **Required**
-- **Default:** `C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll`
-
-The path to the `dbgeng.dll` debug engine library the adapter loads. This must
-point at a real `dbgeng.dll` from the Debugging Tools for Windows.
-
-```json
-"dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
-```
-
----
-
 ### `args`
 
-- **Type:** string · Optional
+- **Type:** string or array of strings · Optional
 
-Command-line arguments passed to the program, written as a **single string**
-exactly as you would type them on a command line.
+Command-line arguments passed to the program: either a **single string** written
+exactly as you would type it on a command line, or an **array** of individual
+arguments.
 
 ```json
 "args": "--config dev --verbose input.txt"
@@ -63,12 +50,33 @@ exactly as you would type them on a command line.
 ### `workingDir`
 
 - **Type:** string · Optional
-- **Default:** the workspace root (`${workspaceRoot}`)
+- **Default:** the target executable's directory
 
-The working directory (current directory) for the debugged program.
+The working directory (current directory) for the debugged program. When omitted,
+the engine uses the directory containing `target`.
 
 ```json
 "workingDir": "${workspaceFolder}/build/Debug"
+```
+
+---
+
+### `dbgengPath`
+
+- **Type:** string · Optional
+
+The path to the `dbgeng.dll` debug engine library. **You usually do not need to
+set this.** When omitted, the adapter resolves the engine automatically:
+
+1. a `dbgeng.dll` bundled next to the adapter, then
+2. the installed Windows SDK Debugging Tools
+   (`...\Windows Kits\10\Debuggers\<arch>\dbgeng.dll`).
+
+Set it only to point at a specific `dbgeng.dll`. If no engine can be found, the
+session fails with a clear error.
+
+```json
+"dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
 ```
 
 ---
@@ -94,7 +102,7 @@ Break at the program's **entry point** right after launch.
 ### `sources`
 
 - **Type:** array of strings · Optional
-- **Default:** `["${workspaceRoot}/src"]`
+- **Default:** `["${workspaceRoot}"]`
 
 Folders to search when resolving source files for your code. List every root that
 contains code you want to step through.
@@ -108,18 +116,17 @@ contains code you want to step through.
 
 ---
 
-### `verbosity`
+### `symbolPath`
 
-- **Type:** string · Optional
-- **Default:** `info`
-- **Values:** `debug`, `info`, `warn`, `error`, `fatal`
+- **Type:** array of strings · Optional
 
-How much diagnostic output the adapter writes to its log (on standard error - it
-never pollutes the debug protocol stream). Raise it to `debug` when reporting a
-problem.
+Symbol (PDB) search paths passed to the engine. Each entry may be a local folder
+or a symbol-server string (for example `srv*C:\symbols*https://msdl.microsoft.com/download/symbols`).
 
 ```json
-"verbosity": "debug"
+"symbolPath": [
+  "${workspaceFolder}/build/Debug"
+]
 ```
 
 ---
@@ -152,11 +159,8 @@ recording is written in the adapter's `{version, messages}` trace format.
       "request": "launch",
       "target": "${workspaceFolder}/build/Debug/myapp.exe",
       "args": "--config dev input.txt",
-      "workingDir": "${workspaceFolder}/build/Debug",
-      "dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll",
       "stopAtEntry": true,
-      "sources": ["${workspaceFolder}/src"],
-      "verbosity": "info"
+      "sources": ["${workspaceFolder}"]
     }
   ]
 }

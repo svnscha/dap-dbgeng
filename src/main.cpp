@@ -9,10 +9,6 @@
 
 namespace
 {
-// The default Windows SDK location of dbgeng.dll, used by --list-processes when no
-// --dbgeng is supplied (the bundled-engine resolution lives in the DAP server).
-constexpr const char *kDefaultDbgEngPath = "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x64\\dbgeng.dll";
-
 // Value following `name` in argv, or nullopt.
 std::optional<std::string> flag_value(const std::vector<std::string> &args, const std::string &name)
 {
@@ -39,7 +35,16 @@ int run_list_processes(const std::vector<std::string> &args)
 
     try
     {
-        const std::string engine_path = flag_value(args, "--dbgeng").value_or(kDefaultDbgEngPath);
+        std::string engine_path;
+        if (!dap_dbgeng::service::dap_server::try_resolve_debugger_engine_path(flag_value(args, "--dbgeng"),
+                                                                               engine_path))
+        {
+            std::cout << nlohmann::json{{"error", "Could not locate dbgeng.dll. Pass --dbgeng or install the "
+                                                  "Windows SDK Debugging Tools."}}
+                             .dump()
+                      << std::endl;
+            return 1;
+        }
         const std::optional<std::string> connection = flag_value(args, "--connection");
 
         dap_dbgeng::debugger::debugger_session session(engine_path);

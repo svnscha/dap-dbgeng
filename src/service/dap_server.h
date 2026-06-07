@@ -30,6 +30,11 @@ class dap_server : public protocol::dap_service
     // into DAP error responses. Returns true when the server should exit.
     bool handle_request(const nlohmann::json &root);
 
+    // Resolve dbgeng.dll: an explicit `requested` path if it exists, else a
+    // dbgeng.dll bundled next to the adapter, else the installed Windows SDK
+    // Debugging Tools. Returns false (and clears engine_path) when none is found.
+    static bool try_resolve_debugger_engine_path(const std::optional<std::string> &requested, std::string &engine_path);
+
   protected:
     // The 18 implemented request handlers (each in its own dap_server_<cmd>.cpp).
     void handle_initialize_request(const protocol::InitializeRequest &request) override;
@@ -135,7 +140,6 @@ class dap_server : public protocol::dap_service
     void disconnect_debugger_session(const disconnect_request_options &options);
     void disconnect_kernel_leaving_machine_running(debugger::debugger_session &session);
     debugger::debugger_session &require_debugger_session();
-    static bool try_resolve_debugger_engine_path(const std::optional<std::string> &requested, std::string &engine_path);
     void apply_session_configuration(debugger::debugger_session &session, const session_configuration &configuration);
     void wire_debugger_session(debugger::debugger_session &session);
 

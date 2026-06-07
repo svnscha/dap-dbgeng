@@ -43,6 +43,50 @@ std::string executable_directory()
     }
     return std::filesystem::path(std::string(buffer, length)).parent_path().string();
 }
+
+std::optional<std::string> env_var(const char *name)
+{
+    char *buffer = nullptr;
+    std::size_t size = 0;
+    if (_dupenv_s(&buffer, &size, name) != 0 || buffer == nullptr)
+    {
+        return std::nullopt;
+    }
+    std::string value(buffer);
+    free(buffer);
+    return value.empty() ? std::nullopt : std::optional<std::string>(value);
+}
+
+// The Windows SDK lays Debugging Tools out under Debuggers\<x64|arm64|x86>.
+std::string sdk_debugger_architecture()
+{
+#if defined(_M_ARM64)
+    return "arm64";
+#elif defined(_M_X64)
+    return "x64";
+#elif defined(_M_IX86)
+    return "x86";
+#else
+    return "x64";
+#endif
+}
+
+// Well-known dbgeng.dll locations to try when the configuration omits dbgengPath:
+// the installed Windows SDK Debugging Tools under the Program Files variants.
+std::vector<std::string> default_dbgeng_candidates()
+{
+    const std::string suffix = "\\Windows Kits\\10\\Debuggers\\" + sdk_debugger_architecture() + "\\dbgeng.dll";
+    std::vector<std::string> candidates;
+    for (const char *variable : {"ProgramFiles(x86)", "ProgramW6432", "ProgramFiles"})
+    {
+        if (auto program_files = env_var(variable))
+        {
+            candidates.push_back(*program_files + suffix);
+        }
+    }
+    candidates.push_back("C:\\Program Files (x86)" + suffix);
+    return candidates;
+}
 } // namespace
 
 dap_server::dap_server(transport::dap_message_writer &writer) : writer_(writer)
@@ -196,17 +240,27 @@ bool dap_server::try_resolve_debugger_engine_path(const std::optional<std::strin
         return false;
     }
 
+    // No explicit path: prefer a dbgeng.dll bundled next to the adapter, then fall
+    // back to the installed Windows SDK Debugging Tools.
     const std::string base = executable_directory();
-    if (base.empty())
+    if (!base.empty())
     {
-        return false;
+        const std::string bundled =
+            (std::filesystem::path(base) / dbgeng_architecture_directory_name() / "dbgeng.dll").string();
+        if (path_exists(bundled))
+        {
+            engine_path = bundled;
+            return true;
+        }
     }
-    const std::string bundled =
-        (std::filesystem::path(base) / dbgeng_architecture_directory_name() / "dbgeng.dll").string();
-    if (path_exists(bundled))
+
+    for (const std::string &candidate : default_dbgeng_candidates())
     {
-        engine_path = bundled;
-        return true;
+        if (path_exists(candidate))
+        {
+            engine_path = candidate;
+            return true;
+        }
     }
     return false;
 }

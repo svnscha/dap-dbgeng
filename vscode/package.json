@@ -57,39 +57,40 @@
                 "configurationAttributes": {
                     "launch": {
                         "required": [
-                            "target",
-                            "dbgengPath"
+                            "target"
                         ],
                         "properties": {
                             "target": {
                                 "type": "string",
-                                "description": "Specifies the path to the executable to launch."
+                                "description": "Path to the executable to launch."
                             },
                             "args": {
-                                "type": "string",
-                                "description": "Specifies the command-line arguments to pass to the executable."
+                                "type": [
+                                    "string",
+                                    "array"
+                                ],
+                                "description": "Command-line arguments for the target: a single string, or an array of arguments."
                             },
                             "dbgengPath": {
                                 "type": "string",
-                                "description": "Specifies the path to the dbgeng.dll library.",
-                                "default": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+                                "description": "Optional path to dbgeng.dll. When omitted, the adapter uses a dbgeng.dll bundled next to it or the installed Windows SDK Debugging Tools, and errors if none is found."
                             },
                             "workingDir": {
                                 "type": "string",
-                                "description": "Specifies the working directory for the debugged process.",
+                                "description": "Working directory for the launched process. Defaults to the target's directory when omitted.",
                                 "default": "${workspaceRoot}"
-                            },
-                            "verbosity": {
-                                "type": "string",
-                                "description": "Specifies the verbosity level for debugger output. Valid values are debug, info, warn, error, and fatal.",
-                                "default": "info"
                             },
                             "sources": {
                                 "type": "array",
-                                "description": "Specifies the list of source directory paths to include when resolving source files.",
+                                "description": "Source directories to search when resolving source files.",
                                 "default": [
-                                    "${workspaceRoot}/src"
+                                    "${workspaceRoot}"
                                 ]
+                            },
+                            "symbolPath": {
+                                "type": "array",
+                                "description": "Symbol (PDB) search paths.",
+                                "default": []
                             },
                             "stopAtEntry": {
                                 "type": "boolean",
@@ -103,9 +104,6 @@
                         }
                     },
                     "attach": {
-                        "required": [
-                            "dbgengPath"
-                        ],
                         "properties": {
                             "processId": {
                                 "type": [
@@ -113,6 +111,10 @@
                                     "string"
                                 ],
                                 "description": "The system process ID to attach to (for remote attach, the PID on the machine running dbgsrv). Set to \"${command:dap-dbgeng.pickProcess}\" to choose interactively at debug time; the picker lists local processes, or processes on the dbgsrv host when 'connectionString' is set."
+                            },
+                            "dumpFile": {
+                                "type": "string",
+                                "description": "Path to a crash dump (.dmp) to open instead of attaching to a live process. Mutually exclusive with 'processId'."
                             },
                             "connectionString": {
                                 "type": "string",
@@ -125,29 +127,18 @@
                             },
                             "dbgengPath": {
                                 "type": "string",
-                                "description": "Specifies the path to the dbgeng.dll library.",
-                                "default": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
-                            },
-                            "workingDir": {
-                                "type": "string",
-                                "description": "Specifies the working directory to use for the debug session.",
-                                "default": "${workspaceRoot}"
-                            },
-                            "verbosity": {
-                                "type": "string",
-                                "description": "Specifies the verbosity level for debugger output. Valid values are debug, info, warn, error, and fatal.",
-                                "default": "info"
+                                "description": "Optional path to dbgeng.dll. When omitted, the adapter uses a dbgeng.dll bundled next to it or the installed Windows SDK Debugging Tools, and errors if none is found."
                             },
                             "sources": {
                                 "type": "array",
-                                "description": "Specifies the list of source directory paths to include when resolving source files.",
+                                "description": "Source directories to search when resolving source files.",
                                 "default": [
-                                    "${workspaceRoot}/src"
+                                    "${workspaceRoot}"
                                 ]
                             },
                             "symbolPath": {
                                 "type": "array",
-                                "description": "Specifies the list of symbol file paths to use when loading PDB files.",
+                                "description": "Symbol (PDB) search paths.",
                                 "default": []
                             },
                             "stopAtEntry": {

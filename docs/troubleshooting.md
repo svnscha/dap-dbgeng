@@ -1,15 +1,15 @@
 # Troubleshooting
 
 When a session won't start or behaves oddly, work through these common causes.
-The fastest first move is almost always to **turn up the adapter's log**:
+The fastest first move is to **check the logs**:
 
-```json
-"verbosity": "debug"
-```
+- The **dap-dbgeng** output channel (View -> Output -> "dap-dbgeng") shows which
+  adapter was launched and any startup error.
+- The adapter's own diagnostics go to **standard error**, which VS Code surfaces
+  in the **Debug Console**.
 
-The adapter logs to **standard error**, which VS Code surfaces in the
-**Debug Console** / output. A `debug`-level log usually shows exactly where
-startup failed.
+For a full record of the DAP conversation, set a
+[`trace`](reference/launch.md#trace) path in the configuration.
 
 ---
 
@@ -25,10 +25,12 @@ reload the window. Your configuration's `type` must be `windbg`.
 
 ### The adapter starts but immediately exits
 
-Usually a bad `dbgengPath`. If `dbgeng.dll` can't be loaded, the engine never
-comes up.
+Usually `dbgeng.dll` could not be loaded: either no Debugging Tools for Windows is
+installed for the adapter to auto-resolve, or a `dbgengPath` you set points at a
+missing or wrong file.
 
-**Fix:** confirm the path exists and points at a real `dbgeng.dll`:
+**Fix:** install the Debugging Tools for Windows (the adapter then finds
+`dbgeng.dll` automatically), or set `dbgengPath` to a real `dbgeng.dll`:
 
 ```powershell
 Test-Path "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
@@ -38,7 +40,9 @@ Remember JSON path rules: forward slashes or doubled backslashes.
 
 ### “Invalid configuration” / a required field is missing
 
-`launch` requires `target` and `dbgengPath`. `attach` requires `dbgengPath`.
+`launch` requires `target`. `attach` requires one of `processId`, `dumpFile`, or
+`kernel` with a `connectionString`. `dbgengPath` is optional (auto-resolved when
+omitted).
 
 **Fix:** check your configuration against the
 [launch](reference/launch.md) / [attach](reference/attach.md) reference.

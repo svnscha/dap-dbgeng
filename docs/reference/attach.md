@@ -8,7 +8,8 @@ covers three scenarios:
 - [Debug a remote process](../scenarios/remote-debugging.md) (via `dbgsrv`)
 - [Debug a Windows driver](../scenarios/driver-debugging.md) (`kernel: true`)
 
-**Required:** `dbgengPath`.
+**Required:** none on its own - supply `processId`, `dumpFile`, or
+(`kernel` + `connectionString`) depending on the scenario.
 
 How the key fields combine determines the scenario:
 
@@ -18,19 +19,21 @@ How the key fields combine determines the scenario:
 | Remote attach | the PID on the target | a `dbgsrv` string | `false` |
 | Kernel attach | omit | a kernel transport | `true` |
 
+To open a crash dump instead of attaching to a live process, set
+[`dumpFile`](#dumpfile).
+
 ## Attributes
 
 | Attribute | Required | Description |
 | --- | --- | --- |
-| [`dbgengPath`](#dbgengpath) | Yes | Path to `dbgeng.dll` (the debug engine). |
 | [`processId`](#processid) | - | PID to attach to (local, or on the `dbgsrv` host). |
+| [`dumpFile`](#dumpfile) | - | Open a crash dump instead of attaching. |
 | [`connectionString`](#connectionstring) | - | Remote (`dbgsrv`) or kernel transport string. |
 | [`kernel`](#kernel) | - | Set `true` for kernel / driver debugging. |
+| [`dbgengPath`](#dbgengpath) | - | Path to `dbgeng.dll`; auto-resolved when omitted. |
 | [`stopAtEntry`](#stopatentry) | - | Break in on connect (default `true`). |
 | [`symbolPath`](#symbolpath) | - | Extra locations to load PDB symbols from. |
 | [`sources`](#sources) | - | Folders searched for source files. |
-| [`workingDir`](#workingdir) | - | Working directory for the session. |
-| [`verbosity`](#verbosity) | - | Adapter log level (default `info`). |
 | [`trace`](#trace) | - | Record the DAP session to a file. |
 
 ## Details
@@ -54,6 +57,19 @@ To pick the process interactively at debug time, use the built-in picker:
 
 The picker lists local processes, or - when `connectionString` is set - the
 processes on the `dbgsrv` host, so the same setting covers local and remote attach.
+
+---
+
+### `dumpFile`
+
+- **Type:** string · Optional
+
+Path to a crash dump (`.dmp`) to open for post-mortem debugging instead of
+attaching to a live process. Mutually exclusive with `processId`.
+
+```json
+"dumpFile": "${workspaceFolder}/crashes/app.dmp"
+```
 
 ---
 
@@ -103,11 +119,18 @@ drops the connection and leaves the target running.
 
 ### `dbgengPath`
 
-- **Type:** string · **Required**
-- **Default:** `C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll`
+- **Type:** string · Optional
 
-The path to the **local** `dbgeng.dll`. Even for remote and kernel sessions, the
-debug engine runs on your machine.
+The path to the **local** `dbgeng.dll` (the debug engine runs on your machine even
+for remote and kernel sessions). **You usually do not need to set this.** When
+omitted, the adapter resolves the engine automatically:
+
+1. a `dbgeng.dll` bundled next to the adapter, then
+2. the installed Windows SDK Debugging Tools
+   (`...\Windows Kits\10\Debuggers\<arch>\dbgeng.dll`).
+
+Set it only to point at a specific `dbgeng.dll`. If no engine can be found, the
+session fails with a clear error.
 
 ---
 
@@ -150,30 +173,10 @@ local folders or a symbol-server string.
 ### `sources`
 
 - **Type:** array of strings · Optional
-- **Default:** `["${workspaceRoot}/src"]`
+- **Default:** `["${workspaceRoot}"]`
 
 Folders to search when resolving source files. Same meaning as in launch
 configurations.
-
----
-
-### `workingDir`
-
-- **Type:** string · Optional
-- **Default:** the workspace root (`${workspaceRoot}`)
-
-The working directory for the debug session.
-
----
-
-### `verbosity`
-
-- **Type:** string · Optional
-- **Default:** `info`
-- **Values:** `debug`, `info`, `warn`, `error`, `fatal`
-
-Adapter log verbosity (written to standard error). Raise to `debug` when
-diagnosing a problem.
 
 ---
 
@@ -197,8 +200,7 @@ Omit to record nothing.
   "name": "Attach to myapp",
   "type": "windbg",
   "request": "attach",
-  "processId": 12345,
-  "dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+  "processId": "${command:dap-dbgeng.pickProcess}"
 }
 ```
 
@@ -210,8 +212,7 @@ Omit to record nothing.
   "type": "windbg",
   "request": "attach",
   "processId": 4321,
-  "connectionString": "tcp:port=5005,server=TARGETPC",
-  "dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+  "connectionString": "tcp:port=5005,server=TARGETPC"
 }
 ```
 
@@ -223,7 +224,17 @@ Omit to record nothing.
   "type": "windbg",
   "request": "attach",
   "kernel": true,
-  "connectionString": "net:port=50005,key=1.2.3.4",
-  "dbgengPath": "C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll"
+  "connectionString": "net:port=50005,key=1.2.3.4"
+}
+```
+
+### Open a crash dump
+
+```json
+{
+  "name": "Open dump",
+  "type": "windbg",
+  "request": "attach",
+  "dumpFile": "${workspaceFolder}/crashes/app.dmp"
 }
 ```
