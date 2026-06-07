@@ -15,9 +15,9 @@ C++20, CMake + Ninja, vcpkg manifest mode. Windows-only.
 
 [![Native Windows Debugging in VS Code - overview](https://img.youtube.com/vi/bEuCPRmjE8o/maxresdefault.jpg)](https://www.youtube.com/watch?v=bEuCPRmjE8o)
 
-| Local program | Remote process | Kernel driver |
+| Remote process | Kernel driver | Local program |
 | --- | --- | --- |
-| [![Debug a local program](https://img.youtube.com/vi/FLM9hPu4xfQ/hqdefault.jpg)](https://www.youtube.com/watch?v=FLM9hPu4xfQ) | [![Debug a remote process](https://img.youtube.com/vi/_YUhyKK2PlI/hqdefault.jpg)](https://www.youtube.com/watch?v=_YUhyKK2PlI) | [![Debug a Windows driver](https://img.youtube.com/vi/m1E5AsglKiQ/hqdefault.jpg)](https://www.youtube.com/watch?v=m1E5AsglKiQ) |
+| [![Debug a remote process](https://img.youtube.com/vi/_YUhyKK2PlI/hqdefault.jpg)](https://www.youtube.com/watch?v=_YUhyKK2PlI) | [![Debug a Windows driver](https://img.youtube.com/vi/m1E5AsglKiQ/hqdefault.jpg)](https://www.youtube.com/watch?v=m1E5AsglKiQ) | [![Debug a local program](https://img.youtube.com/vi/FLM9hPu4xfQ/hqdefault.jpg)](https://www.youtube.com/watch?v=FLM9hPu4xfQ) |
 
 ## Highlights
 
