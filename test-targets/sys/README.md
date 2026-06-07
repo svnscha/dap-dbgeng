@@ -1,21 +1,23 @@
-# test-targets/sys - Hello World kernel driver
+# test-targets/sys - Hello kernel driver
 
-A minimal WDM kernel-mode driver (`hello.sys`) used to exercise the adapter's
+A small WDM control-device driver (`hello.sys`) used to exercise the adapter's
 **kernel-debug attach**. Load it on a KD-enabled VM, attach with the adapter
 (`kernel: true`), and confirm break-in, `DbgPrint` output, and breakpoints on
-`DriverEntry` / `HelloUnload`.
+`DriverEntry` / `HelloDeviceControl`.
 
 It builds against the **WDK delivered via NuGet** - no classic "Windows Kits"
 WDK install required - wired into CMake by [`cmake/FindWDKNuGet.cmake`](cmake/FindWDKNuGet.cmake).
 
 ## What it does
 
-[`src/hello.c`](src/hello.c) is a legacy software driver: `DriverEntry` logs a
-message and registers `HelloUnload`. Output goes to the kernel debugger /
-DebugView. The entry message is logged at `DPFLTR_ERROR_LEVEL` so it shows
-without changing the `DbgPrint` filter mask. Build with `-DHELLO_BREAK_ON_ENTRY=1`
-to make it `DbgBreakPoint()` into an attached debugger the moment it loads (only
-when a debugger is actually present, so it won't wedge a normal boot).
+[`src/hello.c`](src/hello.c) is a legacy software driver. `DriverEntry` creates a
+control device (`\Device\Hello`) and a symbolic link (`\DosDevices\Hello`, i.e.
+`\\.\Hello` from user mode), then registers CREATE/CLOSE/DEVICE_CONTROL dispatch
+routines and `HelloUnload`. The single IOCTL, `IOCTL_HELLO_GET_INFO`, returns a
+`HELLO_INFO` (the driver version plus the number of opens since load). Output goes
+to the kernel debugger / DebugView; lifecycle lines log at `DPFLTR_ERROR_LEVEL` so
+they show without changing the `DbgPrint` filter mask, and the per-request lines
+use `DPFLTR_INFO_LEVEL`.
 
 ## Prerequisites
 
@@ -90,5 +92,4 @@ KDNET or COM-pipe transport), attach from the adapter with the matching
 
 - the break-in presents a paused target,
 - `DriverEntry`'s `DbgPrint` appears,
-- a breakpoint on `DriverEntry` / `HelloUnload` is hit (build with
-  `-DHELLO_BREAK_ON_ENTRY=1` to break automatically on load).
+- a breakpoint on `DriverEntry` / `HelloDeviceControl` is hit.
