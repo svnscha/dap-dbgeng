@@ -35,6 +35,24 @@
             "request": "attach",
             "processId": "${command:dap-dbgeng.pickProcess}",
             "connectionString": "tcp:port=5005,server=localhost",
+        },
+        /*
+            Requires a kernel debugging connection to be configured and available before attaching.
+            Also requires the hello driver to be built, copied to the target, and created there ahead of time.
+            After attaching, start the driver on the target, for example by running this command in an elevated terminal:
+            sc start hello
+        */
+        {
+            "name": "Debug (Kernel Attach)",
+            "type": "dbgeng",
+            "request": "attach",
+            "kernel": true,
+            "connectionString": "net:port=50005,key=1mr4yjkb9wuvs.1k0sva0jipsc8.1carl91yptoex.2ii4nmz9apud6",
+            "symbolPath": [
+                "srv*C:\\Symbols*https://msdl.microsoft.com/download/symbols",
+                "${workspaceFolder}/test-targets/sys/build/Debug"
+            ],
+            "trace": "${workspaceFolder}/recordings/kernel-attach.session.json"
         }
     ]
 }

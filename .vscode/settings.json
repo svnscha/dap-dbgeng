@@ -1,9 +1,6 @@
 {
-    "C_Cpp.default.forcedInclude": [
-        "${workspaceFolder}/src/stdafx.h",
-        "${workspaceFolder}/src/protocol/dap_service.h"
-    ],
-    "C_Cpp.default.cppStandard": "c++20",
+    // C/C++ IntelliSense configuration (include paths, defines, forced PCH, and the
+    // kernel-driver config) lives in .vscode/c_cpp_properties.json.
     "cmake.debugConfig": {
         "type": "dbgeng",
         "request": "launch",

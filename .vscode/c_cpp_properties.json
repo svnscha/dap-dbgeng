@@ -1,0 +1,54 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            // Main adapter project (C++20, user mode). IntelliSense is driven by the
+            // CMake Tools configuration provider once the project is configured, which
+            // also supplies the precompiled header (src/stdafx.h). The includePath /
+            // forcedInclude below are a fallback for when CMake Tools is unavailable.
+            // This is the default active configuration.
+            "name": "Win32",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "intelliSenseMode": "windows-msvc-x64",
+            "cppStandard": "c++20",
+            "includePath": [
+                "${workspaceFolder}/src/**"
+            ],
+            "forcedInclude": [
+                "${workspaceFolder}/src/stdafx.h",
+                "${workspaceFolder}/src/protocol/dap_service.h"
+            ]
+        },
+        {
+            // Kernel driver (test-targets/sys/src/hello.c). Select this configuration
+            // (C/C++: Select a Configuration, or the status-bar config picker) when
+            // editing the driver so <ntddk.h> resolves. It deliberately clears the
+            // user-mode forced PCH ("forcedInclude": []) - forcing src/stdafx.h
+            // (windows.h, fmt, ...) into a kernel TU is what breaks IntelliSense -
+            // and points at the NuGet-delivered WDK headers (SDK 10.0.28000.0).
+            // Refresh these from the "Found WDKNuGet:" line of `npm run build:sys`
+            // if the WDK/SDK NuGet packages are updated.
+            "name": "Kernel (sys)",
+            "intelliSenseMode": "windows-msvc-x64",
+            "cStandard": "c17",
+            "forcedInclude": [],
+            "defines": [
+                "_AMD64_",
+                "AMD64",
+                "_WIN64",
+                "_KERNEL_MODE",
+                "NTDDI_VERSION=0x0A000000",
+                "_WIN32_WINNT=0x0A00",
+                "WINVER=0x0A00",
+                "DBG=1"
+            ],
+            "includePath": [
+                "${env:USERPROFILE}/.nuget/packages/microsoft.windows.wdk.x64/10.0.28000.1839/c/Include/10.0.28000.0/km",
+                "${env:USERPROFILE}/.nuget/packages/microsoft.windows.wdk.x64/10.0.28000.1839/c/Include/10.0.28000.0/km/crt",
+                "${env:USERPROFILE}/.nuget/packages/microsoft.windows.wdk.x64/10.0.28000.1839/c/Include/10.0.28000.0/shared",
+                "${env:USERPROFILE}/.nuget/packages/microsoft.windows.sdk.cpp/10.0.28000.1721/c/Include/10.0.28000.0/shared",
+                "${env:USERPROFILE}/.nuget/packages/microsoft.windows.sdk.cpp/10.0.28000.1721/c/Include/10.0.28000.0/um"
+            ]
+        }
+    ]
+}
