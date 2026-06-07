@@ -61,7 +61,9 @@ arguments.
 - **Default:** the target executable's directory
 
 The working directory (current directory) for the debugged program. When omitted,
-the engine uses the directory containing `target`.
+the engine uses the directory containing `target`. When the target is auto-resolved
+from CMake Tools, the working directory defaults to
+`${command:cmake.launchTargetDirectory}` (the launch target's directory).
 
 ```json
 "workingDir": "${workspaceFolder}/build/Debug"

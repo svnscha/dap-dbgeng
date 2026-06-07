@@ -59,6 +59,10 @@ function activate(context) {
                         return undefined; // abort the session; the user has been told why
                     }
                     config.target = "${command:cmake.launchTargetPath}";
+                    // Run from the launch target's directory unless the user set one.
+                    if (typeof config.workingDir !== "string" || !config.workingDir.trim()) {
+                        config.workingDir = "${command:cmake.launchTargetDirectory}";
+                    }
                 }
 
                 return config;
