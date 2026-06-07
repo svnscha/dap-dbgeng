@@ -32,6 +32,7 @@ add_library(dap-dbgeng-objects OBJECT
   service/dap_server_scopes.cpp
   service/dap_server_set_breakpoints.cpp
   service/dap_server_set_variable.cpp
+  service/dap_server_source.cpp
   service/dap_server_stack_trace.cpp
   service/dap_server_step_in.cpp
   service/dap_server_step_out.cpp

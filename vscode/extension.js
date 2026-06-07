@@ -30,6 +30,22 @@ function activate(context) {
         vscode.commands.registerCommand("dap-dbgeng.pickProcess", pickProcess)
     );
 
+    // Apply config defaults that VS Code does not inject from the schema (schema
+    // "default" values are only editor hints). Runs before variable substitution,
+    // so ${workspaceFolder} is expanded normally.
+    context.subscriptions.push(
+        vscode.debug.registerDebugConfigurationProvider(DEBUG_TYPE, {
+            resolveDebugConfiguration(folder, config) {
+                if (config && config.type === DEBUG_TYPE) {
+                    if (!Array.isArray(config.sources) || config.sources.length === 0) {
+                        config.sources = ["${workspaceFolder}"];
+                    }
+                }
+                return config;
+            },
+        })
+    );
+
     context.subscriptions.push(
         vscode.debug.registerDebugAdapterDescriptorFactory(DEBUG_TYPE, {
             createDebugAdapterDescriptor(session) {

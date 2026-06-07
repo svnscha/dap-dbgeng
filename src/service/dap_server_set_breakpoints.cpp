@@ -147,10 +147,16 @@ void dap_server::handle_set_breakpoints_request(const protocol::SetBreakpointsRe
         send_error_response(request.seq, request.command, "The setBreakpoints request requires 'source.path'.");
         return;
     }
-    if (is_execution_running_.load())
+
+    debugger::debugger_session &session = require_debugger_session();
+    // User-mode targets accept breakpoint updates while running (the adapter
+    // briefly interrupts to apply them, then resumes). A kernel target must be
+    // halted first.
+    const bool resume_after_update = is_execution_running_.load();
+    if (resume_after_update && session.is_kernel())
     {
         send_error_response(request.seq, request.command,
-                            "Breakpoints can only be updated while the debuggee is stopped.");
+                            "Breakpoints can only be updated while the kernel target is halted. Pause first.");
         return;
     }
 
@@ -168,7 +174,6 @@ void dap_server::handle_set_breakpoints_request(const protocol::SetBreakpointsRe
         }
     }
 
-    debugger::debugger_session &session = require_debugger_session();
     std::vector<debugger::source_breakpoint_spec> supported;
     supported.reserve(configurable.size());
     for (const auto &breakpoint : configurable)
@@ -177,7 +182,9 @@ void dap_server::handle_set_breakpoints_request(const protocol::SetBreakpointsRe
     }
 
     const std::vector<debugger::source_breakpoint_result> configured =
-        dispatcher_.invoke([&]() { return session.set_source_breakpoints(*source_path, supported); });
+        resume_after_update
+            ? set_breakpoints_while_running(session, *source_path, supported)
+            : dispatcher_.invoke([&]() { return session.set_source_breakpoints(*source_path, supported); });
 
     std::vector<protocol::SourceBreakpoint> configurable_requests;
     configurable_requests.reserve(configurable.size());

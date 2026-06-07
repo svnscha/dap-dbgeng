@@ -804,6 +804,31 @@ void dap_server::clear_conditional_breakpoint_state(const std::string &source_pa
     conditional_breakpoint_ids_by_path_.erase(it);
 }
 
+std::vector<debugger::source_breakpoint_result> dap_server::set_breakpoints_while_running(
+    debugger::debugger_session &session, const std::string &source_path,
+    const std::vector<debugger::source_breakpoint_spec> &specs)
+{
+    // The target is running, so the dispatcher is blocked in the wait loop's
+    // wait_for_event. Interrupt to a clean stop with events suppressed, let the
+    // wait loop unwind (freeing the dispatcher), then apply the breakpoints exactly
+    // as in the stopped state and resume. The user never sees the transient stop.
+    std::vector<debugger::source_breakpoint_result> configured;
+    run_with_suppressed_session_events([&]() {
+        session.interrupt();
+        join_wait_loop(); // returns once the suppressed break unwinds the wait loop
+
+        configured = dispatcher_.invoke([&]() { return session.set_source_breakpoints(source_path, specs); });
+
+        is_execution_running_.store(true);
+        dispatcher_.invoke([&]() {
+            session.continue_();
+            return 0;
+        });
+    });
+    start_waiting_for_session_event(session);
+    return configured;
+}
+
 bool dap_server::try_auto_continue_conditional_breakpoint_hit(debugger::debugger_session &session,
                                                               std::uint32_t breakpoint_id)
 {

@@ -56,6 +56,7 @@ class dap_server : public protocol::dap_service
     void handle_evaluate_request(const protocol::EvaluateRequest &request) override;
     void handle_disassemble_request(const protocol::DisassembleRequest &request) override;
     void handle_disconnect_request(const protocol::DisconnectRequest &request) override;
+    void handle_source_request(const protocol::SourceRequest &request) override;
 
   public:
     // ---- Test seams ---------------------------------------------------------
@@ -189,6 +190,12 @@ class dap_server : public protocol::dap_service
     void clear_pending_stopped_event();
     bool has_pending_stopped_event();
     bool is_represented_stop_while_halted() const;
+
+    // For a live user-mode target, setBreakpoints briefly interrupts to a clean
+    // stop (events suppressed), applies the breakpoints, and resumes.
+    std::vector<debugger::source_breakpoint_result> set_breakpoints_while_running(
+        debugger::debugger_session &session, const std::string &source_path,
+        const std::vector<debugger::source_breakpoint_spec> &specs);
 
     // ---- Stepping / suspended state -----------------------------------------
     void prepare_stepping_granularity(debugger::debugger_session &session,
