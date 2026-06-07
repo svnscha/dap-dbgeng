@@ -1,14 +1,14 @@
 <#
 .SYNOPSIS
-    Copy the built adapter (and its runtime DLLs) into the VS Code extension so it
-    ships inside the .vsix.
+    Copy the built adapter into the VS Code extension so it ships inside the .vsix.
 
 .DESCRIPTION
     The extension embeds the adapter under vscode/bin so a packaged extension is
-    self-contained (only dbgeng.dll, from the Windows SDK, stays external). By
-    default it bundles the Release build. The vcpkg dynamic triplet puts fmt.dll /
-    spdlog.dll next to dap-dbgeng.exe, so every .exe/.dll in the build output is
-    copied. vscode/bin is git-ignored (a build artifact) but included in the .vsix.
+    self-contained (only dbgeng.dll, from the Windows SDK, stays external). It bundles
+    the Release build, which links statically (x64-windows-static), so the output is a
+    single dap-dbgeng.exe with no fmt/spdlog/CRT DLLs. Every .exe/.dll in the build
+    output is copied anyway, so a stray dependency would still be picked up.
+    vscode/bin is git-ignored (a build artifact) but included in the .vsix.
 
 .PARAMETER SourceDir
     The adapter build output to bundle. Defaults to the Release tree.

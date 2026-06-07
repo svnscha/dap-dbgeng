@@ -42,6 +42,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# The Release package uses a static vcpkg triplet (x64-windows-static) so the adapter
+# ships as a single self-contained exe (no fmt/spdlog DLLs to bundle). Link the MSVC
+# runtime statically to match those static dependencies. The Debug tree keeps the
+# dynamic triplet and CRT for faster, lighter iteration.
+if(VCPKG_TARGET_TRIPLET MATCHES "static")
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)

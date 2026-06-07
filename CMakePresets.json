@@ -25,10 +25,11 @@
         {
             "name": "windows-x64-release",
             "inherits": "windows-x64",
-            "displayName": "Windows x64 (Ninja, Release)",
+            "displayName": "Windows x64 (Ninja, Release, static)",
             "binaryDir": "${sourceDir}/build/windows-x64-release",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "Release",
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static"
             }
         }
     ],
