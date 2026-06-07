@@ -33,11 +33,11 @@ The path to the executable to launch under the debugger.
 ```
 
 `target` is optional when the **CMake Tools** extension (`ms-vscode.cmake-tools`)
-is installed: if you omit it, the adapter uses CMake Tools' selected **launch
-target** (the same one its status bar shows). If no `target` is set and no launch
-target can be resolved, the session fails with a message telling you to select a
-CMake launch target or set `target` explicitly. Without CMake Tools installed,
-`target` is required.
+is installed: if you omit it, the adapter defaults to CMake Tools' **launch
+target** via `${command:cmake.launchTargetPath}`, and VS Code resolves it - building
+the target and prompting you to pick one if none is selected yet. Without CMake
+Tools installed, `target` is required and the session fails with a message to set
+it.
 
 ---
 

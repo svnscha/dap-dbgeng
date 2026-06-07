@@ -28,10 +28,11 @@ If you use the **CMake Tools** extension, you can omit `target` entirely:
 }
 ```
 
-The adapter launches CMake Tools' selected **launch target** (the executable shown
-in its status bar). Pick one with **CMake: Set Launch/Debug Target**. If no target
-is set - or CMake Tools is not installed - the session fails with a message telling
-you to select a launch target or set `target` explicitly.
+The adapter defaults `target` to CMake Tools' **launch target** (the executable
+shown in its status bar). VS Code builds it and, if none is selected yet, prompts
+you to pick one. You can also set it ahead of time with **CMake: Set Launch/Debug
+Target**. Without CMake Tools installed, the session fails with a message telling
+you to set `target` explicitly.
 
 To pass command-line arguments, set a working directory, or change any other
 behavior, see **[launch attributes](../reference/launch.md)**.

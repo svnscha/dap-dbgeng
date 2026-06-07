@@ -36,7 +36,7 @@ function activate(context) {
     // ${workspaceFolder} is expanded normally.
     context.subscriptions.push(
         vscode.debug.registerDebugConfigurationProvider(DEBUG_TYPE, {
-            async resolveDebugConfiguration(folder, config) {
+            resolveDebugConfiguration(folder, config) {
                 if (!config || config.type !== DEBUG_TYPE) {
                     return config;
                 }
@@ -45,14 +45,20 @@ function activate(context) {
                     config.sources = ["${workspaceFolder}"];
                 }
 
-                // target is optional: fall back to the CMake Tools launch target.
+                // target is optional: when omitted, default to the CMake Tools
+                // launch target and let VS Code resolve it (it builds the target
+                // and prompts for a selection if none is set). We only inject this
+                // when CMake Tools is installed, so the ${command:...} variable is
+                // never left unresolved; otherwise fail with a clear message.
                 if (config.request === "launch" && (typeof config.target !== "string" || !config.target.trim())) {
-                    const resolved = await resolveLaunchTargetFromCMake();
-                    if (!resolved.path) {
-                        vscode.window.showErrorMessage(resolved.message);
+                    if (!vscode.extensions.getExtension("ms-vscode.cmake-tools")) {
+                        vscode.window.showErrorMessage(
+                            "No 'target' is set. Set 'target' to the executable to debug, or install the CMake " +
+                                "Tools extension (ms-vscode.cmake-tools) and select a launch target."
+                        );
                         return undefined; // abort the session; the user has been told why
                     }
-                    config.target = resolved.path;
+                    config.target = "${command:cmake.launchTargetPath}";
                 }
 
                 return config;
@@ -93,48 +99,6 @@ function activate(context) {
 function deactivate() {}
 
 module.exports = { activate, deactivate };
-
-// ---------------------------------------------------------------------------
-// CMake Tools launch-target resolution (optional integration)
-// ---------------------------------------------------------------------------
-// Returns { path } when a launch target is resolved, or { message } describing
-// how to fix it. CMake Tools is optional: the message differs depending on
-// whether it is installed. Uses the on-demand command query (the same command
-// CMake Tools exposes for launch.json variable substitution) rather than the
-// event-based typed API, so there is no hard dependency on the extension.
-async function resolveLaunchTargetFromCMake() {
-    const ext = vscode.extensions.getExtension("ms-vscode.cmake-tools");
-    if (!ext) {
-        return {
-            message:
-                "No 'target' is set. Set 'target' to the executable to debug, or install the CMake Tools " +
-                "extension (ms-vscode.cmake-tools) and select a launch target.",
-        };
-    }
-
-    try {
-        if (!ext.isActive) {
-            await ext.activate();
-        }
-        const path = await vscode.commands.executeCommand("cmake.launchTargetPath");
-        if (typeof path === "string" && path.trim()) {
-            return { path: path.trim() };
-        }
-    } catch (err) {
-        return {
-            message:
-                "No 'target' is set and the CMake launch target could not be resolved" +
-                (err && err.message ? ` (${err.message})` : "") +
-                ". Run 'CMake: Set Launch/Debug Target', or set 'target' explicitly.",
-        };
-    }
-
-    return {
-        message:
-            "No 'target' is set and no CMake launch target is selected. Run 'CMake: Set Launch/Debug Target' " +
-            "to choose one, or set 'target' in the launch configuration.",
-    };
-}
 
 // ---------------------------------------------------------------------------
 // Process picker
