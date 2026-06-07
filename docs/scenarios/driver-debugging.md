@@ -4,6 +4,10 @@ Debug **kernel-mode drivers** (and the OS around them). Driver debugging is
 whole-machine, so you need two: a **host** (VS Code + adapter) and a **target**
 machine being debugged - almost always a VM.
 
+<div class="video-embed">
+  <iframe src="https://www.youtube-nocookie.com/embed/m1E5AsglKiQ" title="Debug a Windows kernel driver with dap-dbgeng" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 ```mermaid
 flowchart LR
     subgraph host["HOST MACHINE"]

@@ -4,6 +4,10 @@ Debug **native Windows code** - C and C++ programs, services, and even the
 Windows **kernel** - straight from Visual Studio Code, using the same engine
 that powers WinDbg.
 
+<div class="video-embed">
+  <iframe src="https://www.youtube-nocookie.com/embed/bEuCPRmjE8o" title="Native Windows Debugging in VS Code" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 This adapter (`dap-dbgeng`) is a small program that sits between your editor and
 the Windows debug engine (`dbgeng.dll`). Your editor speaks the
 [Debug Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol/)

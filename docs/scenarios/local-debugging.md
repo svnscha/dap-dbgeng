@@ -4,6 +4,10 @@ The debugger **starts** your program and debugs it from launch. Use
 `"request": "launch"`. You can point it at the executable two ways: set `program`
 yourself, or let the **CMake Tools** extension supply it.
 
+<div class="video-embed">
+  <iframe src="https://www.youtube-nocookie.com/embed/FLM9hPu4xfQ" title="Debug a local program with dap-dbgeng" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 ## Configure it manually
 
 Set `program` to the executable you want to debug:

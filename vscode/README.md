@@ -9,7 +9,11 @@ underneath - no fragile text scraping of WinDbg output.
 
 [Documentation](https://svnscha.github.io/dap-dbgeng/) - [Getting started](https://svnscha.github.io/dap-dbgeng/getting-started/) - [Configuration reference](https://svnscha.github.io/dap-dbgeng/reference/launch/)
 
-<!-- A short demo GIF goes well here once one is recorded. -->
+[![Native Windows Debugging in VS Code - overview](https://img.youtube.com/vi/bEuCPRmjE8o/maxresdefault.jpg)](https://www.youtube.com/watch?v=bEuCPRmjE8o)
+
+| Local program | Remote process | Kernel driver |
+| --- | --- | --- |
+| [![Debug a local program](https://img.youtube.com/vi/FLM9hPu4xfQ/hqdefault.jpg)](https://www.youtube.com/watch?v=FLM9hPu4xfQ) | [![Debug a remote process](https://img.youtube.com/vi/_YUhyKK2PlI/hqdefault.jpg)](https://www.youtube.com/watch?v=_YUhyKK2PlI) | [![Debug a Windows driver](https://img.youtube.com/vi/m1E5AsglKiQ/hqdefault.jpg)](https://www.youtube.com/watch?v=m1E5AsglKiQ) |
 
 ## What you can do
 

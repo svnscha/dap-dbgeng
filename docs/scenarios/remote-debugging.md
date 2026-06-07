@@ -3,6 +3,10 @@
 Debug a **user-mode process on another machine**. You run a Windows process
 server (`dbgsrv`) on the target; the debug engine and your symbols stay local.
 
+<div class="video-embed">
+  <iframe src="https://www.youtube-nocookie.com/embed/_YUhyKK2PlI" title="Debug a remote process with dap-dbgeng" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 ```mermaid
 flowchart LR
     subgraph host["YOUR MACHINE"]
