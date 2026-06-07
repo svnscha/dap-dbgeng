@@ -84,8 +84,8 @@ when those are unavailable.
 
 ## Kernel test driver
 
-`test-targets/sys` is a WDK "Hello World" kernel driver for manually exercising kernel-mode
-attach. It is a separate Visual Studio + WDK build (it does not build under Ninja and is not part
+`test-targets/sys` is a small WDK control-device kernel driver for manually exercising
+kernel-mode attach. It is a separate Visual Studio + WDK build (it does not build under Ninja and is not part
 of the automated tests): `npm run build:sys`, or configure the main tree with the VS generator and
 `-DDAP_DBGENG_BUILD_KERNEL_DRIVER=ON`. See `test-targets/sys/README.md`.
 
