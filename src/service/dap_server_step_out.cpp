@@ -5,6 +5,7 @@ namespace dap_dbgeng::service
 void dap_server::handle_step_out_request(const protocol::StepOutRequest &request)
 {
     const int thread_id = request.arguments.thread_id;
+    const bool single_thread = request.arguments.single_thread.value_or(false);
     const std::optional<protocol::SteppingGranularity> granularity = request.arguments.granularity;
 
     if (is_execution_running_.load())
@@ -13,6 +14,10 @@ void dap_server::handle_step_out_request(const protocol::StepOutRequest &request
         return;
     }
     if (!require_positive_thread_id(request.seq, request.command, thread_id))
+    {
+        return;
+    }
+    if (!reject_single_thread(request.seq, request.command, single_thread))
     {
         return;
     }

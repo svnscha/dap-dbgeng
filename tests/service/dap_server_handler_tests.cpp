@@ -204,6 +204,20 @@ TEST(DapServerHandlers, StepOutWithNonPositiveThreadIdReturnsError)
     EXPECT_EQ(error_format(*response), "The stepOut request requires a positive threadId.");
 }
 
+TEST(DapServerHandlers, StepOutWithSingleThreadReturnsError)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "stepOut", {{"threadId", 1}, {"singleThread", true}}));
+
+    const nlohmann::json *response = writer.find_response("stepOut", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response),
+              "The stepOut request does not support singleThread because supportsSingleThreadExecutionRequests is "
+              "false.");
+}
+
 // --- pause -------------------------------------------------------------------
 
 TEST(DapServerHandlers, PauseWithNonPositiveThreadIdReturnsError)
