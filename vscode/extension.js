@@ -1,31 +1,71 @@
 // VS Code extension entry point for the WinDbg (dbgeng) debug adapter.
 //
-// Its only job today is the process picker: the command "dap-dbgeng.pickProcess"
-// is meant to be used in a launch configuration as
-//   "processId": "${command:dap-dbgeng.pickProcess}"
-// When VS Code resolves that variable it invokes the command with the debug
-// configuration as its argument, so the picker can read 'connectionString' (to
-// list processes on a dbgsrv host instead of locally) and 'dbgengPath'. It shells
-// out to the adapter's "--list-processes" mode, which enumerates processes through
-// the debug engine and works the same for local and remote (process-server)
-// targets. The selected PID is returned as a string for the processId field.
+// Responsibilities:
+//   1. Launch the adapter executable for "windbg" debug sessions via a
+//      DebugAdapterDescriptorFactory (explicit and reliable; does not depend on
+//      the legacy contributes.debuggers "program" field resolving correctly).
+//   2. Log adapter lifecycle/errors to a "dap-dbgeng" output channel so a failed
+//      session is visible instead of silently doing nothing.
+//   3. Provide the process picker command used as
+//        "processId": "${command:dap-dbgeng.pickProcess}"
 
 const vscode = require("vscode");
 const cp = require("child_process");
 const path = require("path");
 const fs = require("fs");
 
+const DEBUG_TYPE = "windbg";
+let output;
+
 function activate(context) {
-    context.subscriptions.push(vscode.commands.registerCommand("dap-dbgeng.pickProcess", pickProcess));
+    output = vscode.window.createOutputChannel("dap-dbgeng");
+    context.subscriptions.push(output);
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand("dap-dbgeng.pickProcess", pickProcess)
+    );
+
+    context.subscriptions.push(
+        vscode.debug.registerDebugAdapterDescriptorFactory(DEBUG_TYPE, {
+            createDebugAdapterDescriptor(session) {
+                const adapterPath = resolveAdapterPath(session.configuration, session.workspaceFolder);
+                output.appendLine(`Starting adapter: ${adapterPath}`);
+                if (!fs.existsSync(adapterPath)) {
+                    const message = `dap-dbgeng adapter not found at ${adapterPath}. Build it (npm run build) or set "program" in the launch config.`;
+                    output.appendLine(message);
+                    output.show(true);
+                    vscode.window.showErrorMessage(message);
+                    throw new Error(message);
+                }
+                return new vscode.DebugAdapterExecutable(adapterPath, []);
+            },
+        })
+    );
+
+    // Surface adapter errors/exit and (optionally) protocol traffic.
+    context.subscriptions.push(
+        vscode.debug.registerDebugAdapterTrackerFactory(DEBUG_TYPE, {
+            createDebugAdapterTracker(session) {
+                return {
+                    onError: (e) => output.appendLine(`[${session.name}] adapter error: ${e && e.message}`),
+                    onExit: (code, signal) =>
+                        output.appendLine(`[${session.name}] adapter exited (code=${code}, signal=${signal})`),
+                };
+            },
+        })
+    );
 }
 
 function deactivate() {}
 
 module.exports = { activate, deactivate };
 
+// ---------------------------------------------------------------------------
+// Process picker
+// ---------------------------------------------------------------------------
 async function pickProcess(config) {
     config = config || {};
-    const adapterPath = resolveAdapterPath(config);
+    const adapterPath = resolveAdapterPath(config, undefined);
     const dbgengPath = typeof config.dbgengPath === "string" ? config.dbgengPath : undefined;
     const connectionString =
         typeof config.connectionString === "string" && config.connectionString.trim()
@@ -59,23 +99,31 @@ async function pickProcess(config) {
     return picked ? String(picked.pid) : undefined;
 }
 
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
 // The adapter executable: an explicit config.program if it exists, otherwise the
-// default Ninja build output under a workspace folder.
-function resolveAdapterPath(config) {
-    if (typeof config.program === "string" && fs.existsSync(config.program)) {
+// default Ninja build output under the session/workspace folder.
+function resolveAdapterPath(config, workspaceFolder) {
+    if (config && typeof config.program === "string" && config.program && fs.existsSync(config.program)) {
         return config.program;
     }
-    const folders = vscode.workspace.workspaceFolders || [];
-    for (const folder of folders) {
-        const candidate = path.join(folder.uri.fsPath, "build", "windows-x64", "src", "dap-dbgeng.exe");
+    const relative = path.join("build", "windows-x64", "src", "dap-dbgeng.exe");
+    const folders = [];
+    if (workspaceFolder) {
+        folders.push(workspaceFolder.uri.fsPath);
+    }
+    for (const folder of vscode.workspace.workspaceFolders || []) {
+        folders.push(folder.uri.fsPath);
+    }
+    for (const base of folders) {
+        const candidate = path.join(base, relative);
         if (fs.existsSync(candidate)) {
             return candidate;
         }
     }
-    if (folders.length) {
-        return path.join(folders[0].uri.fsPath, "build", "windows-x64", "src", "dap-dbgeng.exe");
-    }
-    return "dap-dbgeng.exe";
+    return folders.length ? path.join(folders[0], relative) : "dap-dbgeng.exe";
 }
 
 // Spawn `dap-dbgeng --list-processes` and parse its JSON output. Resolves to an
