@@ -1,7 +1,7 @@
 // VS Code extension entry point for the WinDbg (dbgeng) debug adapter.
 //
 // Responsibilities:
-//   1. Launch the adapter executable for "windbg" debug sessions via a
+//   1. Launch the adapter executable for "dbgeng" debug sessions via a
 //      DebugAdapterDescriptorFactory, resolving its path from the
 //      "dap-dbgeng.adapterPath" setting or the bundled binary.
 //   2. Resolve config defaults (sources, and program/cwd from CMake Tools).
@@ -15,7 +15,7 @@ const cp = require("child_process");
 const path = require("path");
 const fs = require("fs");
 
-const DEBUG_TYPE = "windbg";
+const DEBUG_TYPE = "dbgeng";
 const ADAPTER_NOT_FOUND =
     "dap-dbgeng adapter not found. Reinstall the packaged extension (it bundles the adapter), or set the " +
     "'dap-dbgeng.adapterPath' setting (or a launch 'program') to a built dap-dbgeng.exe.";

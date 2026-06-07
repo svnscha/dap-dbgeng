@@ -19,7 +19,7 @@
     "private": true,
     "main": "./extension.js",
     "activationEvents": [
-        "onDebugResolve:windbg"
+        "onDebugResolve:dbgeng"
     ],
     "repository": {
         "type": "git",
@@ -48,7 +48,7 @@
         },
         "debuggers": [
             {
-                "type": "windbg",
+                "type": "dbgeng",
                 "label": "WinDbg Debug",
                 "variables": {
                     "FileBasenameNoExt": "code-debug.getFileBasenameNoExt",
@@ -152,7 +152,7 @@
                 "initialConfigurations": [
                     {
                         "name": "Debug",
-                        "type": "windbg",
+                        "type": "dbgeng",
                         "request": "launch",
                         "program": "${workspaceFolder}/build/windows-x64/myapp.exe"
                     }

@@ -27,7 +27,7 @@ dbgsrv -t tcp:port=5005
 ```json title=".vscode/launch.json"
 {
   "name": "Attach on TARGETPC",
-  "type": "windbg",
+  "type": "dbgeng",
   "request": "attach",
   "processId": 4321,
   "connectionString": "tcp:port=5005,server=TARGETPC"

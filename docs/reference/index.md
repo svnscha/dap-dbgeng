@@ -1,7 +1,7 @@
 # Configuration reference
 
 This section is the precise, lookup-style reference for everything you can put in
-a `windbg` debug configuration in `launch.json`.
+a `dbgeng` debug configuration in `launch.json`.
 
 - **[launch attributes](launch.md)** - options for `"request": "launch"` (start a
   program).
@@ -21,7 +21,7 @@ Every configuration is an object inside the `configurations` array of
   "configurations": [
     {
       "name": "A human-readable name shown in the dropdown",
-      "type": "windbg",
+      "type": "dbgeng",
       "request": "launch",
       "...": "scenario-specific options"
     }
@@ -32,7 +32,7 @@ Every configuration is an object inside the `configurations` array of
 | Field | Meaning |
 | --- | --- |
 | `name` | The label shown in the Run and Debug dropdown. |
-| `type` | Always `windbg` for this adapter. |
+| `type` | Always `dbgeng` for this adapter. |
 | `request` | `launch` or `attach`. Determines which option set applies. |
 
 ## A note on paths and variables

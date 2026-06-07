@@ -6,7 +6,7 @@ Connect to a process **already running** on this machine, by its process ID. Use
 ```json title=".vscode/launch.json"
 {
   "name": "Attach to myapp",
-  "type": "windbg",
+  "type": "dbgeng",
   "request": "attach",
   "processId": 12345
 }

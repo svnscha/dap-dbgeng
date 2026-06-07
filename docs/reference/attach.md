@@ -198,7 +198,7 @@ Omit to record nothing.
 ```json
 {
   "name": "Attach to myapp",
-  "type": "windbg",
+  "type": "dbgeng",
   "request": "attach",
   "processId": "${command:dap-dbgeng.pickProcess}"
 }
@@ -209,7 +209,7 @@ Omit to record nothing.
 ```json
 {
   "name": "Attach on TARGETPC",
-  "type": "windbg",
+  "type": "dbgeng",
   "request": "attach",
   "processId": 4321,
   "connectionString": "tcp:port=5005,server=TARGETPC"
@@ -221,7 +221,7 @@ Omit to record nothing.
 ```json
 {
   "name": "Kernel debug",
-  "type": "windbg",
+  "type": "dbgeng",
   "request": "attach",
   "kernel": true,
   "connectionString": "net:port=50005,key=1.2.3.4"
@@ -233,7 +233,7 @@ Omit to record nothing.
 ```json
 {
   "name": "Open dump",
-  "type": "windbg",
+  "type": "dbgeng",
   "request": "attach",
   "dumpFile": "${workspaceFolder}/crashes/app.dmp"
 }

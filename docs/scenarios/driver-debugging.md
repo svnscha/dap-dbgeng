@@ -33,7 +33,7 @@ bcdedit /dbgsettings net hostip:<HOST-IP> port:50005 key:1.2.3.4
 ```json title=".vscode/launch.json"
 {
   "name": "Debug driver (KDNET)",
-  "type": "windbg",
+  "type": "dbgeng",
   "request": "attach",
   "kernel": true,
   "connectionString": "net:port=50005,key=1.2.3.4"

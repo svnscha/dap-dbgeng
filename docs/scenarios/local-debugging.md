@@ -1,20 +1,29 @@
 # Debug a local program
 
 The debugger **starts** your program and debugs it from launch. Use
-`"request": "launch"`.
+`"request": "launch"`. You can point it at the executable two ways: set `program`
+yourself, or let the **CMake Tools** extension supply it.
+
+## Configure it manually
+
+Set `program` to the executable you want to debug:
 
 ```json title=".vscode/launch.json"
 {
   "name": "Debug myapp",
-  "type": "windbg",
+  "type": "dbgeng",
   "request": "launch",
   "program": "${workspaceFolder}/build/Debug/myapp.exe"
 }
 ```
 
-`program` (the executable to run) is the only required field - that's a complete
-launch configuration. The adapter finds `dbgeng.dll` automatically; set `dbgengPath`
-only to override it.
+`program` is the only required field - that's a complete launch configuration:
+
+- `dbgeng.dll` is found automatically; set `dbgengPath` only to override it.
+- `cwd` (the working directory) defaults to the program's directory.
+- Add `args`, `stopAtEntry`, `sources`, or `symbolPath` as needed.
+
+See **[launch attributes](../reference/launch.md)** for the full list.
 
 ## Using CMake Tools
 
@@ -23,7 +32,7 @@ If you use the **CMake Tools** extension, you can omit `program` entirely:
 ```json title=".vscode/launch.json"
 {
   "name": "Debug (CMake target)",
-  "type": "windbg",
+  "type": "dbgeng",
   "request": "launch"
 }
 ```
@@ -43,7 +52,7 @@ need a `launch.json`: point CMake Tools' own debug command at this adapter by se
 ```json title=".vscode/settings.json"
 {
   "cmake.debugConfig": {
-    "type": "windbg",
+    "type": "dbgeng",
     "request": "launch"
   }
 }
@@ -52,6 +61,3 @@ need a `launch.json`: point CMake Tools' own debug command at this adapter by se
 Now **CMake: Debug** uses this adapter against the selected launch target - CMake
 Tools fills in `program`, `cwd`, and `name` from the target, and any extra keys you
 add to `cmake.debugConfig` (such as `stopAtEntry` or `args`) are passed through.
-
-To pass command-line arguments, set a working directory, or change any other
-behavior, see **[launch attributes](../reference/launch.md)**.

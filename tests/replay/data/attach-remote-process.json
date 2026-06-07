@@ -8,7 +8,7 @@
         "arguments": {
           "clientID": "vscode",
           "clientName": "Visual Studio Code",
-          "adapterID": "windbg",
+          "adapterID": "dbgeng",
           "pathFormat": "path",
           "linesStartAt1": true,
           "columnsStartAt1": true,
@@ -79,7 +79,7 @@
         "command": "attach",
         "arguments": {
           "name": "Debug (Remote Attach)",
-          "type": "windbg",
+          "type": "dbgeng",
           "request": "attach",
           "connectionString": "tcp:port=${dbgsrvPort},server=localhost",
           "dbgengPath": "${dbgEngPath}",

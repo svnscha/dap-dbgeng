@@ -164,7 +164,7 @@ recording is written in the adapter's `{version, messages}` trace format.
   "configurations": [
     {
       "name": "Debug myapp",
-      "type": "windbg",
+      "type": "dbgeng",
       "request": "launch",
       "program": "${workspaceFolder}/build/Debug/myapp.exe",
       "args": "--config dev input.txt",

@@ -42,13 +42,13 @@ Install it from a packaged `.vsix`:
 code --install-extension vscode-dap-dbgeng.vsix
 ```
 
-The extension registers the `windbg` debug type that your `launch.json` uses.
+The extension registers the `dbgeng` debug type that your `launch.json` uses.
 
 ## 3. Create a `launch.json`
 
 In your project, open the **Run and Debug** view (++ctrl+shift+d++) and click
 *create a launch.json file*, or create `.vscode/launch.json` by hand. Use the
-`windbg` type:
+`dbgeng` type:
 
 ```json title=".vscode/launch.json"
 {
@@ -56,7 +56,7 @@ In your project, open the **Run and Debug** view (++ctrl+shift+d++) and click
   "configurations": [
     {
       "name": "Debug my program",
-      "type": "windbg",
+      "type": "dbgeng",
       "request": "launch",
       "program": "${workspaceFolder}/build/Debug/myapp.exe",
       "stopAtEntry": true,
@@ -70,7 +70,7 @@ In your project, open the **Run and Debug** view (++ctrl+shift+d++) and click
 
 What each line means (full details in the [reference](reference/launch.md)):
 
-- **`type`** - always `windbg` for this adapter.
+- **`type`** - always `dbgeng` for this adapter.
 - **`request`** - `launch` to start a new program, or `attach` to connect to one
   that's already running.
 - **`program`** - the executable you want to debug.

@@ -93,7 +93,7 @@ TEST(DapServerLive, LaunchStopsAtEntryAndEnumeratesThreadsAndStack)
     server.handle_request(make_request(2, "launch",
                                        {{"name", "live-launch-test"},
                                         {"request", "launch"},
-                                        {"type", "windbg"},
+                                        {"type", "dbgeng"},
                                         {"program", target},
                                         {"cwd", working},
                                         {"dbgengPath", dbgeng},

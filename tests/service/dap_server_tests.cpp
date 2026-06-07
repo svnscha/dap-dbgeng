@@ -47,7 +47,7 @@ TEST(ServiceDapServer, InitializeRespondsWithCapabilitiesThenInitializedEvent)
         "command": "initialize",
         "arguments": {
             "clientID": "vscode",
-            "adapterID": "windbg",
+            "adapterID": "dbgeng",
             "pathFormat": "path",
             "linesStartAt1": true,
             "columnsStartAt1": true
