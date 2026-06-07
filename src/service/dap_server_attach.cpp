@@ -125,6 +125,13 @@ void dap_server::handle_attach_request(const protocol::AttachRequest &request)
     send_process_event(fmt::format("process {}", *process_id), process_id,
                        protocol::ProcessEventBodyStartMethod::Attach);
     is_execution_running_.store(false);
-    send_stopped_event(protocol::StoppedEventBodyReason::Pause, "Paused after attach.");
+
+    // Only surface the stop when stopAtEntry is set (the default for attach).
+    // Otherwise the target stays halted at the attach break so breakpoints can be
+    // set, and configurationDone resumes it without a visible stop.
+    if (stop_at_entry)
+    {
+        send_stopped_event(protocol::StoppedEventBodyReason::Pause, "Paused after attach.");
+    }
 }
 } // namespace dap_dbgeng::service

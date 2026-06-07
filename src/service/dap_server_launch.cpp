@@ -64,6 +64,13 @@ void dap_server::handle_launch_request(const protocol::LaunchRequest &request)
     send_response(request.seq, request.command, protocol::LaunchResponse{});
     send_process_event(*executable_path, std::nullopt, protocol::ProcessEventBodyStartMethod::Launch);
     is_execution_running_.store(false);
-    send_stopped_event(protocol::StoppedEventBodyReason::Entry, "Paused at process entry.");
+
+    // Only surface the entry stop when stopAtEntry is set. Otherwise the target
+    // stays halted at the engine's initial break (so breakpoints can be set) and
+    // configurationDone resumes it without the user ever seeing an entry stop.
+    if (stop_at_entry)
+    {
+        send_stopped_event(protocol::StoppedEventBodyReason::Entry, "Paused at process entry.");
+    }
 }
 } // namespace dap_dbgeng::service

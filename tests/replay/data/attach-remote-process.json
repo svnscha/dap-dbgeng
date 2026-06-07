@@ -104,7 +104,7 @@
       "message": {
         "body": {
           "category": "console",
-          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource search path is: ${workspaceFolder}\\test-targets\\testapp\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\\test-targets\\testapp\n\n************* Preparing the environment for Debugger Extensions Gallery repositories **************\n   ExtensionRepository : Implicit\n   UseExperimentalFeatureForNugetShare : true\n   AllowNugetExeUpdate : true\n   NonInteractiveNuget : true\n   AllowNugetMSCredentialProviderInstall : true\n   AllowParallelInitializationOfLocalRepositories : true\n\n   EnableRedirectToV8JsProvider : false\n\n   -- Configuring repositories\n      ----\u003E Repository : LocalInstalled, Enabled: true\n      ----\u003E Repository : UserExtensions, Enabled: true\n\n\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds\n\n************* Waiting for Debugger Extensions Gallery to Initialize **************\n\n\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E\u003E Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds\n   ----\u003E Repository : UserExtensions, Enabled: true, Packages count: 0\n   ----\u003E Repository : LocalInstalled, Enabled: true, Packages count: 29\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.6584 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\n*** wait with pending attach\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nSymbol search path is: ${workspaceFolder}/build/windows-x64/test-targets\nExecutable search path is: \nModLoad: 00007ff6\u00607df70000 00007ff6\u00607df86000   ${workspaceFolder}\\build\\windows-x64\\test-targets\\test_attach.exe\n"
+          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource search path is: ${workspaceFolder}\\test-targets\\testapp\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\\test-targets\\testapp\n\n************* Preparing the environment for Debugger Extensions Gallery repositories **************\n   ExtensionRepository : Implicit\n   UseExperimentalFeatureForNugetShare : true\n   AllowNugetExeUpdate : true\n   NonInteractiveNuget : true\n   AllowNugetMSCredentialProviderInstall : true\n   AllowParallelInitializationOfLocalRepositories : true\n\n   EnableRedirectToV8JsProvider : false\n\n   -- Configuring repositories\n      ----> Repository : LocalInstalled, Enabled: true\n      ----> Repository : UserExtensions, Enabled: true\n\n>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds\n\n************* Waiting for Debugger Extensions Gallery to Initialize **************\n\n>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds\n   ----> Repository : UserExtensions, Enabled: true, Packages count: 0\n   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.6584 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\n*** wait with pending attach\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nSymbol search path is: ${workspaceFolder}/build/windows-x64/test-targets\nExecutable search path is: \nModLoad: 00007ff6`7df70000 00007ff6`7df86000   ${workspaceFolder}\\build\\windows-x64\\test-targets\\test_attach.exe\n"
         },
         "event": "output",
         "seq": 43,
@@ -132,20 +132,6 @@
         },
         "event": "process",
         "seq": 45,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "reason": "pause",
-          "description": "Paused after attach.",
-          "threadId": 8808,
-          "allThreadsStopped": true
-        },
-        "event": "stopped",
-        "seq": 46,
         "type": "event"
       }
     },
@@ -225,7 +211,7 @@
           "breakpoints": [
             {
               "verified": false,
-              "message": "Unable to resolve breakpoint at \u0027${workspaceFolder}\\test-targets\\testapp\\main.cpp:8\u0027.",
+              "message": "Unable to resolve breakpoint at '${workspaceFolder}\\test-targets\\testapp\\main.cpp:8'.",
               "source": {
                 "name": "main.cpp",
                 "path": "${workspaceFolder}\\test-targets\\testapp\\main.cpp"
@@ -316,7 +302,7 @@
       "message": {
         "body": {
           "category": "console",
-          "output": "ModLoad: 00007fff\u006061660000 00007fff\u0060618c7000   C:\\WINDOWS\\SYSTEM32\\ntdll.dll\nModLoad: 00007fff\u006060eb0000 00007fff\u006060f79000   C:\\WINDOWS\\System32\\KERNEL32.DLL\nModLoad: 00007fff\u00605edb0000 00007fff\u00605f1a7000   C:\\WINDOWS\\System32\\KERNELBASE.dll\nModLoad: 00007fff\u006033440000 00007fff\u006033521000   C:\\WINDOWS\\SYSTEM32\\MSVCP140D.dll\nModLoad: 00007fff\u006044f10000 00007fff\u006044f1f000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140_1D.dll\nModLoad: 00007fff\u0060442c0000 00007fff\u0060442f0000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140D.dll\nModLoad: 00007ffe\u0060e3b50000 00007ffe\u0060e3d54000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\nModLoad: 00007ffe\u0060fabb0000 00007ffe\u0060fad4d000   C:\\Program Files (x86)\\Citrix\\ICA Client\\ctxapclient64.dll\nModLoad: 00007fff\u006060870000 00007fff\u006060a36000   C:\\WINDOWS\\System32\\USER32.dll\nModLoad: 00007fff\u00605f300000 00007fff\u00605f327000   C:\\WINDOWS\\System32\\win32u.dll\nModLoad: 00007fff\u00605f4b0000 00007fff\u00605f4db000   C:\\WINDOWS\\System32\\GDI32.dll\nModLoad: 00007fff\u00605e350000 00007fff\u00605e47c000   C:\\WINDOWS\\System32\\gdi32full.dll\nModLoad: 00007fff\u00605f330000 00007fff\u00605f3d3000   C:\\WINDOWS\\System32\\msvcp_win.dll\nModLoad: 00007fff\u00605f1b0000 00007fff\u00605f2fb000   C:\\WINDOWS\\System32\\ucrtbase.dll\nModLoad: 00007fff\u00605f890000 00007fff\u00605fc13000   C:\\WINDOWS\\System32\\combase.dll\nModLoad: 00007fff\u006060f80000 00007fff\u006061098000   C:\\WINDOWS\\System32\\RPCRT4.dll\nModLoad: 00007fff\u00605df80000 00007fff\u00605dfaa000   C:\\WINDOWS\\SYSTEM32\\bcrypt.dll\nModLoad: 00007fff\u006061310000 00007fff\u0060613b7000   C:\\WINDOWS\\System32\\sechost.dll\nModLoad: 00007fff\u006056d00000 00007fff\u006056d0b000   C:\\WINDOWS\\SYSTEM32\\VERSION.dll\nModLoad: 00007fff\u0060611a0000 00007fff\u006061249000   C:\\WINDOWS\\System32\\msvcrt.dll\nModLoad: 00007fff\u00605f470000 00007fff\u00605f4a2000   C:\\WINDOWS\\System32\\IMM32.DLL\nModLoad: 00007fff\u006061250000 00007fff\u006061306000   C:\\WINDOWS\\System32\\ADVAPI32.dll\nModLoad: 00007fff\u00605d020000 00007fff\u00605d056000   C:\\WINDOWS\\SYSTEM32\\ntmarta.dll\nModLoad: 00007fff\u00605e2a0000 00007fff\u00605e348000   C:\\WINDOWS\\System32\\bcryptprimitives.dll\nBreakpoint 0 hit\n"
+          "output": "ModLoad: 00007fff`61660000 00007fff`618c7000   C:\\WINDOWS\\SYSTEM32\\ntdll.dll\nModLoad: 00007fff`60eb0000 00007fff`60f79000   C:\\WINDOWS\\System32\\KERNEL32.DLL\nModLoad: 00007fff`5edb0000 00007fff`5f1a7000   C:\\WINDOWS\\System32\\KERNELBASE.dll\nModLoad: 00007fff`33440000 00007fff`33521000   C:\\WINDOWS\\SYSTEM32\\MSVCP140D.dll\nModLoad: 00007fff`44f10000 00007fff`44f1f000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140_1D.dll\nModLoad: 00007fff`442c0000 00007fff`442f0000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140D.dll\nModLoad: 00007ffe`e3b50000 00007ffe`e3d54000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\nModLoad: 00007ffe`fabb0000 00007ffe`fad4d000   C:\\Program Files (x86)\\Citrix\\ICA Client\\ctxapclient64.dll\nModLoad: 00007fff`60870000 00007fff`60a36000   C:\\WINDOWS\\System32\\USER32.dll\nModLoad: 00007fff`5f300000 00007fff`5f327000   C:\\WINDOWS\\System32\\win32u.dll\nModLoad: 00007fff`5f4b0000 00007fff`5f4db000   C:\\WINDOWS\\System32\\GDI32.dll\nModLoad: 00007fff`5e350000 00007fff`5e47c000   C:\\WINDOWS\\System32\\gdi32full.dll\nModLoad: 00007fff`5f330000 00007fff`5f3d3000   C:\\WINDOWS\\System32\\msvcp_win.dll\nModLoad: 00007fff`5f1b0000 00007fff`5f2fb000   C:\\WINDOWS\\System32\\ucrtbase.dll\nModLoad: 00007fff`5f890000 00007fff`5fc13000   C:\\WINDOWS\\System32\\combase.dll\nModLoad: 00007fff`60f80000 00007fff`61098000   C:\\WINDOWS\\System32\\RPCRT4.dll\nModLoad: 00007fff`5df80000 00007fff`5dfaa000   C:\\WINDOWS\\SYSTEM32\\bcrypt.dll\nModLoad: 00007fff`61310000 00007fff`613b7000   C:\\WINDOWS\\System32\\sechost.dll\nModLoad: 00007fff`56d00000 00007fff`56d0b000   C:\\WINDOWS\\SYSTEM32\\VERSION.dll\nModLoad: 00007fff`611a0000 00007fff`61249000   C:\\WINDOWS\\System32\\msvcrt.dll\nModLoad: 00007fff`5f470000 00007fff`5f4a2000   C:\\WINDOWS\\System32\\IMM32.DLL\nModLoad: 00007fff`61250000 00007fff`61306000   C:\\WINDOWS\\System32\\ADVAPI32.dll\nModLoad: 00007fff`5d020000 00007fff`5d056000   C:\\WINDOWS\\SYSTEM32\\ntmarta.dll\nModLoad: 00007fff`5e2a0000 00007fff`5e348000   C:\\WINDOWS\\System32\\bcryptprimitives.dll\nBreakpoint 0 hit\n"
         },
         "event": "output",
         "seq": 76,
@@ -371,7 +357,7 @@
           "stackFrames": [
             {
               "id": 115135201,
-              "name": "test_attach!main\u002B0x32",
+              "name": "test_attach!main+0x32",
               "source": {
                 "name": "attach.cpp",
                 "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
@@ -478,7 +464,7 @@
           "stackFrames": [
             {
               "id": 115135201,
-              "name": "test_attach!main\u002B0x32",
+              "name": "test_attach!main+0x32",
               "source": {
                 "name": "attach.cpp",
                 "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
@@ -596,7 +582,7 @@
           "stackFrames": [
             {
               "id": 1375772234,
-              "name": "test_attach!invoke_main\u002B0x39",
+              "name": "test_attach!invoke_main+0x39",
               "source": {
                 "name": "exe_common.inl",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
@@ -607,7 +593,7 @@
             },
             {
               "id": 1547207189,
-              "name": "test_attach!__scrt_common_main_seh\u002B0x132",
+              "name": "test_attach!__scrt_common_main_seh+0x132",
               "source": {
                 "name": "exe_common.inl",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
@@ -618,7 +604,7 @@
             },
             {
               "id": 1688788683,
-              "name": "test_attach!__scrt_common_main\u002B0xe",
+              "name": "test_attach!__scrt_common_main+0xe",
               "source": {
                 "name": "exe_common.inl",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
@@ -629,7 +615,7 @@
             },
             {
               "id": 700769586,
-              "name": "test_attach!mainCRTStartup\u002B0xe",
+              "name": "test_attach!mainCRTStartup+0xe",
               "source": {
                 "name": "exe_main.cpp",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
@@ -640,14 +626,14 @@
             },
             {
               "id": 1621446745,
-              "name": "KERNEL32!BaseThreadInitThunk\u002B0x17",
+              "name": "KERNEL32!BaseThreadInitThunk+0x17",
               "line": 0,
               "column": 0,
               "instructionPointerReference": "0x7FFF60EDE957"
             },
             {
               "id": 792043409,
-              "name": "ntdll!RtlUserThreadStart\u002B0x2c",
+              "name": "ntdll!RtlUserThreadStart+0x2c",
               "line": 0,
               "column": 0,
               "instructionPointerReference": "0x7FFF6166427C"
@@ -686,7 +672,7 @@
             },
             {
               "name": "argv",
-              "value": "0x00000218\u006039f7f1d0",
+              "value": "0x00000218`39f7f1d0",
               "evaluateName": "argv",
               "variablesReference": 0
             }
@@ -818,7 +804,7 @@
           "stackFrames": [
             {
               "id": 115135201,
-              "name": "test_attach!main\u002B0x32",
+              "name": "test_attach!main+0x32",
               "source": {
                 "name": "attach.cpp",
                 "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
@@ -906,7 +892,7 @@
             },
             {
               "name": "argv",
-              "value": "0x00000218\u006039f7f1d0",
+              "value": "0x00000218`39f7f1d0",
               "evaluateName": "argv",
               "variablesReference": 0
             }
@@ -939,7 +925,7 @@
           "stackFrames": [
             {
               "id": 1375772234,
-              "name": "test_attach!invoke_main\u002B0x39",
+              "name": "test_attach!invoke_main+0x39",
               "source": {
                 "name": "exe_common.inl",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
@@ -950,7 +936,7 @@
             },
             {
               "id": 1547207189,
-              "name": "test_attach!__scrt_common_main_seh\u002B0x132",
+              "name": "test_attach!__scrt_common_main_seh+0x132",
               "source": {
                 "name": "exe_common.inl",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
@@ -961,7 +947,7 @@
             },
             {
               "id": 1688788683,
-              "name": "test_attach!__scrt_common_main\u002B0xe",
+              "name": "test_attach!__scrt_common_main+0xe",
               "source": {
                 "name": "exe_common.inl",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
@@ -972,7 +958,7 @@
             },
             {
               "id": 700769586,
-              "name": "test_attach!mainCRTStartup\u002B0xe",
+              "name": "test_attach!mainCRTStartup+0xe",
               "source": {
                 "name": "exe_main.cpp",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
@@ -983,14 +969,14 @@
             },
             {
               "id": 1621446745,
-              "name": "KERNEL32!BaseThreadInitThunk\u002B0x17",
+              "name": "KERNEL32!BaseThreadInitThunk+0x17",
               "line": 0,
               "column": 0,
               "instructionPointerReference": "0x7FFF60EDE957"
             },
             {
               "id": 792043409,
-              "name": "ntdll!RtlUserThreadStart\u002B0x2c",
+              "name": "ntdll!RtlUserThreadStart+0x2c",
               "line": 0,
               "column": 0,
               "instructionPointerReference": "0x7FFF6166427C"
@@ -1132,7 +1118,7 @@
           "stackFrames": [
             {
               "id": 115135201,
-              "name": "test_attach!main\u002B0x32",
+              "name": "test_attach!main+0x32",
               "source": {
                 "name": "attach.cpp",
                 "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
@@ -1220,7 +1206,7 @@
             },
             {
               "name": "argv",
-              "value": "0x00000218\u006039f7f1d0",
+              "value": "0x00000218`39f7f1d0",
               "evaluateName": "argv",
               "variablesReference": 0
             }
@@ -1253,7 +1239,7 @@
           "stackFrames": [
             {
               "id": 1375772234,
-              "name": "test_attach!invoke_main\u002B0x39",
+              "name": "test_attach!invoke_main+0x39",
               "source": {
                 "name": "exe_common.inl",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
@@ -1264,7 +1250,7 @@
             },
             {
               "id": 1547207189,
-              "name": "test_attach!__scrt_common_main_seh\u002B0x132",
+              "name": "test_attach!__scrt_common_main_seh+0x132",
               "source": {
                 "name": "exe_common.inl",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
@@ -1275,7 +1261,7 @@
             },
             {
               "id": 1688788683,
-              "name": "test_attach!__scrt_common_main\u002B0xe",
+              "name": "test_attach!__scrt_common_main+0xe",
               "source": {
                 "name": "exe_common.inl",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
@@ -1286,7 +1272,7 @@
             },
             {
               "id": 700769586,
-              "name": "test_attach!mainCRTStartup\u002B0xe",
+              "name": "test_attach!mainCRTStartup+0xe",
               "source": {
                 "name": "exe_main.cpp",
                 "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
@@ -1297,14 +1283,14 @@
             },
             {
               "id": 1621446745,
-              "name": "KERNEL32!BaseThreadInitThunk\u002B0x17",
+              "name": "KERNEL32!BaseThreadInitThunk+0x17",
               "line": 0,
               "column": 0,
               "instructionPointerReference": "0x7FFF60EDE957"
             },
             {
               "id": 792043409,
-              "name": "ntdll!RtlUserThreadStart\u002B0x2c",
+              "name": "ntdll!RtlUserThreadStart+0x2c",
               "line": 0,
               "column": 0,
               "instructionPointerReference": "0x7FFF6166427C"

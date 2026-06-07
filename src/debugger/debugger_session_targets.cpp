@@ -115,29 +115,21 @@ std::vector<process_info> debugger_session::list_processes()
     std::vector<process_info> result;
     result.reserve(ids.size());
     std::vector<char> exe_name(kSymbolBufferBytes);
-    std::vector<char> description(kSymbolBufferBytes);
     for (const ULONG id : ids)
     {
         process_info info;
         info.system_id = id;
 
+        // NO_PATHS yields just the image basename; we deliberately ignore the
+        // verbose description (command line, services, session) so the remote
+        // picker matches the local one: name + pid only.
         ULONG exe_size = 0;
-        ULONG description_size = 0;
-        if (SUCCEEDED(client_->GetRunningProcessDescription(process_server_handle_, id, DEBUG_PROC_DESC_DEFAULT,
+        if (SUCCEEDED(client_->GetRunningProcessDescription(process_server_handle_, id, DEBUG_PROC_DESC_NO_PATHS,
                                                             exe_name.data(), static_cast<ULONG>(exe_name.size()),
-                                                            &exe_size, description.data(),
-                                                            static_cast<ULONG>(description.size()), &description_size)))
+                                                            &exe_size, nullptr, 0, nullptr)) &&
+            exe_size > 1)
         {
-            // The engine writes null-terminated strings; sizes include the
-            // terminator (1 means empty).
-            if (exe_size > 1)
-            {
-                info.name = std::string(exe_name.data());
-            }
-            if (description_size > 1)
-            {
-                info.description = std::string(description.data());
-            }
+            info.name = std::string(exe_name.data());
         }
         result.push_back(std::move(info));
     }

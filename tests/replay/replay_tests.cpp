@@ -115,12 +115,21 @@ TEST(Replay, BasicDebugSession)
     ASSERT_NE(process, nullptr);
     EXPECT_EQ("launch", process->at("body").value("startMethod", std::string{}));
 
+    // stopAtEntry is false in this fixture, so the adapter must not surface an
+    // entry stop; the session stops on its breakpoint instead.
     const bool entry_stop =
         std::any_of(replay.non_output.begin(), replay.non_output.end(), [](const nlohmann::json &m) {
             return is_event(m, "stopped") && m.contains("body") &&
                    m.at("body").value("reason", std::string{}) == "entry";
         });
-    EXPECT_TRUE(entry_stop) << "Expected a stopped event with reason 'entry'.";
+    EXPECT_FALSE(entry_stop) << "stopAtEntry is false; expected no 'entry' stop.";
+
+    const bool breakpoint_stop =
+        std::any_of(replay.non_output.begin(), replay.non_output.end(), [](const nlohmann::json &m) {
+            return is_event(m, "stopped") && m.contains("body") &&
+                   m.at("body").value("reason", std::string{}) == "breakpoint";
+        });
+    EXPECT_TRUE(breakpoint_stop) << "Expected a stopped event with reason 'breakpoint'.";
 
     const bool stack_frames =
         std::any_of(replay.non_output.begin(), replay.non_output.end(), [](const nlohmann::json &m) {

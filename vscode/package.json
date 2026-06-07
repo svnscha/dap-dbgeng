@@ -77,8 +77,7 @@
                             },
                             "workingDir": {
                                 "type": "string",
-                                "description": "Working directory for the launched process. Defaults to the target's directory when omitted.",
-                                "default": "${workspaceRoot}"
+                                "description": "Working directory for the launched process. Defaults to the target executable's directory when omitted."
                             },
                             "sources": {
                                 "type": "array",
