@@ -1,6 +1,6 @@
 # dap-dbgeng
 
-[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/svnscha.vscode-dap-dbgeng?label=VS%20Marketplace&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=svnscha.vscode-dap-dbgeng)
+[![VS Marketplace](https://vsmarketplacebadges.dev/version/svnscha.vscode-dap-dbgeng.svg)](https://marketplace.visualstudio.com/items?itemName=svnscha.vscode-dap-dbgeng)
 [![CI](https://github.com/svnscha/dap-dbgeng/actions/workflows/ci.yml/badge.svg)](https://github.com/svnscha/dap-dbgeng/actions/workflows/ci.yml)
 [![Docs](https://github.com/svnscha/dap-dbgeng/actions/workflows/pages.yml/badge.svg)](https://svnscha.github.io/dap-dbgeng/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
