@@ -1,5 +1,6 @@
 # dap-dbgeng
 
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/svnscha.vscode-dap-dbgeng?label=VS%20Marketplace&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=svnscha.vscode-dap-dbgeng)
 [![CI](https://github.com/svnscha/dap-dbgeng/actions/workflows/ci.yml/badge.svg)](https://github.com/svnscha/dap-dbgeng/actions/workflows/ci.yml)
 [![Docs](https://github.com/svnscha/dap-dbgeng/actions/workflows/pages.yml/badge.svg)](https://svnscha.github.io/dap-dbgeng/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -109,6 +110,13 @@ pwsh scripts/Format.ps1 -Path src
 Bugs and feature requests go through the
 [issue tracker](https://github.com/svnscha/dap-dbgeng/issues/new/choose) (templates guide what to
 include). For code changes, run `npm run check` and see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Links
+
+- [Install from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=svnscha.vscode-dap-dbgeng)
+- Deep dive: [Native Windows kernel and remote debugging in VS Code](https://svnscha.de/posts/native-windows-kernel-remote-debugging-vscode/)
+- Discussion: [r/vscode on Reddit](https://www.reddit.com/r/vscode/comments/1tzsk5b/new_extension_native_windows_debugging_dbgeng/)
+- Announcement: [on LinkedIn](https://www.linkedin.com/posts/svnscha_native-windows-debugging-in-vs-code-cc-share-7469537648555159552-Fubb/)
 
 ## License
 
