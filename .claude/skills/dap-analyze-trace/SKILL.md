@@ -1,6 +1,6 @@
 ---
 name: dap-analyze-trace
-description: "Use when: analyzing a recorded dap-dbgeng trace, formatting the DAP request/response/event flow first, investigating a user-described live debugging bug, making a focused code fix or asking for missing reproduction details, and only after the user confirms the live retest succeeded, turning the fresh trace into an automated replay back-test under tests/replay."
+description: Use when analyzing a recorded dap-dbgeng session trace or investigating a live debugging bug from its DAP request/response/event flow.
 ---
 
 # DAP Analyze Trace

@@ -1,6 +1,6 @@
 ---
 name: dap-request-coverage
-description: "Use when: validating DAP request-handler coverage for any DAP request, using the session replay tests as the source of truth, checking which requests have recorded fixtures via the request matrix, finding uncovered request behavior, or deciding whether a gap needs a new recorded session, a helper unit test, or is dead code."
+description: Use when validating or improving test coverage for a DAP request handler, using the session replay tests and request matrix as the source of truth.
 ---
 
 # DAP Request Coverage

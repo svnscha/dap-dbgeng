@@ -1,6 +1,6 @@
 ---
 name: dap-request-review
-description: "Use when: reviewing or refactoring any DAP request handler, validating parse-first ordering, enforcing typed argument extraction over raw nlohmann::json, checking canonical option names with no alias fallbacks, or confirming that session/server state changes happen only after validated parsing."
+description: Use when reviewing or refactoring a DAP request handler for parse-first ordering, typed argument extraction, and validated state changes.
 ---
 
 # DAP Request Review
