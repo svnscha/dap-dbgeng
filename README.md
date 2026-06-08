@@ -12,12 +12,6 @@ backed by the Windows debug engine (`dbgeng` / `dbghelp`). It lets DAP clients s
 debug native Windows user-mode processes (launch, attach, remote attach) and kernel targets.
 C++20, CMake + Ninja, vcpkg manifest mode. Windows-only.
 
-## Demos
-
-| Remote process | Kernel driver | Local program |
-| --- | --- | --- |
-| [![Debug a remote process](https://img.youtube.com/vi/_YUhyKK2PlI/hqdefault.jpg)](https://www.youtube.com/watch?v=_YUhyKK2PlI) | [![Debug a Windows driver](https://img.youtube.com/vi/m1E5AsglKiQ/hqdefault.jpg)](https://www.youtube.com/watch?v=m1E5AsglKiQ) | [![Debug a local program](https://img.youtube.com/vi/FLM9hPu4xfQ/hqdefault.jpg)](https://www.youtube.com/watch?v=FLM9hPu4xfQ) |
-
 ## Highlights
 
 - **Launch, attach, remote (`dbgsrv`), and kernel** debugging through one adapter.
@@ -108,6 +102,12 @@ pwsh scripts/Format.ps1 -Path src
 Bugs and feature requests go through the
 [issue tracker](https://github.com/svnscha/dap-dbgeng/issues/new/choose) (templates guide what to
 include). For code changes, run `npm run check` and see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Demos
+
+| Remote process | Kernel driver | Local program |
+| --- | --- | --- |
+| [![Debug a remote process](https://img.youtube.com/vi/_YUhyKK2PlI/hqdefault.jpg)](https://www.youtube.com/watch?v=_YUhyKK2PlI) | [![Debug a Windows driver](https://img.youtube.com/vi/m1E5AsglKiQ/hqdefault.jpg)](https://www.youtube.com/watch?v=m1E5AsglKiQ) | [![Debug a local program](https://img.youtube.com/vi/FLM9hPu4xfQ/hqdefault.jpg)](https://www.youtube.com/watch?v=FLM9hPu4xfQ) |
 
 ## Links
 
