@@ -36,7 +36,7 @@ jobs:
       # Hosted runners cannot do live cross-process attach; skip those replay tests.
       DAP_DBGENG_SKIP_LIVE_ATTACH: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Point VCPKG_ROOT at the preinstalled vcpkg
         shell: pwsh
@@ -44,7 +44,7 @@ jobs:
 
       # Expose the GitHub Actions cache endpoint to vcpkg's x-gha binary cache.
       - name: Enable vcpkg binary caching
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
