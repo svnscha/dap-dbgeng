@@ -308,6 +308,62 @@ std::vector<variable_node> debugger_session::get_locals_tree(std::uint32_t frame
     return roots;
 }
 
+variable_node debugger_session::set_local_value(std::uint32_t frame_number, const std::string &expression,
+                                                const std::string &value)
+{
+    throw_if_disposed();
+
+    // Scope to the frame, then add the target expression as a symbol in the scope
+    // group and write its value with the engine's own type-aware text assignment
+    // (the same path WinDbg's Locals editor uses). No expression-command string.
+    execute_command_with_output(fmt::format(".frame {}", frame_number), /*suppress_output_events=*/true);
+
+    IDebugSymbolGroup2 *group = nullptr;
+    {
+        PDEBUG_SYMBOL_GROUP base_group = nullptr;
+        const HRESULT hr = symbols_->GetScopeSymbolGroup(kDebugScopeGroupAll, nullptr, &base_group);
+        if (FAILED(hr) || base_group == nullptr)
+        {
+            throw std::runtime_error("Could not open the scope symbol group to assign a variable.");
+        }
+        const HRESULT qi = base_group->QueryInterface(__uuidof(IDebugSymbolGroup2), reinterpret_cast<PVOID *>(&group));
+        base_group->Release();
+        if (FAILED(qi) || group == nullptr)
+        {
+            throw std::runtime_error("Could not access the scope symbol group to assign a variable.");
+        }
+    }
+
+    struct group_releaser
+    {
+        IDebugSymbolGroup2 *g;
+        ~group_releaser()
+        {
+            g->Release();
+        }
+    } releaser{group};
+
+    ULONG index = DEBUG_ANY_ID;
+    if (FAILED(group->AddSymbol(expression.c_str(), &index)) || index == DEBUG_ANY_ID)
+    {
+        throw std::runtime_error(fmt::format("Could not resolve '{}' in the current frame.", expression));
+    }
+    check_hr(group->WriteSymbol(index, value.c_str()), fmt::format("Could not assign '{}' to '{}'", value, expression));
+
+    variable_node node;
+    // Display name is the trailing path segment (after the last '.' or ']').
+    const std::size_t separator = expression.find_last_of(".]");
+    node.name = separator == std::string::npos ? expression : expression.substr(separator + 1);
+    node.value = normalize_value_text(read_symbol_value(group, index));
+    node.type = read_symbol_type(group, index);
+    DEBUG_SYMBOL_PARAMETERS params{};
+    if (SUCCEEDED(group->GetSymbolParameters(index, 1, &params)))
+    {
+        node.is_expandable = params.SubElements != 0;
+    }
+    return node;
+}
+
 std::vector<named_value_info> debugger_session::get_registers(std::uint32_t frame_number)
 {
     throw_if_disposed();

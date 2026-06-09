@@ -292,6 +292,42 @@ TEST(Replay, LaunchExpandsNestedStructLocals)
     EXPECT_TRUE(leaf_scalar_path) << "Expected the scalar field 't.id' to be a non-expandable leaf.";
 }
 
+TEST(Replay, LaunchSetsStructFieldsViaSetVariable)
+{
+    REPLAY_OR_SKIP(replay, "struct-setVariable.json");
+    assert_positive_launch_replay(replay);
+
+    // The session assigns two nested struct fields - origin.x = 20 and t.id = 43.
+    // The setVariable response echoes the engine's read-back, so the assigned
+    // int values must come back over the wire.
+    std::size_t set_variable_responses = 0;
+    bool wrote_20 = false;
+    bool wrote_43 = false;
+    for (const auto &m : replay.non_output)
+    {
+        if (!is_response(m, "setVariable") || !m.value("success", false) || !m.contains("body"))
+        {
+            continue;
+        }
+        ++set_variable_responses;
+        const auto &body = m.at("body");
+        const std::string value = body.value("value", std::string{});
+        const std::string type = body.value("type", std::string{});
+        if (value == "20" && type == "int")
+        {
+            wrote_20 = true;
+        }
+        if (value == "43" && type == "int")
+        {
+            wrote_43 = true;
+        }
+    }
+
+    EXPECT_EQ(2u, set_variable_responses) << "Expected two successful struct-field assignments.";
+    EXPECT_TRUE(wrote_20) << "Expected the nested field assignment to read back as int 20.";
+    EXPECT_TRUE(wrote_43) << "Expected the struct field assignment to read back as int 43.";
+}
+
 TEST(Replay, ThreadsRequestDuringRecordedExit)
 {
     REPLAY_OR_SKIP(replay, "threads-after-exit.json");

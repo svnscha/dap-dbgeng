@@ -240,6 +240,12 @@ class dap_server : public protocol::dap_service
     // structs expand. evaluate_name is the full access path (e.g. "t.origin.x").
     protocol::Variable build_variable_tree(const debugger::variable_node &node, const frame_context &context,
                                            const std::string &parent_evaluate_name);
+    // Assigns one field of a struct-kind variable container by its full access
+    // path (the child's evaluate_name), via the debugger's native symbol-group
+    // write, then refreshes that child in the cached container.
+    void handle_set_struct_field(const protocol::SetVariableRequest &request,
+                                 const variable_container_context &container, int variables_reference,
+                                 const std::string &name, const std::string &value);
     static protocol::Scope create_scope(const std::string &name, protocol::ScopePresentationHint presentation_hint,
                                         int variables_reference, int named_variables,
                                         const std::optional<debugger::source_location> &source);

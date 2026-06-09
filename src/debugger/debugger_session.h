@@ -82,6 +82,11 @@ class debugger_session
     // depth and node-count cap). Used by the scopes/variables handlers to render
     // expandable locals; get_locals stays the flat form used by setVariable.
     std::vector<variable_node> get_locals_tree(std::uint32_t frame_number);
+    // Assigns a local or a nested struct field, named by its in-scope expression
+    // (e.g. "t.origin.x"), through the engine's symbol group - the native write
+    // counterpart of get_locals_tree's reads. Returns the field's refreshed
+    // value/type. Throws if the expression cannot be resolved or assigned.
+    variable_node set_local_value(std::uint32_t frame_number, const std::string &expression, const std::string &value);
     std::vector<named_value_info> get_registers(std::uint32_t frame_number);
     std::optional<source_location> try_get_frame_source(std::uint64_t instruction_offset);
 

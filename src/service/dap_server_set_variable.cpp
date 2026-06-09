@@ -46,14 +46,12 @@ void dap_server::handle_set_variable_request(const protocol::SetVariableRequest 
 
     variable_container_context container = container_it->second;
 
-    // Editing a nested struct field would need a path-based assignment
-    // (evaluate_name) and a subtree refresh; that is a follow-up. Top-level locals
-    // and registers still edit normally.
+    // A struct-field container assigns through the symbol group by the field's full
+    // access path (e.g. "t.origin.x"), which the engine resolves and writes with
+    // type awareness - distinct from the top-level locals/registers path below.
     if (container.kind == variable_container_kind::structure)
     {
-        send_error_response(request.seq, request.command,
-                            "Editing struct fields is not supported yet. Only top-level locals and registers can be "
-                            "changed.");
+        handle_set_struct_field(request, container, variables_reference, name, value);
         return;
     }
 
@@ -169,6 +167,87 @@ void dap_server::handle_set_variable_request(const protocol::SetVariableRequest 
         response.body.indexed_variables = variable.indexed_variables;
         response.body.memory_reference = variable.memory_reference;
         response.body.value_location_reference = variable.value_location_reference;
+        send_response(request.seq, request.command, std::move(response));
+    }
+    catch (const std::exception &exception)
+    {
+        send_error_response(request.seq, request.command,
+                            util::debugger_session_dispatcher::unwrap_failure_message(exception, exception.what()));
+    }
+}
+
+void dap_server::handle_set_struct_field(const protocol::SetVariableRequest &request,
+                                         const variable_container_context &container, int variables_reference,
+                                         const std::string &name, const std::string &value)
+{
+    // The cached child carries the field's full access path in evaluate_name; that
+    // is what the engine resolves and writes (e.g. "t.origin.x").
+    const protocol::Variable *child = nullptr;
+    for (const auto &variable : container.variables)
+    {
+        if (variable.name == name)
+        {
+            child = &variable;
+            break;
+        }
+    }
+    if (child == nullptr)
+    {
+        send_error_response(request.seq, request.command,
+                            fmt::format("Variable '{}' was not found in this struct.", name));
+        return;
+    }
+    const std::string expression = child->evaluate_name.value_or(name);
+
+    try
+    {
+        debugger::debugger_session &session = require_debugger_session();
+        // Write + read-back on the dispatcher thread, restoring the original thread.
+        std::pair<variable_container_context, protocol::Variable> assignment = dispatcher_.invoke([&]() {
+            const std::uint32_t original_thread_id = session.get_current_thread_id();
+            try
+            {
+                session.set_current_thread(static_cast<std::uint32_t>(container.thread_id));
+                const debugger::variable_node updated =
+                    session.set_local_value(container.frame_number, expression, value);
+
+                // Refresh only the edited child in the cached container; its
+                // variablesReference (and any child container) stays valid.
+                variable_container_context updated_container = container;
+                protocol::Variable result;
+                for (auto &variable : updated_container.variables)
+                {
+                    if (variable.name == name)
+                    {
+                        variable.value = updated.value;
+                        if (!updated.type.empty())
+                        {
+                            variable.type = updated.type;
+                        }
+                        result = variable;
+                        break;
+                    }
+                }
+                session.set_current_thread(original_thread_id);
+                return std::make_pair(std::move(updated_container), result);
+            }
+            catch (...)
+            {
+                session.set_current_thread(original_thread_id);
+                throw;
+            }
+        });
+
+        variables_by_reference_[variables_reference] = assignment.first;
+
+        protocol::SetVariableResponse response;
+        const protocol::Variable &variable = assignment.second;
+        response.body.value = variable.value;
+        response.body.type = variable.type;
+        response.body.variables_reference =
+            variable.variables_reference > 0 ? std::optional<int>(variable.variables_reference) : std::nullopt;
+        response.body.named_variables = variable.named_variables;
+        response.body.indexed_variables = variable.indexed_variables;
         send_response(request.seq, request.command, std::move(response));
     }
     catch (const std::exception &exception)

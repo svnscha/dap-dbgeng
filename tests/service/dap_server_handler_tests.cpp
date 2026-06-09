@@ -449,13 +449,15 @@ TEST(DapServerHandlers, SetVariableWhileRunningRejectsBeforeLookup)
               "The debuggee is currently running. Wait until execution stops before changing variables.");
 }
 
-TEST(DapServerHandlers, SetVariableOnStructFieldContainerIsRejected)
+TEST(DapServerHandlers, SetVariableOnStructFieldContainerRoutesToSession)
 {
     recording_message_writer writer;
     dap_server server(writer);
 
-    // A struct local's child container is a 'structure' kind; editing fields there
-    // is not supported yet and must be rejected with a clear message.
+    // A struct local's child container is a 'structure' kind. Editing a field is
+    // now accepted and routed to the debugger (which assigns it natively); without
+    // a live session here it surfaces the no-session error rather than a rejection,
+    // proving struct containers are no longer turned away by the handler itself.
     dap_dbgeng::debugger::variable_node x{"x", "10", "int", false, {}};
     dap_dbgeng::debugger::variable_node origin{"origin", "{...}", "point2", false, {x}};
     const dap_dbgeng::protocol::Variable origin_var = server.build_variable_tree_for_test(origin);
@@ -467,8 +469,7 @@ TEST(DapServerHandlers, SetVariableOnStructFieldContainerIsRejected)
     const nlohmann::json *response = writer.find_response("setVariable", 1);
     ASSERT_NE(response, nullptr);
     EXPECT_FALSE(response->at("success").get<bool>());
-    EXPECT_EQ(error_format(*response),
-              "Editing struct fields is not supported yet. Only top-level locals and registers can be changed.");
+    EXPECT_EQ(error_format(*response), "No active debugger session is available.");
 }
 
 // --- setBreakpoints ----------------------------------------------------------
