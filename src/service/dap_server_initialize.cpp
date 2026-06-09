@@ -16,21 +16,32 @@ void dap_server::handle_initialize_request(const protocol::InitializeRequest &re
     capabilities.supports_clipboard_context = true;
     capabilities.supports_configuration_done_request = true;
     capabilities.supports_conditional_breakpoints = true;
+    capabilities.supports_data_breakpoints = true;
     capabilities.supports_delayed_stack_trace_loading = true;
     capabilities.supports_disassemble_request = true;
     // Hover evaluation must remain side-effect free, but the adapter forwards arbitrary WinDbg commands.
     capabilities.supports_evaluate_for_hovers = false;
-    capabilities.supports_function_breakpoints = false;
+    capabilities.supports_exception_info_request = true;
+    capabilities.supports_function_breakpoints = true;
     capabilities.supports_hit_conditional_breakpoints = false;
-    capabilities.supports_instruction_breakpoints = false;
+    capabilities.supports_instruction_breakpoints = true;
     capabilities.supports_log_points = false;
-    capabilities.supports_modules_request = false;
-    capabilities.supports_read_memory_request = false;
+    capabilities.supports_modules_request = true;
+    capabilities.supports_read_memory_request = true;
     capabilities.supports_restart_request = false;
     capabilities.supports_restart_frame = false;
     capabilities.supports_step_back = false;
     capabilities.supports_set_variable = true;
-    capabilities.supports_set_expression = false;
+    capabilities.supports_set_expression = true;
+
+    // One exception filter: break when a C++ exception is thrown (first chance).
+    // Off by default, matching the engine's second-chance-only default.
+    protocol::ExceptionBreakpointsFilter cpp_filter;
+    cpp_filter.filter = "cpp";
+    cpp_filter.label = "C++ exceptions";
+    cpp_filter.description = "Break when a C++ exception is thrown (first chance).";
+    cpp_filter.default_ = false;
+    capabilities.exception_breakpoint_filters = std::vector<protocol::ExceptionBreakpointsFilter>{cpp_filter};
     // Note: SupportsVariablePaging exists only on the client InitializeRequestArguments in this
     // generated model, not on the server Capabilities struct (it is a client capability in the DAP
     // schema), so it is not advertised here. Behavior is unaffected (replay ignores the caps body)
@@ -39,7 +50,7 @@ void dap_server::handle_initialize_request(const protocol::InitializeRequest &re
     capabilities.supports_stepping_granularity = true;
     capabilities.supports_terminate_request = true;
     capabilities.supports_value_formatting_options = false;
-    capabilities.supports_write_memory_request = false;
+    capabilities.supports_write_memory_request = true;
     capabilities.support_terminate_debuggee = true;
     capabilities.support_suspend_debuggee = false;
 

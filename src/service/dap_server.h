@@ -36,7 +36,7 @@ class dap_server : public protocol::dap_service
     static bool try_resolve_debugger_engine_path(const std::optional<std::string> &requested, std::string &engine_path);
 
   protected:
-    // The 18 implemented request handlers (each in its own dap_server_<cmd>.cpp).
+    // The implemented request handlers (each in its own dap_server_<cmd>.cpp).
     void handle_initialize_request(const protocol::InitializeRequest &request) override;
     void handle_launch_request(const protocol::LaunchRequest &request) override;
     void handle_attach_request(const protocol::AttachRequest &request) override;
@@ -57,6 +57,16 @@ class dap_server : public protocol::dap_service
     void handle_disassemble_request(const protocol::DisassembleRequest &request) override;
     void handle_disconnect_request(const protocol::DisconnectRequest &request) override;
     void handle_source_request(const protocol::SourceRequest &request) override;
+    void handle_modules_request(const protocol::ModulesRequest &request) override;
+    void handle_read_memory_request(const protocol::ReadMemoryRequest &request) override;
+    void handle_write_memory_request(const protocol::WriteMemoryRequest &request) override;
+    void handle_set_expression_request(const protocol::SetExpressionRequest &request) override;
+    void handle_set_function_breakpoints_request(const protocol::SetFunctionBreakpointsRequest &request) override;
+    void handle_set_instruction_breakpoints_request(const protocol::SetInstructionBreakpointsRequest &request) override;
+    void handle_set_exception_breakpoints_request(const protocol::SetExceptionBreakpointsRequest &request) override;
+    void handle_exception_info_request(const protocol::ExceptionInfoRequest &request) override;
+    void handle_data_breakpoint_info_request(const protocol::DataBreakpointInfoRequest &request) override;
+    void handle_set_data_breakpoints_request(const protocol::SetDataBreakpointsRequest &request) override;
 
   public:
     // ---- Test seams ---------------------------------------------------------

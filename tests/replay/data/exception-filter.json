@@ -1,0 +1,371 @@
+{
+  "messages": [
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "adapterID": "dbgeng",
+          "columnsStartAt1": true,
+          "linesStartAt1": true,
+          "pathFormat": "path"
+        },
+        "command": "initialize",
+        "seq": 1,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "exceptionBreakpointFilters": [
+            {
+              "default": false,
+              "description": "Break when a C++ exception is thrown (first chance).",
+              "filter": "cpp",
+              "label": "C++ exceptions"
+            }
+          ],
+          "supportSuspendDebuggee": false,
+          "supportTerminateDebuggee": true,
+          "supportsClipboardContext": true,
+          "supportsConditionalBreakpoints": true,
+          "supportsConfigurationDoneRequest": true,
+          "supportsDataBreakpoints": true,
+          "supportsDelayedStackTraceLoading": true,
+          "supportsDisassembleRequest": true,
+          "supportsEvaluateForHovers": false,
+          "supportsExceptionInfoRequest": true,
+          "supportsFunctionBreakpoints": true,
+          "supportsHitConditionalBreakpoints": false,
+          "supportsInstructionBreakpoints": true,
+          "supportsLogPoints": false,
+          "supportsModulesRequest": true,
+          "supportsReadMemoryRequest": true,
+          "supportsRestartFrame": false,
+          "supportsRestartRequest": false,
+          "supportsSetExpression": true,
+          "supportsSetVariable": true,
+          "supportsSingleThreadExecutionRequests": false,
+          "supportsStepBack": false,
+          "supportsSteppingGranularity": true,
+          "supportsTerminateRequest": true,
+          "supportsValueFormattingOptions": false,
+          "supportsWriteMemoryRequest": true
+        },
+        "command": "initialize",
+        "request_seq": 1,
+        "seq": 1,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "initialized",
+        "seq": 2,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "cwd": "${workspaceFolder}\\build\\windows-x64\\test-targets",
+          "name": "Debug",
+          "program": "${workspaceFolder}\\build\\windows-x64\\test-targets\\test_exception_1.exe",
+          "request": "launch",
+          "sources": [
+            "${workspaceFolder}\\test-targets\\testapp"
+          ],
+          "stopAtEntry": false,
+          "symbolPath": [
+            "${workspaceFolder}\\build\\windows-x64\\test-targets"
+          ],
+          "trace": "${workspaceFolder}\\recordings\\exception-filter.session.json",
+          "type": "dbgeng"
+        },
+        "command": "launch",
+        "seq": 2,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\\build\\windows-x64\\test-targets\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource search path is: ${workspaceFolder}\\test-targets\\testapp\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\\test-targets\\testapp\n\n************* Preparing the environment for Debugger Extensions Gallery repositories **************\n   ExtensionRepository : Implicit\n   UseExperimentalFeatureForNugetShare : true\n   AllowNugetExeUpdate : true\n   NonInteractiveNuget : true\n   AllowNugetMSCredentialProviderInstall : true\n   AllowParallelInitializationOfLocalRepositories : true\n\n   EnableRedirectToV8JsProvider : false\n\n   -- Configuring repositories\n      ----> Repository : LocalInstalled, Enabled: true\n      ----> Repository : UserExtensions, Enabled: true\n\n>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds\n\n************* Waiting for Debugger Extensions Gallery to Initialize **************\n\n>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.031 seconds\n   ----> Repository : UserExtensions, Enabled: true, Packages count: 0\n   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.6584 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: ${workspaceFolder}\\build\\windows-x64\\test-targets\\test_exception_1.exe\nStarting directory: ${workspaceFolder}\\build\\windows-x64\\test-targets\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\\build\\windows-x64\\test-targets\nSymbol search path is: ${workspaceFolder}\\build\\windows-x64\\test-targets\nExecutable search path is: \n\n+------------------------------------------------------------------------+\n| This target supports Hardware-enforced Stack Protection. A HW based    |\n| \"Shadow Stack\" may be available to assist in debugging and analysis.   |\n| See aka.ms/userhsp for more info.                                      |\n|                                                                        |\n| dps @ssp                                                               |\n|                                                                        |\n+------------------------------------------------------------------------+\n\nModLoad: 00007ff6`38f00000 00007ff6`38f15000   test_exception_1.exe\n"
+        },
+        "event": "output",
+        "seq": 45,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "launch",
+        "request_seq": 2,
+        "seq": 46,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "isLocalProcess": true,
+          "name": "${workspaceFolder}\\build\\windows-x64\\test-targets\\test_exception_1.exe",
+          "startMethod": "launch"
+        },
+        "event": "process",
+        "seq": 47,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "filters": [
+            "cpp"
+          ]
+        },
+        "command": "setExceptionBreakpoints",
+        "seq": 3,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": [
+            {
+              "verified": true
+            }
+          ]
+        },
+        "command": "setExceptionBreakpoints",
+        "request_seq": 3,
+        "seq": 48,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "configurationDone",
+        "seq": 4,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "configurationDone",
+        "request_seq": 4,
+        "seq": 49,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true,
+          "threadId": 21676
+        },
+        "event": "continued",
+        "seq": 50,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007ffd`c5440000 00007ffd`c56a7000   ntdll.dll\nModLoad: 00007ffd`c4150000 00007ffd`c4219000   C:\\WINDOWS\\System32\\KERNEL32.DLL\nModLoad: 00007ffd`c2d10000 00007ffd`c3107000   C:\\WINDOWS\\System32\\KERNELBASE.dll\nModLoad: 00007ffc`f9dc0000 00007ffc`f9ea1000   C:\\WINDOWS\\SYSTEM32\\MSVCP140D.dll\nModLoad: 00007ffd`2e160000 00007ffd`2e190000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140D.dll\nModLoad: 00007ffd`a6c20000 00007ffd`a6c2f000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140_1D.dll\nModLoad: 00007ffc`f9bb0000 00007ffc`f9db4000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\nModLoad: 00007ffd`49ee0000 00007ffd`4a07d000   C:\\Program Files (x86)\\Citrix\\ICA Client\\ctxapclient64.dll\nModLoad: 00007ffd`c4fd0000 00007ffd`c5196000   C:\\WINDOWS\\System32\\USER32.dll\nModLoad: 00007ffd`c2050000 00007ffd`c2077000   C:\\WINDOWS\\System32\\win32u.dll\nModLoad: 00007ffd`c53d0000 00007ffd`c53fb000   C:\\WINDOWS\\System32\\GDI32.dll\nModLoad: 00007ffd`c1e70000 00007ffd`c1f9c000   C:\\WINDOWS\\System32\\gdi32full.dll\nModLoad: 00007ffd`c3110000 00007ffd`c31b3000   C:\\WINDOWS\\System32\\msvcp_win.dll\nModLoad: 00007ffd`c2350000 00007ffd`c249b000   C:\\WINDOWS\\System32\\ucrtbase.dll\nModLoad: 00007ffd`c32b0000 00007ffd`c3633000   C:\\WINDOWS\\System32\\combase.dll\nModLoad: 00007ffd`c4eb0000 00007ffd`c4fc8000   C:\\WINDOWS\\System32\\RPCRT4.dll\nModLoad: 00007ffd`c1d60000 00007ffd`c1d8a000   C:\\WINDOWS\\SYSTEM32\\bcrypt.dll\nModLoad: 00007ffd`c4be0000 00007ffd`c4c87000   C:\\WINDOWS\\System32\\sechost.dll\nModLoad: 00007ffd`b84a0000 00007ffd`b84ab000   C:\\WINDOWS\\SYSTEM32\\VERSION.dll\nModLoad: 00007ffd`c4220000 00007ffd`c42c9000   C:\\WINDOWS\\System32\\msvcrt.dll\nModLoad: 00007ffd`c5390000 00007ffd`c53c2000   C:\\WINDOWS\\System32\\IMM32.DLL\nModLoad: 00007ffd`c37c0000 00007ffd`c3876000   C:\\WINDOWS\\System32\\ADVAPI32.dll\nModLoad: 00007ffd`c0ce0000 00007ffd`c0d16000   C:\\WINDOWS\\SYSTEM32\\ntmarta.dll\nModLoad: 00007ffd`c1fa0000 00007ffd`c2048000   C:\\WINDOWS\\System32\\bcryptprimitives.dll\n(76b4.54ac): C++ EH exception - code e06d7363 (first chance)\nFirst chance exceptions are reported before any exception handling.\nThis exception may be expected and handled.\n"
+        },
+        "event": "output",
+        "seq": 78,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 27416
+        },
+        "event": "thread",
+        "seq": 79,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 13340
+        },
+        "event": "thread",
+        "seq": 80,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsStopped": true,
+          "description": "Paused on exception 0xE06D7363.",
+          "reason": "exception",
+          "threadId": 21676
+        },
+        "event": "stopped",
+        "seq": 81,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "threadId": 21676
+        },
+        "command": "exceptionInfo",
+        "seq": 5,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakMode": "always",
+          "description": "C++ exception",
+          "details": {
+            "message": "C++ exception at 0x7ffdc2dcfe0a (first chance)."
+          },
+          "exceptionId": "0xE06D7363"
+        },
+        "command": "exceptionInfo",
+        "request_seq": 5,
+        "seq": 82,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "threadId": 21676
+        },
+        "command": "continue",
+        "seq": 6,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true
+        },
+        "command": "continue",
+        "request_seq": 6,
+        "seq": 83,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true,
+          "threadId": 21676
+        },
+        "event": "continued",
+        "seq": 84,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007ffd`c0a90000 00007ffd`c0aab000   C:\\WINDOWS\\SYSTEM32\\kernel.appcore.dll\n"
+        },
+        "event": "output",
+        "seq": 85,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "exited",
+          "threadId": 27416
+        },
+        "event": "thread",
+        "seq": 86,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "exitCode": 0
+        },
+        "event": "exited",
+        "seq": 87,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "terminated",
+        "seq": 88,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "restart": false,
+          "terminateDebuggee": false
+        },
+        "command": "disconnect",
+        "seq": 7,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "disconnect",
+        "request_seq": 7,
+        "seq": 89,
+        "success": true,
+        "type": "response"
+      }
+    }
+  ],
+  "version": 1
+}

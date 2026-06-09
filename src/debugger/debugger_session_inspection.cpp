@@ -281,6 +281,18 @@ std::vector<variable_node> debugger_session::get_locals_tree(std::uint32_t frame
                 // Expandable but not inlined (depth/budget cap or pointer): leave
                 // children empty so the caller can still flag it if it wants.
                 nodes[i].is_expandable = params[i].SubElements != 0 && (params[i].Flags & kDebugSymbolExpanded) == 0;
+                // Address + size feed memoryReference and data breakpoints;
+                // enregistered symbols have neither (left 0).
+                ULONG64 offset = 0;
+                if (SUCCEEDED(group->GetSymbolOffset(i, &offset)))
+                {
+                    nodes[i].address = offset;
+                }
+                ULONG size = 0;
+                if (SUCCEEDED(group->GetSymbolSize(i, &size)))
+                {
+                    nodes[i].size = size;
+                }
             }
 
             // Children always have a higher index than their parent, so linking
@@ -362,6 +374,59 @@ variable_node debugger_session::set_local_value(std::uint32_t frame_number, cons
         node.is_expandable = params.SubElements != 0;
     }
     return node;
+}
+
+std::pair<std::uint64_t, std::uint32_t> debugger_session::get_symbol_address(std::uint32_t frame_number,
+                                                                             const std::string &expression)
+{
+    throw_if_disposed();
+
+    // Scope to the frame, resolve the expression as a scope-group symbol (same
+    // path set_local_value writes through), then read its address and size.
+    execute_command_with_output(fmt::format(".frame {}", frame_number), /*suppress_output_events=*/true);
+
+    IDebugSymbolGroup2 *group = nullptr;
+    {
+        PDEBUG_SYMBOL_GROUP base_group = nullptr;
+        const HRESULT hr = symbols_->GetScopeSymbolGroup(kDebugScopeGroupAll, nullptr, &base_group);
+        if (FAILED(hr) || base_group == nullptr)
+        {
+            throw std::runtime_error("Could not open the scope symbol group to resolve an expression.");
+        }
+        const HRESULT qi = base_group->QueryInterface(__uuidof(IDebugSymbolGroup2), reinterpret_cast<PVOID *>(&group));
+        base_group->Release();
+        if (FAILED(qi) || group == nullptr)
+        {
+            throw std::runtime_error("Could not access the scope symbol group to resolve an expression.");
+        }
+    }
+
+    struct group_releaser
+    {
+        IDebugSymbolGroup2 *g;
+        ~group_releaser()
+        {
+            g->Release();
+        }
+    } releaser{group};
+
+    ULONG index = DEBUG_ANY_ID;
+    if (FAILED(group->AddSymbol(expression.c_str(), &index)) || index == DEBUG_ANY_ID)
+    {
+        throw std::runtime_error(fmt::format("Could not resolve '{}' in the current frame.", expression));
+    }
+
+    ULONG64 offset = 0;
+    if (FAILED(group->GetSymbolOffset(index, &offset)) || offset == 0)
+    {
+        throw std::runtime_error(fmt::format("'{}' has no memory address (it may be enregistered).", expression));
+    }
+    ULONG size = 0;
+    if (FAILED(group->GetSymbolSize(index, &size)) || size == 0)
+    {
+        throw std::runtime_error(fmt::format("Could not determine the size of '{}'.", expression));
+    }
+    return {offset, size};
 }
 
 std::vector<named_value_info> debugger_session::get_registers(std::uint32_t frame_number)

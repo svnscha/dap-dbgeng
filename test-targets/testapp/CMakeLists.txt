@@ -13,7 +13,13 @@ add_executable(test_attach attach.cpp)
 # Locals view must expand. Source must stay stable so recorded sessions match.
 add_executable(test_struct_1 struct-1.cpp)
 
-set_target_properties(test_launch test_attach test_struct_1 PROPERTIES
+# Throws a caught C++ exception, for the exception-filter fixtures.
+add_executable(test_exception_1 exception-1.cpp)
+
+# Writes a watched local on a known line, for the data-breakpoint fixtures.
+add_executable(test_data_1 data-1.cpp)
+
+set_target_properties(test_launch test_attach test_struct_1 test_exception_1 test_data_1 PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test-targets")
 
 # These are debugging fixtures: the tests and recorded sessions assert on exact
@@ -24,7 +30,11 @@ if(MSVC)
   target_compile_options(test_launch PRIVATE /Od /Zi)
   target_compile_options(test_attach PRIVATE /Od /Zi)
   target_compile_options(test_struct_1 PRIVATE /Od /Zi)
+  target_compile_options(test_exception_1 PRIVATE /Od /Zi)
+  target_compile_options(test_data_1 PRIVATE /Od /Zi)
   target_link_options(test_launch PRIVATE /DEBUG)
   target_link_options(test_attach PRIVATE /DEBUG)
   target_link_options(test_struct_1 PRIVATE /DEBUG)
+  target_link_options(test_exception_1 PRIVATE /DEBUG)
+  target_link_options(test_data_1 PRIVATE /DEBUG)
 endif()

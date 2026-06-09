@@ -22,15 +22,24 @@ add_library(dap-dbgeng-objects OBJECT
   service/dap_server_attach.cpp
   service/dap_server_configuration_done.cpp
   service/dap_server_continue.cpp
+  service/dap_server_data_breakpoint_info.cpp
   service/dap_server_disassemble.cpp
   service/dap_server_disconnect.cpp
   service/dap_server_evaluate.cpp
+  service/dap_server_exception_info.cpp
   service/dap_server_initialize.cpp
   service/dap_server_launch.cpp
+  service/dap_server_modules.cpp
   service/dap_server_next.cpp
   service/dap_server_pause.cpp
+  service/dap_server_read_memory.cpp
   service/dap_server_scopes.cpp
   service/dap_server_set_breakpoints.cpp
+  service/dap_server_set_data_breakpoints.cpp
+  service/dap_server_set_exception_breakpoints.cpp
+  service/dap_server_set_expression.cpp
+  service/dap_server_set_function_breakpoints.cpp
+  service/dap_server_set_instruction_breakpoints.cpp
   service/dap_server_set_variable.cpp
   service/dap_server_source.cpp
   service/dap_server_stack_trace.cpp
@@ -39,6 +48,7 @@ add_library(dap-dbgeng-objects OBJECT
   service/dap_server_terminate.cpp
   service/dap_server_threads.cpp
   service/dap_server_variables.cpp
+  service/dap_server_write_memory.cpp
   transport/dap_trace_recorder.cpp
   transport/io_stream_server.cpp
   util/dap_argument_reader.cpp

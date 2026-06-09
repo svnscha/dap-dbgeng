@@ -585,6 +585,21 @@ class replay_state
             rewrite_int(*args, "frameId", frame_ids_);
             rewrite_int(*args, "variablesReference", variables_references_);
             rewrite_string(*args, "memoryReference", memory_references_);
+
+            // setInstructionBreakpoints / setDataBreakpoints carry their
+            // volatile references nested in the breakpoints array.
+            auto breakpoints = args->find("breakpoints");
+            if (breakpoints != args->end() && breakpoints->is_array())
+            {
+                for (auto &breakpoint : *breakpoints)
+                {
+                    if (breakpoint.is_object())
+                    {
+                        rewrite_string(breakpoint, "instructionReference", memory_references_);
+                        rewrite_string(breakpoint, "dataId", memory_references_);
+                    }
+                }
+            }
         }
 
         return node;
@@ -599,6 +614,8 @@ class replay_state
         map_array_ids(expected, actual, "variables", "variablesReference", variables_references_);
         map_array_strings(expected, actual, "stackFrames", "instructionPointerReference", memory_references_);
         map_array_strings(expected, actual, "instructions", "address", memory_references_);
+        map_array_strings(expected, actual, "variables", "memoryReference", memory_references_);
+        map_body_string(expected, actual, "dataId", memory_references_);
     }
 
   private:
@@ -674,6 +691,23 @@ class replay_state
             return nullptr;
         }
         return &(*prop);
+    }
+
+    // Maps a top-level body string property (e.g. dataBreakpointInfo's dataId).
+    static void map_body_string(const nlohmann::json &expected, const nlohmann::json &actual, const char *property,
+                                std::map<std::string, std::string> &map)
+    {
+        const nlohmann::json *e = body_property(expected, property);
+        const nlohmann::json *a = body_property(actual, property);
+        if (e != nullptr && a != nullptr && e->is_string() && a->is_string())
+        {
+            const std::string es = e->get<std::string>();
+            const std::string as = a->get<std::string>();
+            if (!es.empty() && !as.empty())
+            {
+                map[es] = as;
+            }
+        }
     }
 
     void map_thread_id(const nlohmann::json &expected, const nlohmann::json &actual)
