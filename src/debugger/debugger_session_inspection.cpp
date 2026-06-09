@@ -4,6 +4,77 @@
 
 namespace dap_dbgeng::debugger
 {
+namespace
+{
+// Read one symbol-group string field (name / value text / type name) into a
+// trimmed std::string; empty when the engine reports nothing.
+std::string read_symbol_name(IDebugSymbolGroup2 *group, ULONG index)
+{
+    std::vector<char> buffer(kSymbolBufferBytes);
+    ULONG size = 0;
+    if (SUCCEEDED(group->GetSymbolName(index, buffer.data(), static_cast<ULONG>(buffer.size()), &size)) && size != 0)
+    {
+        return buffer_to_trimmed_string(buffer, size);
+    }
+    return {};
+}
+
+std::string read_symbol_value(IDebugSymbolGroup2 *group, ULONG index)
+{
+    std::vector<char> buffer(kLocalValueBufferBytes);
+    ULONG size = 0;
+    if (SUCCEEDED(group->GetSymbolValueText(index, buffer.data(), static_cast<ULONG>(buffer.size()), &size)) &&
+        size != 0)
+    {
+        return buffer_to_trimmed_string(buffer, size);
+    }
+    return {};
+}
+
+std::string read_symbol_type(IDebugSymbolGroup2 *group, ULONG index)
+{
+    std::vector<char> buffer(kSymbolBufferBytes);
+    ULONG size = 0;
+    if (SUCCEEDED(group->GetSymbolTypeName(index, buffer.data(), static_cast<ULONG>(buffer.size()), &size)) &&
+        size != 0)
+    {
+        return buffer_to_trimmed_string(buffer, size);
+    }
+    return {};
+}
+
+// A pointer type (trailing '*') is expandable but we do not auto-follow it: that
+// risks cycles (linked lists) and unbounded depth. Such nodes stay leaves.
+bool type_is_pointer(const std::string &type)
+{
+    for (auto it = type.rbegin(); it != type.rend(); ++it)
+    {
+        if (*it == '*')
+        {
+            return true;
+        }
+        if (std::isspace(static_cast<unsigned char>(*it)) == 0)
+        {
+            return false;
+        }
+    }
+    return false;
+}
+
+// Hops from a symbol to a top-level (unparented) symbol; top-level == 0.
+int symbol_depth(const std::vector<DEBUG_SYMBOL_PARAMETERS> &params, ULONG index)
+{
+    int depth = 0;
+    ULONG parent = params[index].ParentSymbol;
+    while (parent != kDebugAnyId && parent < params.size())
+    {
+        ++depth;
+        parent = params[parent].ParentSymbol;
+    }
+    return depth;
+}
+} // namespace
+
 // ---------------------------------------------------------------------------
 // Stack / vars
 // ---------------------------------------------------------------------------
@@ -122,6 +193,175 @@ std::vector<named_value_info> debugger_session::get_locals(std::uint32_t frame_n
 
     group->Release();
     return result;
+}
+
+std::vector<variable_node> debugger_session::get_locals_tree(std::uint32_t frame_number)
+{
+    throw_if_disposed();
+
+    // Same scope symbol group get_locals reads, but here we expand aggregate
+    // members in place so structs/classes become a tree. The group is only live
+    // for this call; we snapshot the whole (bounded) tree before releasing it, so
+    // later variables requests never need the group again.
+    execute_command_with_output(fmt::format(".frame {}", frame_number), /*suppress_output_events=*/true);
+
+    IDebugSymbolGroup2 *group = nullptr;
+    {
+        PDEBUG_SYMBOL_GROUP base_group = nullptr;
+        const HRESULT hr = symbols_->GetScopeSymbolGroup(kDebugScopeGroupAll, nullptr, &base_group);
+        if (FAILED(hr) || base_group == nullptr)
+        {
+            return {};
+        }
+        const HRESULT qi = base_group->QueryInterface(__uuidof(IDebugSymbolGroup2), reinterpret_cast<PVOID *>(&group));
+        base_group->Release();
+        if (FAILED(qi) || group == nullptr)
+        {
+            return {};
+        }
+    }
+
+    // Phase 1: expand value aggregates, bounded by depth and a total-node budget.
+    // ExpandSymbol inserts children right after the parent and shifts every later
+    // index, so we re-query parameters from scratch after each expansion and act
+    // on one symbol per scan. The EXPANDED flag stops us re-expanding a node;
+    // pointers are skipped (no auto-follow). The loop terminates because each
+    // successful expansion sets a flag, shrinking the eligible set.
+    for (;;)
+    {
+        ULONG count = 0;
+        if (FAILED(group->GetNumberSymbols(&count)) || count == 0 || count >= kMaxExpandedNodes)
+        {
+            break;
+        }
+        std::vector<DEBUG_SYMBOL_PARAMETERS> params(count);
+        if (FAILED(group->GetSymbolParameters(0, count, params.data())))
+        {
+            break;
+        }
+
+        bool expanded_one = false;
+        for (ULONG i = 0; i < count; ++i)
+        {
+            const DEBUG_SYMBOL_PARAMETERS &p = params[i];
+            if ((p.Flags & kDebugSymbolExpanded) != 0 || p.SubElements == 0)
+            {
+                continue;
+            }
+            if (symbol_depth(params, i) >= kMaxExpansionDepth || type_is_pointer(read_symbol_type(group, i)))
+            {
+                continue;
+            }
+            if (SUCCEEDED(group->ExpandSymbol(i, TRUE)))
+            {
+                expanded_one = true;
+                break;
+            }
+        }
+        if (!expanded_one)
+        {
+            break;
+        }
+    }
+
+    // Phase 2: read the now-stable flat list and rebuild the tree via ParentSymbol.
+    std::vector<variable_node> roots;
+    ULONG count = 0;
+    if (SUCCEEDED(group->GetNumberSymbols(&count)) && count != 0)
+    {
+        std::vector<DEBUG_SYMBOL_PARAMETERS> params(count);
+        if (SUCCEEDED(group->GetSymbolParameters(0, count, params.data())))
+        {
+            std::vector<variable_node> nodes(count);
+            for (ULONG i = 0; i < count; ++i)
+            {
+                nodes[i].name = read_symbol_name(group, i);
+                nodes[i].value = normalize_value_text(read_symbol_value(group, i));
+                nodes[i].type = read_symbol_type(group, i);
+                // Expandable but not inlined (depth/budget cap or pointer): leave
+                // children empty so the caller can still flag it if it wants.
+                nodes[i].is_expandable = params[i].SubElements != 0 && (params[i].Flags & kDebugSymbolExpanded) == 0;
+            }
+
+            // Children always have a higher index than their parent, so linking
+            // high-to-low moves a fully built child subtree into its parent before
+            // the parent itself is moved. Inserting at the front preserves order.
+            for (ULONG idx = count; idx-- > 0;)
+            {
+                const ULONG parent = params[idx].ParentSymbol;
+                if (parent != kDebugAnyId && parent < count)
+                {
+                    nodes[parent].children.insert(nodes[parent].children.begin(), std::move(nodes[idx]));
+                }
+            }
+            for (ULONG i = 0; i < count; ++i)
+            {
+                if (params[i].ParentSymbol == kDebugAnyId)
+                {
+                    roots.push_back(std::move(nodes[i]));
+                }
+            }
+        }
+    }
+
+    group->Release();
+    return roots;
+}
+
+variable_node debugger_session::set_local_value(std::uint32_t frame_number, const std::string &expression,
+                                                const std::string &value)
+{
+    throw_if_disposed();
+
+    // Scope to the frame, then add the target expression as a symbol in the scope
+    // group and write its value with the engine's own type-aware text assignment
+    // (the same path WinDbg's Locals editor uses). No expression-command string.
+    execute_command_with_output(fmt::format(".frame {}", frame_number), /*suppress_output_events=*/true);
+
+    IDebugSymbolGroup2 *group = nullptr;
+    {
+        PDEBUG_SYMBOL_GROUP base_group = nullptr;
+        const HRESULT hr = symbols_->GetScopeSymbolGroup(kDebugScopeGroupAll, nullptr, &base_group);
+        if (FAILED(hr) || base_group == nullptr)
+        {
+            throw std::runtime_error("Could not open the scope symbol group to assign a variable.");
+        }
+        const HRESULT qi = base_group->QueryInterface(__uuidof(IDebugSymbolGroup2), reinterpret_cast<PVOID *>(&group));
+        base_group->Release();
+        if (FAILED(qi) || group == nullptr)
+        {
+            throw std::runtime_error("Could not access the scope symbol group to assign a variable.");
+        }
+    }
+
+    struct group_releaser
+    {
+        IDebugSymbolGroup2 *g;
+        ~group_releaser()
+        {
+            g->Release();
+        }
+    } releaser{group};
+
+    ULONG index = DEBUG_ANY_ID;
+    if (FAILED(group->AddSymbol(expression.c_str(), &index)) || index == DEBUG_ANY_ID)
+    {
+        throw std::runtime_error(fmt::format("Could not resolve '{}' in the current frame.", expression));
+    }
+    check_hr(group->WriteSymbol(index, value.c_str()), fmt::format("Could not assign '{}' to '{}'", value, expression));
+
+    variable_node node;
+    // Display name is the trailing path segment (after the last '.' or ']').
+    const std::size_t separator = expression.find_last_of(".]");
+    node.name = separator == std::string::npos ? expression : expression.substr(separator + 1);
+    node.value = normalize_value_text(read_symbol_value(group, index));
+    node.type = read_symbol_type(group, index);
+    DEBUG_SYMBOL_PARAMETERS params{};
+    if (SUCCEEDED(group->GetSymbolParameters(index, 1, &params)))
+    {
+        node.is_expandable = params.SubElements != 0;
+    }
+    return node;
 }
 
 std::vector<named_value_info> debugger_session::get_registers(std::uint32_t frame_number)

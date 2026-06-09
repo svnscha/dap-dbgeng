@@ -22,22 +22,23 @@ void dap_server::handle_scopes_request(const protocol::ScopesRequest &request)
     const frame_context context = context_it->second;
 
     using named_values = std::vector<debugger::named_value_info>;
-    std::pair<named_values, named_values> values = read_session_data_or_default<>(
+    using variable_tree = std::vector<debugger::variable_node>;
+    std::pair<variable_tree, named_values> values = read_session_data_or_default<>(
         [this, &context](debugger::debugger_session &session) {
-            named_values locals = dispatcher_.invoke([&]() { return session.get_locals(context.frame_number); });
+            variable_tree locals = dispatcher_.invoke([&]() { return session.get_locals_tree(context.frame_number); });
             named_values registers = dispatcher_.invoke([&]() { return session.get_registers(context.frame_number); });
             return std::make_pair(std::move(locals), std::move(registers));
         },
-        std::make_pair(named_values{}, named_values{}));
+        std::make_pair(variable_tree{}, named_values{}));
 
-    const named_values &locals = values.first;
+    const variable_tree &locals = values.first;
     const named_values &registers = values.second;
 
     std::vector<protocol::Variable> local_variables;
     local_variables.reserve(locals.size());
     for (const auto &value : locals)
     {
-        local_variables.push_back(create_variable(value));
+        local_variables.push_back(build_variable_tree(value, context, std::string{}));
     }
     std::vector<protocol::Variable> register_variables;
     register_variables.reserve(registers.size());

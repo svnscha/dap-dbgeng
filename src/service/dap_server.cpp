@@ -737,6 +737,53 @@ protocol::Variable dap_server::create_variable(const debugger::named_value_info 
     return variable;
 }
 
+protocol::Variable dap_server::build_variable_tree(const debugger::variable_node &node, const frame_context &context,
+                                                   const std::string &parent_evaluate_name)
+{
+    protocol::Variable variable;
+    variable.name = node.name;
+    variable.value = node.value;
+    if (!node.type.empty())
+    {
+        variable.type = node.type;
+    }
+
+    // Full access path: a field appends ".field" to its parent; an array element
+    // ("[0]") appends directly. A child with no name (anonymous union / base
+    // subobject) cannot form a valid expression, so it inherits the parent's path.
+    std::string evaluate_name = parent_evaluate_name;
+    if (!node.name.empty())
+    {
+        if (parent_evaluate_name.empty() || node.name.front() == '[')
+        {
+            evaluate_name = parent_evaluate_name + node.name;
+        }
+        else
+        {
+            evaluate_name = parent_evaluate_name + "." + node.name;
+        }
+    }
+    variable.evaluate_name = evaluate_name;
+
+    if (!node.children.empty())
+    {
+        std::vector<protocol::Variable> children;
+        children.reserve(node.children.size());
+        for (const auto &child : node.children)
+        {
+            children.push_back(build_variable_tree(child, context, evaluate_name));
+        }
+        variable.named_variables = static_cast<int>(children.size());
+        variable.variables_reference =
+            create_variables_reference(context, variable_container_kind::structure, children);
+    }
+    else
+    {
+        variable.variables_reference = 0;
+    }
+    return variable;
+}
+
 protocol::Scope dap_server::create_scope(const std::string &name, protocol::ScopePresentationHint presentation_hint,
                                          int variables_reference, int named_variables,
                                          const std::optional<debugger::source_location> &source)

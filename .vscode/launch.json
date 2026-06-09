@@ -12,6 +12,9 @@
             "name": "Debug Test Target (Launch)",
             "type": "dbgeng",
             "request": "launch",
+            // Each session is recorded to the gitignored recordings/ directory; normalize a
+            // capture into a replay fixture with scripts/Normalize-DapRecording.ps1.
+            "trace": "${workspaceFolder}/recordings/launch.session.json"
         },
         /*
             Requires launching the target process separately, e.g. by running the following command in a terminal:
@@ -22,6 +25,7 @@
             "type": "dbgeng",
             "request": "attach",
             "processId": "${command:dap-dbgeng.pickProcess}",
+            "trace": "${workspaceFolder}/recordings/attach.session.json"
         },
         /*
             Requires starting the dbgsrv process separately, for example by running this command in a terminal:
@@ -35,6 +39,7 @@
             "request": "attach",
             "processId": "${command:dap-dbgeng.pickProcess}",
             "connectionString": "tcp:port=5005,server=localhost",
+            "trace": "${workspaceFolder}/recordings/remote-attach.session.json"
         },
         /*
             Requires a kernel debugging connection to be configured and available before attaching.
