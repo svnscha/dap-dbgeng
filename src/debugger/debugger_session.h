@@ -71,6 +71,16 @@ class debugger_session
                                                                  const std::vector<int> &lines);
     std::vector<source_breakpoint_result> set_source_breakpoints(
         const std::string &file_path, const std::vector<source_breakpoint_spec> &breakpoints);
+    // Function-name breakpoints ("bu name"). Each call replaces the previous
+    // set, mirroring DAP setFunctionBreakpoints semantics. Results are in
+    // request order; verified means the engine accepted the location.
+    std::vector<source_breakpoint_result> set_function_breakpoints(const std::vector<std::string> &names);
+    // Instruction (address) breakpoints ("bp <address>"). Replaces the previous set.
+    std::vector<source_breakpoint_result> set_instruction_breakpoints(const std::vector<std::uint64_t> &addresses);
+    // Data (hardware) breakpoints ("ba [r|w]<size> <address>"). Replaces the previous set.
+    std::vector<source_breakpoint_result> set_data_breakpoints(const std::vector<data_breakpoint_spec> &breakpoints);
+    // Break on first-chance C++ exceptions (sxe/sxd e06d7363).
+    void set_cpp_first_chance_break(bool enabled);
     std::vector<breakpoint_state> get_breakpoint_states();
     void clear_all_breakpoints();
 
@@ -87,6 +97,11 @@ class debugger_session
     // counterpart of get_locals_tree's reads. Returns the field's refreshed
     // value/type. Throws if the expression cannot be resolved or assigned.
     variable_node set_local_value(std::uint32_t frame_number, const std::string &expression, const std::string &value);
+    // Resolves an in-scope expression (e.g. "watched" or "t.origin.x") to its
+    // absolute address and byte size, for data breakpoints and memory views.
+    // Throws if the expression cannot be resolved or has no address.
+    std::pair<std::uint64_t, std::uint32_t> get_symbol_address(std::uint32_t frame_number,
+                                                               const std::string &expression);
     std::vector<named_value_info> get_registers(std::uint32_t frame_number);
     std::optional<source_location> try_get_frame_source(std::uint64_t instruction_offset);
 
@@ -105,6 +120,20 @@ class debugger_session
     // Memory ------------------------------------------------------------------
     std::vector<disassembled_instruction_info> disassemble(std::uint64_t memory_address, int instruction_offset,
                                                            int instruction_count, bool resolve_symbols);
+    // Reads up to `count` bytes of debuggee virtual memory; the result may be
+    // shorter when the range is partially unreadable.
+    std::vector<unsigned char> read_memory(std::uint64_t address, std::uint32_t count);
+    // Writes bytes to debuggee virtual memory; returns the bytes written.
+    std::uint32_t write_memory(std::uint64_t address, const std::vector<unsigned char> &bytes);
+
+    // Modules -------------------------------------------------------------------
+    std::vector<module_info> get_modules();
+
+    // The last exception event observed, if any (valid while stopped on it).
+    std::optional<last_exception_info> get_last_exception() const
+    {
+        return last_exception_;
+    }
 
     // Command -----------------------------------------------------------------
     std::string execute_command_with_output(const std::string &command, bool suppress_output_events = false);
@@ -155,6 +184,12 @@ class debugger_session
     std::uint32_t get_last_breakpoint_id();
     std::vector<int> get_configured_breakpoint_ids();
     void clear_source_breakpoints(const std::string &normalized_path);
+    // Replace-all helper shared by the function/instruction/data breakpoint
+    // setters: clears `tracked_ids`, runs one engine command per breakpoint
+    // (id-diffing to learn the new id), and re-fills `tracked_ids`.
+    std::vector<source_breakpoint_result> set_command_breakpoints(std::vector<int> &tracked_ids,
+                                                                  const std::vector<std::string> &commands,
+                                                                  const std::vector<std::string> &failure_labels);
 
     // Output capture.
     void begin_output_capture(bool suppress_output_events);
@@ -186,5 +221,15 @@ class debugger_session
     // Per-path configured breakpoint ids (case-insensitive key), so a new
     // setSourceBreakpoints for a file clears the file's previous breakpoints.
     std::map<std::string, std::vector<int>> source_breakpoint_ids_by_path_;
+
+    // Per-kind configured breakpoint ids, so each replace-all DAP request
+    // (setFunctionBreakpoints / setInstructionBreakpoints / setDataBreakpoints)
+    // clears only its own previous set.
+    std::vector<int> function_breakpoint_ids_;
+    std::vector<int> instruction_breakpoint_ids_;
+    std::vector<int> data_breakpoint_ids_;
+
+    // Last exception event, captured by the engine callback.
+    std::optional<last_exception_info> last_exception_;
 };
 } // namespace dap_dbgeng::debugger

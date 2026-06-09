@@ -43,7 +43,39 @@ struct variable_node
     std::string value;
     std::string type;
     bool is_expandable = false;
+    // Absolute address and byte size when the symbol has one (0 when
+    // enregistered or unknown); feeds memoryReference and data breakpoints.
+    std::uint64_t address = 0;
+    std::uint32_t size = 0;
     std::vector<variable_node> children;
+};
+
+// A loaded module as reported by the engine.
+struct module_info
+{
+    std::string name;
+    std::string image_path;
+    std::uint64_t base = 0;
+    std::uint32_t size = 0;
+    std::string symbol_status;
+};
+
+// The most recent exception event (set by the engine callback while the
+// debuggee is stopped on an exception).
+struct last_exception_info
+{
+    std::uint32_t code = 0;
+    std::uint64_t address = 0;
+    bool first_chance = false;
+};
+
+// One requested data (hardware) breakpoint: an address, a byte size (1/2/4/8),
+// and whether it also breaks on reads.
+struct data_breakpoint_spec
+{
+    std::uint64_t address = 0;
+    std::uint32_t size = 0;
+    bool break_on_read = false;
 };
 
 // A single stack frame.

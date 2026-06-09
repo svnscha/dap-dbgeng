@@ -747,6 +747,11 @@ protocol::Variable dap_server::build_variable_tree(const debugger::variable_node
     {
         variable.type = node.type;
     }
+    if (node.address != 0)
+    {
+        // Feeds readMemory (hex views) and asAddress data breakpoints.
+        variable.memory_reference = fmt::format("0x{:x}", node.address);
+    }
 
     // Full access path: a field appends ".field" to its parent; an array element
     // ("[0]") appends directly. A child with no name (anonymous union / base

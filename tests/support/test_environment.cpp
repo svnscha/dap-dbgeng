@@ -148,9 +148,34 @@ std::string resolve_struct_target_directory()
 
 std::string resolve_struct_target_source()
 {
+    return resolve_test_target_source("struct-1.cpp");
+}
+
+std::string resolve_test_target_path(const std::string &executable_name)
+{
+    // Same layout as the other targets: built into <binaryDir>/test-targets
+    // alongside the test binary, with the source tree as a fallback.
+    const fs::path sibling = module_directory().parent_path() / "test-targets" / executable_name;
+    if (fs::exists(sibling))
+    {
+        return sibling.string();
+    }
     if (auto root = find_repository_root())
     {
-        const fs::path source = *root / "test-targets" / "testapp" / "struct-1.cpp";
+        const fs::path target = *root / "build" / "windows-x64" / "test-targets" / executable_name;
+        if (fs::exists(target))
+        {
+            return target.string();
+        }
+    }
+    return std::string();
+}
+
+std::string resolve_test_target_source(const std::string &source_name)
+{
+    if (auto root = find_repository_root())
+    {
+        const fs::path source = *root / "test-targets" / "testapp" / source_name;
         if (fs::exists(source))
         {
             return source.string();

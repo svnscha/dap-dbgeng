@@ -18,37 +18,7 @@ struct disassemble_arguments
     bool resolve_symbols = false;
 };
 
-bool try_parse_memory_reference(const std::string &memory_reference, std::uint64_t &address)
-{
-    std::string value = memory_reference;
-    int base = 10;
-    if (value.size() >= 2 && (value[0] == '0') && (value[1] == 'x' || value[1] == 'X'))
-    {
-        base = 16;
-        value = value.substr(2);
-    }
-    // Strip WinDbg's `\`` group separators.
-    value.erase(std::remove(value.begin(), value.end(), '`'), value.end());
-    if (value.empty())
-    {
-        return false;
-    }
-    try
-    {
-        std::size_t consumed = 0;
-        const unsigned long long parsed = std::stoull(value, &consumed, base);
-        if (consumed != value.size())
-        {
-            return false;
-        }
-        address = static_cast<std::uint64_t>(parsed);
-        return true;
-    }
-    catch (const std::exception &)
-    {
-        return false;
-    }
-}
+using util::try_parse_memory_reference;
 
 bool try_apply_byte_offset(std::uint64_t memory_address, long long offset, std::uint64_t &adjusted)
 {

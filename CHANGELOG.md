@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Ten new DAP requests, each end-to-end tested with live integration tests and
+  recorded replay fixtures:
+  - `modules` lists the loaded modules with image path, address range, and
+    symbol status.
+  - `readMemory` / `writeMemory` give clients (e.g. VS Code's hex editor) raw
+    access to debuggee virtual memory; locals now carry a `memoryReference`.
+  - `setExpression` assigns any in-scope l-value expression (e.g. `t.origin.x`)
+    through the engine's native symbol-group write.
+  - `setFunctionBreakpoints` sets name-based breakpoints (`bu`), deferred until
+    the module loads.
+  - `setInstructionBreakpoints` sets address breakpoints from the disassembly
+    view.
+  - `setExceptionBreakpoints` with one filter: break on first-chance C++
+    exceptions (`sxe e06d7363`).
+  - `exceptionInfo` describes the current exception stop (code, address, first
+    or second chance).
+  - `dataBreakpointInfo` / `setDataBreakpoints` arm hardware write/read-write
+    watchpoints (`ba`) on locals and struct fields.
+- New test debuggees `exception-1.cpp` (caught C++ throw) and `data-1.cpp`
+  (watched write), plus `scripts/Record-FeatureFixtures.mjs`, a scripted DAP
+  driver that reproduces the recorded feature fixtures.
 - Expand structs in the Locals view. Locals backed by aggregates (structs, classes,
   nested members) now report a non-zero `variablesReference` and expand to their
   members, read from the dbgeng scope symbol group via `IDebugSymbolGroup2` with
