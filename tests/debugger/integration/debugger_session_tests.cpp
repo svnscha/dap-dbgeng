@@ -214,6 +214,72 @@ TEST(DebuggerSessionIntegration, LaunchGetLocalsAtSourceBreakpointReturnsNamedVa
     cleanup_launched_session(session);
 }
 
+TEST(DebuggerSessionIntegration, LaunchGetLocalsTreeExpandsNestedStruct)
+{
+    const std::string dbgeng = resolve_dbgeng_path();
+    DAP_REQUIRE_OR_SKIP(dbgeng, "dbgeng.dll not found (set DAP_DBGENG_WINDBG_PATH).");
+    const std::string target = resolve_struct_target_path();
+    DAP_REQUIRE_OR_SKIP(target, "test_struct_1.exe not found (build test-targets/testapp).");
+    const std::string source = resolve_struct_target_source();
+    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/struct-1.cpp not found.");
+
+    const auto find_child = [](const std::vector<variable_node> &nodes,
+                               const std::string &name) -> const variable_node * {
+        for (const auto &node : nodes)
+        {
+            if (node.name == name)
+            {
+                return &node;
+            }
+        }
+        return nullptr;
+    };
+
+    std::unique_ptr<debugger_session> session;
+    try
+    {
+        session = std::make_unique<debugger_session>(dbgeng);
+        session->launch(target);
+        session->set_symbol_path({resolve_struct_target_directory()});
+        session->set_source_path({fs::path(source).parent_path().string()});
+        session->enable_source_line_support();
+        // Line 37 is the cout that uses p, v, t; all three are initialized and live there.
+        session->set_source_breakpoints(source, std::vector<int>{37});
+        session->continue_();
+        session->wait_for_event(10000);
+
+        const auto locals = session->get_locals_tree(0);
+        ASSERT_GT(locals.size(), 0u) << "Expected named locals at the source breakpoint.";
+
+        const variable_node *t = find_child(locals, "t");
+        ASSERT_NE(t, nullptr) << "Expected the nested struct local 't'.";
+        EXPECT_FALSE(t->type.empty()) << "Struct locals should carry a type name.";
+        ASSERT_FALSE(t->children.empty()) << "'t' is a struct and must expand to its fields.";
+
+        const variable_node *origin = find_child(t->children, "origin");
+        const variable_node *scale = find_child(t->children, "scale");
+        ASSERT_NE(origin, nullptr) << "Expected 't.origin' (a point2).";
+        ASSERT_NE(scale, nullptr) << "Expected 't.scale' (a vector3).";
+
+        // Second level: point2 nested inside transform expands to its scalar fields.
+        ASSERT_FALSE(origin->children.empty()) << "'t.origin' is a struct and must expand.";
+        EXPECT_NE(find_child(origin->children, "x"), nullptr) << "Expected 't.origin.x'.";
+        EXPECT_NE(find_child(origin->children, "y"), nullptr) << "Expected 't.origin.y'.";
+
+        // Scalar leaf: 't.id' is an int and must not be expandable.
+        const variable_node *id = find_child(t->children, "id");
+        ASSERT_NE(id, nullptr) << "Expected 't.id'.";
+        EXPECT_TRUE(id->children.empty()) << "A scalar field should have no children.";
+        EXPECT_FALSE(id->is_expandable) << "A scalar field should not be expandable.";
+    }
+    catch (...)
+    {
+        cleanup_launched_session(session);
+        throw;
+    }
+    cleanup_launched_session(session);
+}
+
 TEST(DebuggerSessionIntegration, LaunchDisassembleReturnsInstructions)
 {
     const std::string dbgeng = resolve_dbgeng_path();

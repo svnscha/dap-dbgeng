@@ -78,6 +78,10 @@ class debugger_session
     std::vector<stack_frame_info> get_stack_trace(int max_frames = 128);
     stack_trace_details get_stack_trace_details(int max_frames = 128);
     std::vector<named_value_info> get_locals(std::uint32_t frame_number);
+    // Locals for a frame as a tree, with struct/class members expanded (up to a
+    // depth and node-count cap). Used by the scopes/variables handlers to render
+    // expandable locals; get_locals stays the flat form used by setVariable.
+    std::vector<variable_node> get_locals_tree(std::uint32_t frame_number);
     std::vector<named_value_info> get_registers(std::uint32_t frame_number);
     std::optional<source_location> try_get_frame_source(std::uint64_t instruction_offset);
 

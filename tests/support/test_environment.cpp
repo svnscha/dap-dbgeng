@@ -119,4 +119,43 @@ std::string resolve_launch_target_source()
     }
     return std::string();
 }
+
+std::string resolve_struct_target_path()
+{
+    // Same layout as the launch target: built into <binaryDir>/test-targets
+    // alongside the test binary, with the source tree as a fallback.
+    const fs::path sibling = module_directory().parent_path() / "test-targets" / "test_struct_1.exe";
+    if (fs::exists(sibling))
+    {
+        return sibling.string();
+    }
+    if (auto root = find_repository_root())
+    {
+        const fs::path target = *root / "build" / "windows-x64" / "test-targets" / "test_struct_1.exe";
+        if (fs::exists(target))
+        {
+            return target.string();
+        }
+    }
+    return std::string();
+}
+
+std::string resolve_struct_target_directory()
+{
+    const std::string target = resolve_struct_target_path();
+    return target.empty() ? std::string() : fs::path(target).parent_path().string();
+}
+
+std::string resolve_struct_target_source()
+{
+    if (auto root = find_repository_root())
+    {
+        const fs::path source = *root / "test-targets" / "testapp" / "struct-1.cpp";
+        if (fs::exists(source))
+        {
+            return source.string();
+        }
+    }
+    return std::string();
+}
 } // namespace dap_dbgeng::test_support

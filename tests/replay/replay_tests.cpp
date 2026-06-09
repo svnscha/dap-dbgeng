@@ -247,6 +247,51 @@ TEST(Replay, LaunchSetVariable)
     assert_positive_launch_replay(replay);
 }
 
+TEST(Replay, LaunchExpandsNestedStructLocals)
+{
+    REPLAY_OR_SKIP(replay, "struct-locals.json");
+    assert_positive_launch_replay(replay);
+
+    // Recorded VS Code session: it expands the struct locals v, t and p (four
+    // variables responses - the locals scope plus one per expanded struct). The
+    // struct levels and full access paths must survive over the wire.
+    std::size_t variables_responses = 0;
+    bool struct_local_expandable = false;  // a "struct ..." local with a non-zero variablesReference
+    bool nested_struct_expandable = false; // a struct field that is itself expandable, e.g. "t.origin"
+    bool leaf_scalar_path = false;         // a scalar field with a dotted evaluateName and no children
+    for (const auto &m : replay.non_output)
+    {
+        if (!is_response(m, "variables") || !m.contains("body") || !m.at("body").contains("variables"))
+        {
+            continue;
+        }
+        ++variables_responses;
+        for (const auto &v : m.at("body").at("variables"))
+        {
+            const std::string evaluate_name = v.value("evaluateName", std::string{});
+            const std::string type = v.value("type", std::string{});
+            const int reference = v.value("variablesReference", 0);
+            if (reference > 0 && type.rfind("struct", 0) == 0)
+            {
+                struct_local_expandable = true;
+            }
+            if (evaluate_name == "t.origin" && reference > 0)
+            {
+                nested_struct_expandable = true;
+            }
+            if (evaluate_name == "t.id" && reference == 0)
+            {
+                leaf_scalar_path = true;
+            }
+        }
+    }
+
+    EXPECT_EQ(4u, variables_responses) << "Expected the locals scope plus one expansion each for v, t and p.";
+    EXPECT_TRUE(struct_local_expandable) << "Expected an expandable struct local (non-zero variablesReference).";
+    EXPECT_TRUE(nested_struct_expandable) << "Expected the nested struct field 't.origin' to be expandable.";
+    EXPECT_TRUE(leaf_scalar_path) << "Expected the scalar field 't.id' to be a non-expandable leaf.";
+}
+
 TEST(Replay, ThreadsRequestDuringRecordedExit)
 {
     REPLAY_OR_SKIP(replay, "threads-after-exit.json");

@@ -352,6 +352,60 @@ TEST(DapServerHandlers, VariablesHonorsStartAndCountPaging)
     EXPECT_EQ(response->at("body").at("variables")[0].at("name"), "beta");
 }
 
+TEST(DapServerHandlers, ScopesBuildsExpandableNestedStructVariables)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    // t { origin { x, y }, id } - one level of nesting plus a scalar leaf.
+    dap_dbgeng::debugger::variable_node x{"x", "10", "int", false, {}};
+    dap_dbgeng::debugger::variable_node y{"y", "20", "int", false, {}};
+    dap_dbgeng::debugger::variable_node origin{"origin", "{...}", "point2", false, {x, y}};
+    dap_dbgeng::debugger::variable_node id{"id", "42", "int", false, {}};
+    dap_dbgeng::debugger::variable_node t{"t", "{...}", "transform", false, {origin, id}};
+
+    const dap_dbgeng::protocol::Variable t_var = server.build_variable_tree_for_test(t);
+
+    // The struct local is expandable; the scalar path is reached via expansion.
+    EXPECT_EQ(t_var.name, "t");
+    EXPECT_EQ(t_var.type, "transform");
+    EXPECT_EQ(t_var.named_variables, 2);
+    ASSERT_GT(t_var.variables_reference, 0) << "A struct local must be expandable.";
+
+    // Expanding 't' yields its fields, with 'origin' itself expandable and 'id' a leaf.
+    server.handle_request(make_request(1, "variables", {{"variablesReference", t_var.variables_reference}}));
+    const nlohmann::json *t_children = writer.find_response("variables", 1);
+    ASSERT_NE(t_children, nullptr);
+    const nlohmann::json &fields = t_children->at("body").at("variables");
+    ASSERT_EQ(fields.size(), 2u);
+
+    int origin_ref = 0;
+    for (const auto &field : fields)
+    {
+        if (field.at("name") == "origin")
+        {
+            origin_ref = field.at("variablesReference").get<int>();
+            EXPECT_EQ(field.at("evaluateName"), "t.origin");
+        }
+        else if (field.at("name") == "id")
+        {
+            EXPECT_EQ(field.at("variablesReference").get<int>(), 0) << "A scalar field is not expandable.";
+            EXPECT_EQ(field.at("evaluateName"), "t.id");
+        }
+    }
+    ASSERT_GT(origin_ref, 0) << "'t.origin' is a struct and must be expandable.";
+
+    // Second level: expanding 'origin' yields its scalar fields with full paths.
+    server.handle_request(make_request(2, "variables", {{"variablesReference", origin_ref}}));
+    const nlohmann::json *origin_children = writer.find_response("variables", 2);
+    ASSERT_NE(origin_children, nullptr);
+    const nlohmann::json &scalars = origin_children->at("body").at("variables");
+    ASSERT_EQ(scalars.size(), 2u);
+    EXPECT_EQ(scalars[0].at("name"), "x");
+    EXPECT_EQ(scalars[0].at("evaluateName"), "t.origin.x");
+    EXPECT_EQ(scalars[0].at("variablesReference").get<int>(), 0);
+}
+
 // --- setVariable -------------------------------------------------------------
 
 TEST(DapServerHandlers, SetVariableWithNonPositiveReferenceReturnsError)
@@ -393,6 +447,28 @@ TEST(DapServerHandlers, SetVariableWhileRunningRejectsBeforeLookup)
     ASSERT_NE(response, nullptr);
     EXPECT_EQ(error_format(*response),
               "The debuggee is currently running. Wait until execution stops before changing variables.");
+}
+
+TEST(DapServerHandlers, SetVariableOnStructFieldContainerIsRejected)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    // A struct local's child container is a 'structure' kind; editing fields there
+    // is not supported yet and must be rejected with a clear message.
+    dap_dbgeng::debugger::variable_node x{"x", "10", "int", false, {}};
+    dap_dbgeng::debugger::variable_node origin{"origin", "{...}", "point2", false, {x}};
+    const dap_dbgeng::protocol::Variable origin_var = server.build_variable_tree_for_test(origin);
+    ASSERT_GT(origin_var.variables_reference, 0);
+
+    server.handle_request(make_request(
+        1, "setVariable", {{"variablesReference", origin_var.variables_reference}, {"name", "x"}, {"value", "5"}}));
+
+    const nlohmann::json *response = writer.find_response("setVariable", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_FALSE(response->at("success").get<bool>());
+    EXPECT_EQ(error_format(*response),
+              "Editing struct fields is not supported yet. Only top-level locals and registers can be changed.");
 }
 
 // --- setBreakpoints ----------------------------------------------------------

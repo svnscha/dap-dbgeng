@@ -35,6 +35,20 @@ constexpr ULONG kDebugBreakpointDeferred = 0x00000002;
 // DEBUG_SCOPE_GROUP_ALL == arguments | locals.
 constexpr ULONG kDebugScopeGroupAll = DEBUG_SCOPE_GROUP_ALL;
 
+// Symbol-group expansion bounds for get_locals_tree. Depth caps nesting (a
+// struct field that is itself a struct counts as one level deeper); the node
+// budget bounds total cost so a wide or self-referential aggregate cannot blow
+// up enumeration. Unoptimized debuggee locals sit far below both.
+constexpr int kMaxExpansionDepth = 3;
+constexpr std::size_t kMaxExpandedNodes = 4096;
+
+// DEBUG_SYMBOL_PARAMETERS::ParentSymbol for a top-level (unparented) symbol.
+constexpr ULONG kDebugAnyId = DEBUG_ANY_ID;
+
+// DEBUG_SYMBOL_PARAMETERS::Flags bit set once a symbol has been expanded, so the
+// enumeration does not expand it twice.
+constexpr ULONG kDebugSymbolExpanded = DEBUG_SYMBOL_EXPANDED;
+
 // Engine-state argument values are DEBUG_STATUS_* codes.
 constexpr ULONG64 kStatusBreak = DEBUG_STATUS_BREAK;
 constexpr ULONG64 kStatusNoDebuggee = DEBUG_STATUS_NO_DEBUGGEE;

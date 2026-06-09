@@ -98,6 +98,12 @@ class dap_server : public protocol::dap_service
         return frame_contexts_.size();
     }
     void register_locals_container_for_test(int variables_reference, const std::vector<protocol::Variable> &variables);
+    // Runs build_variable_tree for a node, allocating real child containers in the
+    // reference map so a follow-up variables request can resolve them.
+    protocol::Variable build_variable_tree_for_test(const debugger::variable_node &node)
+    {
+        return build_variable_tree(node, frame_context{}, std::string{});
+    }
 
   private:
     // ---- Outbound ------------------------------------------------------------
@@ -209,7 +215,8 @@ class dap_server : public protocol::dap_service
     enum class variable_container_kind
     {
         locals,
-        registers
+        registers,
+        structure
     };
     struct frame_context
     {
@@ -228,6 +235,11 @@ class dap_server : public protocol::dap_service
     int create_variables_reference(const frame_context &context, variable_container_kind kind,
                                    const std::vector<protocol::Variable> &variables);
     static protocol::Variable create_variable(const debugger::named_value_info &value);
+    // Converts a local-variable tree node into a protocol::Variable, allocating a
+    // variablesReference (and its child container) for any node with children so
+    // structs expand. evaluate_name is the full access path (e.g. "t.origin.x").
+    protocol::Variable build_variable_tree(const debugger::variable_node &node, const frame_context &context,
+                                           const std::string &parent_evaluate_name);
     static protocol::Scope create_scope(const std::string &name, protocol::ScopePresentationHint presentation_hint,
                                         int variables_reference, int named_variables,
                                         const std::optional<debugger::source_location> &source);

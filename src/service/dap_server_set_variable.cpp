@@ -45,6 +45,18 @@ void dap_server::handle_set_variable_request(const protocol::SetVariableRequest 
     }
 
     variable_container_context container = container_it->second;
+
+    // Editing a nested struct field would need a path-based assignment
+    // (evaluate_name) and a subtree refresh; that is a follow-up. Top-level locals
+    // and registers still edit normally.
+    if (container.kind == variable_container_kind::structure)
+    {
+        send_error_response(request.seq, request.command,
+                            "Editing struct fields is not supported yet. Only top-level locals and registers can be "
+                            "changed.");
+        return;
+    }
+
     debugger::debugger_session &session = require_debugger_session();
 
     try

@@ -32,6 +32,20 @@ struct named_value_info
     std::string value;
 };
 
+// A local variable as a tree node, so structured values (structs, classes,
+// nested aggregates) can be expanded. `children` is populated up to a depth cap
+// during enumeration; `is_expandable` is set when the engine reports children we
+// did not inline (depth/budget cap reached), so a client can still show the
+// expand affordance. Leaf scalars have no children and is_expandable == false.
+struct variable_node
+{
+    std::string name;
+    std::string value;
+    std::string type;
+    bool is_expandable = false;
+    std::vector<variable_node> children;
+};
+
 // A single stack frame.
 struct stack_frame_info
 {

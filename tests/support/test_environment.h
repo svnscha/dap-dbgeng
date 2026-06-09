@@ -28,6 +28,17 @@ std::string resolve_launch_target_directory();
 // Resolves the launch target's source (test-targets/testapp/launch.cpp). Empty
 // when unavailable.
 std::string resolve_launch_target_source();
+
+// Resolves the struct-expansion native test app (test_struct_1.exe) from the
+// build tree. Empty when unavailable.
+std::string resolve_struct_target_path();
+
+// Directory holding the struct target, or empty when the target is unavailable.
+std::string resolve_struct_target_directory();
+
+// Resolves the struct target's source (test-targets/testapp/struct-1.cpp). Empty
+// when unavailable.
+std::string resolve_struct_target_source();
 } // namespace dap_dbgeng::test_support
 
 // Skips the current test (GTEST_SKIP) with `reason` when `value` is empty.

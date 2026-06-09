@@ -50,9 +50,14 @@ $ignoreCase = [System.StringComparison]::OrdinalIgnoreCase
 $text = $text.Replace($repoRoot.Replace('\', '\\'), '${workspaceFolder}', $ignoreCase)
 $text = $text.Replace($repoRoot.Replace('\', '/'), '${workspaceFolder}', $ignoreCase)
 
-# 2) dbgeng path -> ${dbgEngPath}
+# 2) dbgeng path -> ${dbgEngPath}. Like the repository root, the value is a Windows path whose
+#    backslashes are stored escaped (\\) in the JSON text, so replace that form as well as the
+#    forward-slash form (and the raw value, in case a recorder emitted single separators).
 if (($configArgs.PSObject.Properties.Name -contains 'dbgengPath') -and $configArgs.dbgengPath) {
-    $text = $text.Replace([string]$configArgs.dbgengPath, '${dbgEngPath}', $ignoreCase)
+    $dbgengPath = [string]$configArgs.dbgengPath
+    $text = $text.Replace($dbgengPath.Replace('\', '\\'), '${dbgEngPath}', $ignoreCase)
+    $text = $text.Replace($dbgengPath.Replace('\', '/'), '${dbgEngPath}', $ignoreCase)
+    $text = $text.Replace($dbgengPath, '${dbgEngPath}', $ignoreCase)
 }
 
 # 3) attach processId -> "${attachProcessId}" (only the request field, not coincidental numbers elsewhere)
