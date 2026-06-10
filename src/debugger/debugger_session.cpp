@@ -66,10 +66,17 @@ class debugger_session::event_callbacks : public IDebugEventCallbacks
 
     STDMETHOD(Exception)(PEXCEPTION_RECORD64 exception, ULONG first_chance) override
     {
-        (void)first_chance;
-        if (owner_->on_exception_hit && exception != nullptr)
+        if (exception != nullptr)
         {
-            owner_->on_exception_hit(static_cast<int>(exception->ExceptionCode));
+            // Remember the event so an exceptionInfo request can describe the
+            // stop. Set on the dispatcher thread (inside WaitForEvent), read
+            // there too via dispatcher-marshaled calls.
+            owner_->last_exception_ =
+                last_exception_info{exception->ExceptionCode, exception->ExceptionAddress, first_chance != 0};
+            if (owner_->on_exception_hit)
+            {
+                owner_->on_exception_hit(static_cast<int>(exception->ExceptionCode));
+            }
         }
         return DEBUG_STATUS_BREAK;
     }

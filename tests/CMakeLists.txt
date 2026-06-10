@@ -11,6 +11,7 @@ add_executable(dap-dbgeng-tests
   service/dap_server_live_tests.cpp
   support/test_environment.cpp
   transport/dap_trace_recorder_tests.cpp
+  util/base64_tests.cpp
   util/dap_argument_reader_tests.cpp
   util/debugger_session_dap_factory_tests.cpp
 )
