@@ -1,9 +1,13 @@
 # Recording replay fixtures from VS Code
 
-The replay tests under `tests/replay` are driven by recorded DAP sessions. The preferred source for
-a fixture is a real VS Code session, because it captures the request flow an actual client
-produces. This page lists the manual debugging sessions to perform and the exact gestures that
-trigger each DAP request, so the captures can replace the synthesized fixtures.
+The replay tests under `tests/replay` are driven by recorded DAP sessions. A fixture must come
+from a real VS Code session: only a real client capture proves the request ordering an actual
+client produces, which is exactly what the strict-order replay matcher asserts. This page lists
+the manual debugging sessions to perform and the exact gestures that trigger each DAP request.
+
+The six feature scenarios below do not have fixtures yet; their `TEST(Replay, ...)` entries in
+`tests/replay/replay_tests.cpp` skip (with the missing fixture named in the skip message) until
+the scenario has been recorded and normalized.
 
 ## How a session gets recorded
 
@@ -20,13 +24,18 @@ Prerequisites:
 
 - A built Debug tree: `npm run configure` and `npm run build` (adapter plus the `test-targets`
   debuggees).
+- Set `"dbgengPath"` in the launch configuration to the `dbgeng.dll` you debug with.
+  `Normalize-DapRecording.ps1` rewrites that value to the `${dbgEngPath}` token, which the replay
+  harness resolves through `DAP_DBGENG_WINDBG_PATH` (or the default SDK install). A capture
+  recorded without it only replays on machines with the SDK Debugging Tools at the default
+  location.
 - The "Debug Test Target (Launch)" configuration omits `program`, so select the debuggee per
   scenario via the CMake Tools active launch target in the status bar (`test_struct_1`,
   `test_launch`, `test_exception_1`, `test_data_1`).
 - The memory scenario needs the Hex Editor extension (`ms-vscode.hexeditor`).
 
 The deliverable per scenario is the raw, renamed capture under `recordings/`. Normalization
-(`scripts/Normalize-DapRecording.ps1`), replacing the fixture under `tests/replay/data/`, and
+(`scripts/Normalize-DapRecording.ps1`), creating the fixture under `tests/replay/data/`, and
 adjusting the matching `TEST(Replay, ...)` assertions happen afterwards.
 
 ## Ground rules for clean captures
@@ -42,9 +51,9 @@ adjusting the matching `TEST(Replay, ...)` assertions happen afterwards.
 
 ## Scenarios
 
-### 1. Memory read and write - replaces `modules-memory.json`
+### 1. Memory read and write - creates `memory-read-write.json`
 
-Target: `test_struct_1` (fixture asserts `p` at `{3, 7}`, then `42` written back).
+Target: `test_struct_1` (the test asserts `p` at `{3, 7}`, then `42` written back).
 
 1. Set a source breakpoint on `struct-1.cpp` line 37 (the `std::cout` line), then F5.
 2. In the Variables view, select `p` and use **View Binary Data** (the inline button on the
@@ -53,11 +62,11 @@ Target: `test_struct_1` (fixture asserts `p` at `{3, 7}`, then `42` written back
    sends `writeMemory` followed by a re-read.
 4. Close the hex editor, then continue to exit.
 
-Note: the `modules` request in this fixture cannot be recorded from VS Code (see
-[what cannot be recorded](#what-cannot-be-recorded-from-vs-code)); the recorded capture covers the
-memory half, and the fixture keeps a synthesized or driver-recorded `modules` exchange.
+Note: the `modules` request cannot be recorded from VS Code (see
+[what cannot be recorded](#what-cannot-be-recorded-from-vs-code)); it has no replay fixture and is
+covered by the live integration and handler tests instead.
 
-### 2. Set expression - replaces `set-expression.json`
+### 2. Set expression - creates `set-expression.json`
 
 Target: `test_struct_1` (fixture assigns `t.origin.x = 123` and observes it).
 
@@ -69,7 +78,7 @@ Target: `test_struct_1` (fixture assigns `t.origin.x = 123` and observes it).
 4. In the Variables view, expand `t`, then `origin`, and confirm `x` reads `123`.
 5. Remove the watch expression, then continue to exit.
 
-### 3. Function breakpoints - replaces `function-breakpoints.json`
+### 3. Function breakpoints - creates `function-breakpoints.json`
 
 Target: `test_launch` (fixture stops in `main` via a deferred function breakpoint).
 
@@ -78,7 +87,7 @@ Target: `test_launch` (fixture stops in `main` via a deferred function breakpoin
 2. F5: the session stops in `main`.
 3. Continue to exit, then remove the function breakpoint.
 
-### 4. Instruction breakpoints - replaces `instruction-breakpoints.json`
+### 4. Instruction breakpoints - creates `instruction-breakpoints.json`
 
 Target: `test_struct_1` (fixture stops at a disassembly address past the current one).
 
@@ -90,7 +99,7 @@ Target: `test_struct_1` (fixture stops at a disassembly address past the current
 4. Continue: the session stops at that instruction.
 5. Remove the instruction breakpoint, then continue to exit.
 
-### 5. Exception filter - replaces `exception-filter.json`
+### 5. Exception filter - creates `exception-filter.json`
 
 Target: `test_exception_1` (fixture stops first-chance on a caught `std::runtime_error`).
 
@@ -100,7 +109,7 @@ Target: `test_exception_1` (fixture stops first-chance on a caught `std::runtime
 3. Continue: the exception is caught locally, so the program runs to a clean exit.
 4. Untick the **C++ exceptions** filter.
 
-### 6. Data breakpoints - replaces `data-breakpoints.json`
+### 6. Data breakpoints - creates `data-breakpoints.json`
 
 Target: `test_data_1` (fixture arms a write watchpoint on `watched` and observes the write).
 
@@ -118,14 +127,14 @@ Target: `test_data_1` (fixture arms a write watchpoint on `watched` and observes
 
 - **`modules`** - VS Code has no Modules view (it is an open feature request,
   [microsoft/vscode#110067](https://github.com/microsoft/vscode/issues/110067)) and never sends the
-  `modules` request, so no UI gesture can produce it. Keep this exchange synthesized via
-  `scripts/Record-FeatureFixtures.mjs`.
+  `modules` request, so no UI gesture can produce it. The request has no replay fixture; the live
+  integration test (`LaunchGetModulesListsTheDebuggee`) and the handler tests cover it.
 
 ## Turning a capture into a fixture
 
 For each delivered `recordings/<scenario>.session.json`:
 
-1. Normalize it into the fixture it replaces:
+1. Normalize it into its fixture:
 
    ```powershell
    pwsh scripts/Normalize-DapRecording.ps1 recordings/set-expression.session.json `

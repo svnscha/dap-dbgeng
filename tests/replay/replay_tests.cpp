@@ -328,27 +328,19 @@ TEST(Replay, LaunchSetsStructFieldsViaSetVariable)
     EXPECT_TRUE(wrote_43) << "Expected the struct field assignment to read back as int 43.";
 }
 
-TEST(Replay, ModulesAndMemoryReadWrite)
+TEST(Replay, MemoryReadWrite)
 {
-    REPLAY_OR_SKIP(replay, "modules-memory.json");
+    // Recorded from VS Code with the Hex Editor extension (see
+    // docs/development/recording-fixtures.md); VS Code never sends 'modules',
+    // so module listing is covered by the live integration tests instead.
+    REPLAY_OR_SKIP(replay, "memory-read-write.json");
     assert_positive_launch_replay(replay);
 
-    // modules lists the debuggee; readMemory before and after a writeMemory.
-    bool modules_lists_debuggee = false;
+    // readMemory before and after a writeMemory.
     std::size_t read_memory_responses = 0;
     std::size_t write_memory_responses = 0;
     for (const auto &m : replay.non_output)
     {
-        if (is_response(m, "modules") && m.contains("body"))
-        {
-            for (const auto &module : m.at("body").at("modules"))
-            {
-                if (module.value("name", std::string{}).find("test_struct_1") != std::string::npos)
-                {
-                    modules_lists_debuggee = true;
-                }
-            }
-        }
         if (is_response(m, "readMemory") && m.value("success", false))
         {
             ++read_memory_responses;
@@ -359,8 +351,7 @@ TEST(Replay, ModulesAndMemoryReadWrite)
             ++write_memory_responses;
         }
     }
-    EXPECT_TRUE(modules_lists_debuggee) << "Expected the debuggee module in the modules response.";
-    EXPECT_EQ(2u, read_memory_responses);
+    EXPECT_GE(read_memory_responses, 2u) << "Expected reads before and after the write.";
     EXPECT_EQ(1u, write_memory_responses);
 }
 

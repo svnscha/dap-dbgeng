@@ -78,6 +78,7 @@
           "__configurationTarget": 6,
           "__sessionId": "d4c75f73-a999-4c86-b566-b25acdef7af6",
           "cwd": "${workspaceFolder}\\build\\windows-x64\\test-targets",
+          "dbgengPath": "${dbgEngPath}",
           "name": "Debug Test Target (Launch)",
           "program": "${workspaceFolder}\\build\\windows-x64\\test-targets\\test_struct_1.exe",
           "request": "launch",

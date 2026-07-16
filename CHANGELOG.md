@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Ten new DAP requests, each end-to-end tested with live integration tests and
-  recorded replay fixtures:
+- Ten new DAP requests, each end-to-end tested with live integration tests
+  (replay coverage lands per scenario as the manual VS Code sessions from
+  `docs/development/recording-fixtures.md` are recorded):
   - `modules` lists the loaded modules with image path, address range, and
     symbol status.
   - `readMemory` / `writeMemory` give clients (e.g. VS Code's hex editor) raw
@@ -28,8 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `dataBreakpointInfo` / `setDataBreakpoints` arm hardware write/read-write
     watchpoints (`ba`) on locals and struct fields.
 - New test debuggees `exception-1.cpp` (caught C++ throw) and `data-1.cpp`
-  (watched write), plus `scripts/Record-FeatureFixtures.mjs`, a scripted DAP
-  driver that reproduces the recorded feature fixtures.
+  (watched write). The feature replay fixtures are recorded from real VS Code
+  sessions (see `docs/development/recording-fixtures.md`); a replay test skips
+  until its scenario has been recorded.
 - Expand structs in the Locals view. Locals backed by aggregates (structs, classes,
   nested members) now report a non-zero `variablesReference` and expand to their
   members, read from the dbgeng scope symbol group via `IDebugSymbolGroup2` with
