@@ -41,7 +41,8 @@ inline std::string base64_encode(const std::vector<unsigned char> &bytes)
 }
 
 // Decodes standard base64 (padding optional). Returns false on any character
-// outside the alphabet or a malformed length.
+// outside the alphabet, padding anywhere but the end of the final quantum, or
+// a dangling character that encodes no byte (length % 4 == 1).
 inline bool try_base64_decode(const std::string &text, std::vector<unsigned char> &bytes)
 {
     bytes.clear();
@@ -71,11 +72,27 @@ inline bool try_base64_decode(const std::string &text, std::vector<unsigned char
 
     unsigned int accumulator = 0;
     int bits = 0;
+    int group = 0; // data characters in the current 4-character quantum
+    int pad = 0;   // '=' characters closing the final quantum
     for (char c : text)
     {
-        if (c == '=' || c == '\r' || c == '\n')
+        if (c == '\r' || c == '\n')
         {
             continue;
+        }
+        if (c == '=')
+        {
+            // '=' may only pad a final quantum of 2 or 3 data characters to 4.
+            if (group < 2 || group + pad >= 4)
+            {
+                return false;
+            }
+            ++pad;
+            continue;
+        }
+        if (pad != 0)
+        {
+            return false; // data after padding
         }
         const int value = value_of(c);
         if (value < 0)
@@ -84,12 +101,20 @@ inline bool try_base64_decode(const std::string &text, std::vector<unsigned char
         }
         accumulator = (accumulator << 6) | static_cast<unsigned int>(value);
         bits += 6;
+        if (++group == 4)
+        {
+            group = 0;
+        }
         if (bits >= 8)
         {
             bits -= 8;
             bytes.push_back(static_cast<unsigned char>((accumulator >> bits) & 0xFF));
         }
     }
-    return true;
+    if (pad != 0)
+    {
+        return group + pad == 4;
+    }
+    return group != 1; // a single dangling character encodes no byte
 }
 } // namespace dap_dbgeng::util

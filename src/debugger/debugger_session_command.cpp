@@ -16,6 +16,16 @@ void debugger_session::detach_current_process()
 void debugger_session::detach_all_processes()
 {
     throw_if_disposed();
+    // Drop every breakpoint before letting the target go: a hardware
+    // watchpoint left in the debug registers outlives the detach and freezes
+    // the process when it fires with no debugger attached. Best effort.
+    try
+    {
+        clear_all_breakpoints();
+    }
+    catch (...)
+    {
+    }
     terminate_debuggee_on_dispose_ = false;
     try
     {

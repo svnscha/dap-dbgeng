@@ -23,14 +23,12 @@ void dap_server::handle_write_memory_request(const protocol::WriteMemoryRequest 
         return;
     }
     const std::int64_t offset = request.arguments.offset.value_or(0);
-    if (offset < 0 && static_cast<std::uint64_t>(-offset) > address)
+    if (!util::try_apply_byte_offset(address, offset, address))
     {
         send_error_response(request.seq, request.command,
-                            "The writeMemory request 'offset' moves the address below zero.");
+                            "The writeMemory request 'offset' moves the address outside the 64-bit address space.");
         return;
     }
-    address =
-        offset >= 0 ? address + static_cast<std::uint64_t>(offset) : address - static_cast<std::uint64_t>(-offset);
 
     if (is_execution_running_.load())
     {

@@ -207,8 +207,10 @@ class dap_server : public protocol::dap_service
     bool has_pending_stopped_event();
     bool is_represented_stop_while_halted() const;
 
-    // For a live user-mode target, setBreakpoints briefly interrupts to a clean
-    // stop (events suppressed), applies the breakpoints, and resumes.
+    // For a live user-mode target, breakpoint updates briefly interrupt to a
+    // clean stop (events suppressed), run `apply` (which does its own
+    // dispatcher invoke), and resume. The user never sees the transient stop.
+    void apply_breakpoint_update_while_running(debugger::debugger_session &session, const std::function<void()> &apply);
     std::vector<debugger::source_breakpoint_result> set_breakpoints_while_running(
         debugger::debugger_session &session, const std::string &source_path,
         const std::vector<debugger::source_breakpoint_spec> &specs);

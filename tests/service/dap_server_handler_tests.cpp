@@ -507,6 +507,20 @@ TEST(DapServerHandlers, ModulesWithoutSessionReturnsError)
     EXPECT_EQ(error_format(*response), "The modules request requires an active debugger session.");
 }
 
+TEST(DapServerHandlers, ModulesWhileRunningReturnsError)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+    server.set_execution_running_for_test(true);
+
+    server.handle_request(make_request(1, "modules", nlohmann::json::object()));
+
+    const nlohmann::json *response = writer.find_response("modules", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response),
+              "The debuggee is currently running. The module list is only available while stopped.");
+}
+
 TEST(DapServerHandlers, ReadMemoryRejectsAnInvalidReference)
 {
     recording_message_writer writer;
@@ -520,12 +534,51 @@ TEST(DapServerHandlers, ReadMemoryRejectsAnInvalidReference)
               "The readMemory request 'memoryReference' value 'garbage' is not a valid address.");
 }
 
+TEST(DapServerHandlers, ReadMemoryRejectsANegativeReference)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "readMemory", {{"memoryReference", "-8"}, {"count", 16}}));
+
+    const nlohmann::json *response = writer.find_response("readMemory", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "The readMemory request 'memoryReference' value '-8' is not a valid address.");
+}
+
+TEST(DapServerHandlers, ReadMemoryRejectsAnOffsetThatWrapsTheAddressSpace)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(
+        make_request(1, "readMemory", {{"memoryReference", "0xFFFFFFFFFFFFFFF0"}, {"offset", 0x100}, {"count", 16}}));
+
+    const nlohmann::json *response = writer.find_response("readMemory", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response),
+              "The readMemory request 'offset' moves the address outside the 64-bit address space.");
+}
+
 TEST(DapServerHandlers, WriteMemoryRejectsInvalidBase64)
 {
     recording_message_writer writer;
     dap_server server(writer);
 
     server.handle_request(make_request(1, "writeMemory", {{"memoryReference", "0x1000"}, {"data", "!!!"}}));
+
+    const nlohmann::json *response = writer.find_response("writeMemory", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "The writeMemory request 'data' value is not valid base64.");
+}
+
+TEST(DapServerHandlers, WriteMemoryRejectsTruncatedBase64)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    // "KgAAAA==" chopped mid-quantum: must be rejected, not partially written.
+    server.handle_request(make_request(1, "writeMemory", {{"memoryReference", "0x1000"}, {"data", "KgAAA"}}));
 
     const nlohmann::json *response = writer.find_response("writeMemory", 1);
     ASSERT_NE(response, nullptr);

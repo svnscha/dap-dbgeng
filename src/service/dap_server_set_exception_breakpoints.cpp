@@ -35,10 +35,30 @@ void dap_server::handle_set_exception_breakpoints_request(const protocol::SetExc
     try
     {
         debugger::debugger_session &session = require_debugger_session();
-        dispatcher_.invoke([&]() {
-            session.set_cpp_first_chance_break(cpp_enabled);
-            return 0;
-        });
+        // While the target is running the dispatcher is parked in wait_for_event;
+        // a plain invoke would block the transport thread behind it forever.
+        const bool resume_after_update = is_execution_running_.load();
+        if (resume_after_update && session.is_kernel())
+        {
+            send_error_response(request.seq, request.command,
+                                "Exception filters can only be updated while the kernel target is halted. Pause "
+                                "first.");
+            return;
+        }
+        const auto apply = [&]() {
+            dispatcher_.invoke([&]() {
+                session.set_cpp_first_chance_break(cpp_enabled);
+                return 0;
+            });
+        };
+        if (resume_after_update)
+        {
+            apply_breakpoint_update_while_running(session, apply);
+        }
+        else
+        {
+            apply();
+        }
 
         protocol::SetExceptionBreakpointsResponse response;
         protocol::SetExceptionBreakpointsResponseBody body;

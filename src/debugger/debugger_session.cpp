@@ -66,17 +66,25 @@ class debugger_session::event_callbacks : public IDebugEventCallbacks
 
     STDMETHOD(Exception)(PEXCEPTION_RECORD64 exception, ULONG first_chance) override
     {
-        if (exception != nullptr)
+        if (exception == nullptr)
         {
-            // Remember the event so an exceptionInfo request can describe the
-            // stop. Set on the dispatcher thread (inside WaitForEvent), read
-            // there too via dispatcher-marshaled calls.
-            owner_->last_exception_ =
-                last_exception_info{exception->ExceptionCode, exception->ExceptionAddress, first_chance != 0};
-            if (owner_->on_exception_hit)
-            {
-                owner_->on_exception_hit(static_cast<int>(exception->ExceptionCode));
-            }
+            return DEBUG_STATUS_NO_CHANGE;
+        }
+        // A first-chance C++ EH exception (0xE06D7363) stops only when the
+        // 'cpp' filter is enabled; returning BREAK here would override the
+        // engine's sxd disposition and stop on every locally caught throw.
+        if (first_chance != 0 && exception->ExceptionCode == 0xE06D7363u && !owner_->cpp_first_chance_break_)
+        {
+            return DEBUG_STATUS_NO_CHANGE;
+        }
+        // Remember the event so an exceptionInfo request can describe the
+        // stop. Set on the dispatcher thread (inside WaitForEvent), read
+        // there too via dispatcher-marshaled calls; resuming clears it.
+        owner_->last_exception_ =
+            last_exception_info{exception->ExceptionCode, exception->ExceptionAddress, first_chance != 0};
+        if (owner_->on_exception_hit)
+        {
+            owner_->on_exception_hit(static_cast<int>(exception->ExceptionCode));
         }
         return DEBUG_STATUS_BREAK;
     }

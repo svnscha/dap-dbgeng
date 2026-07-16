@@ -20,15 +20,13 @@ void dap_server::handle_set_instruction_breakpoints_request(const protocol::SetI
             return;
         }
         const std::int64_t offset = breakpoint.offset.value_or(0);
-        if (offset < 0 && static_cast<std::uint64_t>(-offset) > address)
+        if (!util::try_apply_byte_offset(address, offset, address))
         {
-            send_error_response(
-                request.seq, request.command,
-                fmt::format("The offset {} moves '{}' below address zero.", offset, breakpoint.instruction_reference));
+            send_error_response(request.seq, request.command,
+                                fmt::format("The offset {} moves '{}' outside the 64-bit address space.", offset,
+                                            breakpoint.instruction_reference));
             return;
         }
-        address =
-            offset >= 0 ? address + static_cast<std::uint64_t>(offset) : address - static_cast<std::uint64_t>(-offset);
         addresses.push_back(address);
     }
     if (debugger_session_ == nullptr)
@@ -41,8 +39,27 @@ void dap_server::handle_set_instruction_breakpoints_request(const protocol::SetI
     try
     {
         debugger::debugger_session &session = require_debugger_session();
-        const std::vector<debugger::source_breakpoint_result> results =
-            dispatcher_.invoke([&]() { return session.set_instruction_breakpoints(addresses); });
+        // While the target is running the dispatcher is parked in wait_for_event;
+        // a plain invoke would block the transport thread behind it forever.
+        const bool resume_after_update = is_execution_running_.load();
+        if (resume_after_update && session.is_kernel())
+        {
+            send_error_response(request.seq, request.command,
+                                "Breakpoints can only be updated while the kernel target is halted. Pause first.");
+            return;
+        }
+        std::vector<debugger::source_breakpoint_result> results;
+        const auto apply = [&]() {
+            results = dispatcher_.invoke([&]() { return session.set_instruction_breakpoints(addresses); });
+        };
+        if (resume_after_update)
+        {
+            apply_breakpoint_update_while_running(session, apply);
+        }
+        else
+        {
+            apply();
+        }
 
         protocol::SetInstructionBreakpointsResponse response;
         response.body.breakpoints.reserve(results.size());

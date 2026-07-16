@@ -229,7 +229,11 @@ class debugger_session
     std::vector<int> instruction_breakpoint_ids_;
     std::vector<int> data_breakpoint_ids_;
 
-    // Last exception event, captured by the engine callback.
+    // Last exception event, captured by the engine callback; cleared whenever
+    // execution resumes so exceptionInfo never describes a stale stop.
     std::optional<last_exception_info> last_exception_;
+    // Mirrors the sxe/sxd e06d7363 filter so the exception callback lets
+    // first-chance C++ exceptions run when the filter is off.
+    bool cpp_first_chance_break_ = false;
 };
 } // namespace dap_dbgeng::debugger

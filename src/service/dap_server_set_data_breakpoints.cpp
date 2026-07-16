@@ -66,8 +66,27 @@ void dap_server::handle_set_data_breakpoints_request(const protocol::SetDataBrea
     try
     {
         debugger::debugger_session &session = require_debugger_session();
-        const std::vector<debugger::source_breakpoint_result> results =
-            dispatcher_.invoke([&]() { return session.set_data_breakpoints(specs); });
+        // While the target is running the dispatcher is parked in wait_for_event;
+        // a plain invoke would block the transport thread behind it forever.
+        const bool resume_after_update = is_execution_running_.load();
+        if (resume_after_update && session.is_kernel())
+        {
+            send_error_response(request.seq, request.command,
+                                "Breakpoints can only be updated while the kernel target is halted. Pause first.");
+            return;
+        }
+        std::vector<debugger::source_breakpoint_result> results;
+        const auto apply = [&]() {
+            results = dispatcher_.invoke([&]() { return session.set_data_breakpoints(specs); });
+        };
+        if (resume_after_update)
+        {
+            apply_breakpoint_update_while_running(session, apply);
+        }
+        else
+        {
+            apply();
+        }
 
         protocol::SetDataBreakpointsResponse response;
         response.body.breakpoints.reserve(results.size());

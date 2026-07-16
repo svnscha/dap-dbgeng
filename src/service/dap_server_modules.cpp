@@ -13,6 +13,12 @@ void dap_server::handle_modules_request(const protocol::ModulesRequest &request)
         return;
     }
 
+    if (is_execution_running_.load())
+    {
+        send_error_response(request.seq, request.command,
+                            "The debuggee is currently running. The module list is only available while stopped.");
+        return;
+    }
     if (debugger_session_ == nullptr)
     {
         send_error_response(request.seq, request.command, "The modules request requires an active debugger session.");

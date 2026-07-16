@@ -45,3 +45,31 @@ TEST(Base64, DecodeRejectsInvalidCharacters)
     EXPECT_FALSE(try_base64_decode("Zm9v!", decoded));
     EXPECT_FALSE(try_base64_decode("a b", decoded));
 }
+
+TEST(Base64, DecodeRejectsDanglingCharacters)
+{
+    // A single character (6 bits) encodes no byte; a truncated payload must
+    // fail instead of silently writing fewer bytes.
+    std::vector<unsigned char> decoded;
+    EXPECT_FALSE(try_base64_decode("A", decoded));
+    EXPECT_FALSE(try_base64_decode("KgAAA", decoded));
+    EXPECT_TRUE(try_base64_decode("KgAAAA==", decoded));
+    EXPECT_EQ(decoded, bytes_of({42, 0, 0, 0}));
+}
+
+TEST(Base64, DecodeRejectsMisplacedPadding)
+{
+    std::vector<unsigned char> decoded;
+    EXPECT_FALSE(try_base64_decode("Zg==Zg==", decoded)); // data after padding
+    EXPECT_FALSE(try_base64_decode("Zg=", decoded));      // quantum not padded to 4
+    EXPECT_FALSE(try_base64_decode("Z===", decoded));     // more padding than data allows
+    EXPECT_FALSE(try_base64_decode("Zm9v=", decoded));    // padding after a full quantum
+    EXPECT_FALSE(try_base64_decode("=", decoded));
+}
+
+TEST(Base64, DecodeSkipsLineBreaks)
+{
+    std::vector<unsigned char> decoded;
+    ASSERT_TRUE(try_base64_decode("Zm9v\r\nZg==", decoded));
+    EXPECT_EQ(decoded, bytes_of({'f', 'o', 'o', 'f'}));
+}

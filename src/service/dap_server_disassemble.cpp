@@ -18,28 +18,8 @@ struct disassemble_arguments
     bool resolve_symbols = false;
 };
 
+using util::try_apply_byte_offset;
 using util::try_parse_memory_reference;
-
-bool try_apply_byte_offset(std::uint64_t memory_address, long long offset, std::uint64_t &adjusted)
-{
-    if (offset >= 0)
-    {
-        const std::uint64_t add = static_cast<std::uint64_t>(offset);
-        if (memory_address > std::numeric_limits<std::uint64_t>::max() - add)
-        {
-            return false;
-        }
-        adjusted = memory_address + add;
-        return true;
-    }
-    const std::uint64_t sub = static_cast<std::uint64_t>(-offset);
-    if (memory_address < sub)
-    {
-        return false;
-    }
-    adjusted = memory_address - sub;
-    return true;
-}
 
 bool try_read_disassemble_arguments(const protocol::DisassembleArguments &arguments, disassemble_arguments &result,
                                     std::string &error_message)

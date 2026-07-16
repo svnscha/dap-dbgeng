@@ -278,8 +278,10 @@ void debugger_session::set_cpp_first_chance_break(bool enabled)
 {
     throw_if_disposed();
     // 0xE06D7363 is the MSVC C++ EH exception code; sxe breaks first chance,
-    // sxd restores second-chance-only.
+    // sxd restores second-chance-only. The mirrored flag keeps the exception
+    // callback from overriding the sxd disposition.
     execute_command_with_output(enabled ? "sxe e06d7363" : "sxd e06d7363", /*suppress_output_events=*/true);
+    cpp_first_chance_break_ = enabled;
 }
 
 std::vector<breakpoint_state> debugger_session::get_breakpoint_states()
