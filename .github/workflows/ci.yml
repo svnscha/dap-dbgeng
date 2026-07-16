@@ -16,6 +16,9 @@ jobs:
   build-and-test:
     name: Windows x64 (${{ matrix.preset }})
     runs-on: windows-latest
+    # A hung test must not burn the 6-hour runner default (a leaked debuggee
+    # once kept the job alive until GitHub cancelled it).
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:

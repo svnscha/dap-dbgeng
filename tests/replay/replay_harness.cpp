@@ -336,10 +336,16 @@ class out_of_process_adapter
             }
         }
 
-        // The reader exits when stdout is closed (which happens once the child
-        // exits). Close our read end to unblock a stuck read, then join.
+        // The reader exits when the pipe's last write handle closes - normally
+        // when the child dies. A debuggee that inherited the adapter's stdout
+        // can outlive a terminated adapter and keep the pipe open forever, so
+        // cancel a blocked synchronous read until the reader finishes.
         if (reader_.joinable())
         {
+            while (WaitForSingleObject(reader_.native_handle(), 100) == WAIT_TIMEOUT)
+            {
+                CancelSynchronousIo(reader_.native_handle());
+            }
             reader_.join();
         }
 

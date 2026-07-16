@@ -589,6 +589,11 @@ TEST(DebuggerSessionIntegration, DataBreakpointStopsOnWatchedWrite)
         const variable_node *watched = find_child(locals, "watched");
         ASSERT_NE(watched, nullptr);
         EXPECT_EQ(watched->value, "4") << "The data breakpoint should fire right after the write.";
+
+        // Clear the watchpoint before detaching: the watched stack slot is
+        // reused after main returns, and a leftover hardware breakpoint in the
+        // detached process re-fires forever so test_data_1 never exits.
+        EXPECT_TRUE(session->set_data_breakpoints({}).empty());
     }
     catch (...)
     {
