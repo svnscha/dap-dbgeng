@@ -36,7 +36,7 @@ jobs:
       # Hosted runners cannot do live cross-process attach; skip those replay tests.
       DAP_DBGENG_SKIP_LIVE_ATTACH: "1"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Point VCPKG_ROOT at the preinstalled vcpkg
         shell: pwsh
