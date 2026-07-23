@@ -12,6 +12,10 @@
             "name": "Debug Test Target (Launch)",
             "type": "dbgeng",
             "request": "launch",
+            // Set dbgengPath so Normalize-DapRecording.ps1 can tokenize it to ${dbgEngPath};
+            // fixtures recorded without it only replay where the SDK Debugging Tools are
+            // installed at the default location.
+            // "dbgengPath": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x64\\dbgeng.dll",
             // Each session is recorded to the gitignored recordings/ directory; normalize a
             // capture into a replay fixture with scripts/Normalize-DapRecording.ps1.
             "trace": "${workspaceFolder}/recordings/launch.session.json"

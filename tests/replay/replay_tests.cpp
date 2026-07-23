@@ -328,6 +328,176 @@ TEST(Replay, LaunchSetsStructFieldsViaSetVariable)
     EXPECT_TRUE(wrote_43) << "Expected the struct field assignment to read back as int 43.";
 }
 
+TEST(Replay, MemoryReadWrite)
+{
+    // Recorded from VS Code with the Hex Editor extension (see
+    // docs/development/recording-fixtures.md); VS Code never sends 'modules',
+    // so module listing is covered by the live integration tests instead.
+    REPLAY_OR_SKIP(replay, "memory-read-write.json");
+    assert_positive_launch_replay(replay);
+
+    // readMemory before and after a writeMemory. The hex editor also probes
+    // pages outside the readable region; those reads succeed with empty data
+    // and unreadableBytes, so only data-carrying reads are counted.
+    std::size_t read_memory_responses_with_data = 0;
+    std::size_t write_memory_responses = 0;
+    for (const auto &m : replay.non_output)
+    {
+        if (is_response(m, "readMemory") && m.value("success", false) &&
+            !m.at("body").value("data", std::string{}).empty())
+        {
+            ++read_memory_responses_with_data;
+        }
+        if (is_response(m, "writeMemory") && m.value("success", false))
+        {
+            ++write_memory_responses;
+        }
+    }
+    EXPECT_GE(read_memory_responses_with_data, 2u) << "Expected data-carrying reads before and after the write.";
+    EXPECT_EQ(1u, write_memory_responses);
+}
+
+TEST(Replay, SetExpressionAssignsNestedField)
+{
+    REPLAY_OR_SKIP(replay, "set-expression.json");
+    assert_positive_launch_replay(replay);
+
+    // The setExpression response echoes the engine read-back, and the fresh
+    // variables read afterwards observes t.origin.x == 123.
+    bool assigned = false;
+    bool observed = false;
+    for (const auto &m : replay.non_output)
+    {
+        if (is_response(m, "setExpression") && m.value("success", false))
+        {
+            assigned = m.at("body").value("value", std::string{}) == "123";
+        }
+        if (is_response(m, "variables") && m.contains("body"))
+        {
+            for (const auto &v : m.at("body").at("variables"))
+            {
+                if (v.value("evaluateName", std::string{}) == "t.origin.x" && v.value("value", std::string{}) == "123")
+                {
+                    observed = true;
+                }
+            }
+        }
+    }
+    EXPECT_TRUE(assigned) << "Expected setExpression to read back 123.";
+    EXPECT_TRUE(observed) << "Expected the fresh variables read to observe the assignment.";
+}
+
+TEST(Replay, FunctionBreakpointStopsInMain)
+{
+    REPLAY_OR_SKIP(replay, "function-breakpoints.json");
+    assert_positive_launch_replay(replay);
+
+    bool verified = false;
+    for (const auto &m : replay.non_output)
+    {
+        if (is_response(m, "setFunctionBreakpoints") && m.contains("body"))
+        {
+            const auto &breakpoints = m.at("body").at("breakpoints");
+            verified = breakpoints.size() == 1 && breakpoints[0].value("verified", false);
+        }
+    }
+    EXPECT_TRUE(verified) << "Expected the function breakpoint to verify.";
+
+    const bool stopped_in_main =
+        std::any_of(replay.non_output.begin(), replay.non_output.end(), [](const nlohmann::json &m) {
+            return is_response(m, "stackTrace") && m.contains("body") && !m.at("body").at("stackFrames").empty() &&
+                   m.at("body").at("stackFrames")[0].value("name", std::string{}).find("main") != std::string::npos;
+        });
+    EXPECT_TRUE(stopped_in_main) << "Expected the stop's top frame to be main.";
+}
+
+TEST(Replay, InstructionBreakpointStopsAtAddress)
+{
+    REPLAY_OR_SKIP(replay, "instruction-breakpoints.json");
+    assert_positive_launch_replay(replay);
+
+    bool verified = false;
+    for (const auto &m : replay.non_output)
+    {
+        if (is_response(m, "setInstructionBreakpoints") && m.contains("body"))
+        {
+            const auto &breakpoints = m.at("body").at("breakpoints");
+            verified = breakpoints.size() == 1 && breakpoints[0].value("verified", false);
+        }
+    }
+    EXPECT_TRUE(verified) << "Expected the instruction breakpoint to verify.";
+    // Two stops: the arming source breakpoint, then the instruction breakpoint.
+    EXPECT_EQ(2u, count_events(replay.non_output, "stopped"));
+}
+
+TEST(Replay, CppExceptionFilterStopsAndDescribesTheThrow)
+{
+    REPLAY_OR_SKIP(replay, "exception-filter.json");
+    assert_positive_launch_replay(replay);
+
+    const bool exception_stop =
+        std::any_of(replay.non_output.begin(), replay.non_output.end(), [](const nlohmann::json &m) {
+            return is_event(m, "stopped") && m.contains("body") &&
+                   m.at("body").value("reason", std::string{}) == "exception";
+        });
+    EXPECT_TRUE(exception_stop) << "Expected a stopped event with reason 'exception'.";
+
+    bool described = false;
+    for (const auto &m : replay.non_output)
+    {
+        if (is_response(m, "exceptionInfo") && m.value("success", false))
+        {
+            described = m.at("body").value("exceptionId", std::string{}) == "0xE06D7363" &&
+                        m.at("body").value("description", std::string{}) == "C++ exception";
+        }
+    }
+    EXPECT_TRUE(described) << "Expected exceptionInfo to describe the C++ exception.";
+    // The exception is caught: after continuing, the debuggee exits cleanly.
+    EXPECT_EQ(1u, count_events(replay.non_output, "exited"));
+}
+
+TEST(Replay, DataBreakpointFiresOnWatchedWrite)
+{
+    REPLAY_OR_SKIP(replay, "data-breakpoints.json");
+    assert_positive_launch_replay(replay);
+
+    bool info_returned_data_id = false;
+    std::size_t verified_data_breakpoints = 0;
+    bool watched_updated = false;
+    for (const auto &m : replay.non_output)
+    {
+        if (is_response(m, "dataBreakpointInfo") && m.value("success", false))
+        {
+            info_returned_data_id = !m.at("body").value("dataId", std::string{}).empty();
+        }
+        if (is_response(m, "setDataBreakpoints") && m.contains("body"))
+        {
+            for (const auto &breakpoint : m.at("body").at("breakpoints"))
+            {
+                if (breakpoint.value("verified", false))
+                {
+                    ++verified_data_breakpoints;
+                }
+            }
+        }
+        if (is_response(m, "variables") && m.contains("body"))
+        {
+            for (const auto &v : m.at("body").at("variables"))
+            {
+                if (v.value("name", std::string{}) == "watched" && v.value("value", std::string{}) == "4")
+                {
+                    watched_updated = true;
+                }
+            }
+        }
+    }
+    EXPECT_TRUE(info_returned_data_id) << "Expected dataBreakpointInfo to produce a dataId.";
+    EXPECT_EQ(1u, verified_data_breakpoints) << "Expected one verified data breakpoint.";
+    EXPECT_TRUE(watched_updated) << "Expected the post-hit variables read to show watched == 4.";
+    // Two stops: the arming source breakpoint, then the watchpoint hit.
+    EXPECT_EQ(2u, count_events(replay.non_output, "stopped"));
+}
+
 TEST(Replay, ThreadsRequestDuringRecordedExit)
 {
     REPLAY_OR_SKIP(replay, "threads-after-exit.json");

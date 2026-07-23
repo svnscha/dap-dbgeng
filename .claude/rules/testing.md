@@ -32,5 +32,9 @@ recorded order**, but the inherently nondeterministic `thread` lifecycle is loos
   fixture is retried twice.
 - **Surplus** actual `thread` events are tolerated: how many threads a process and the loader/CRT
   spin up is environment-dependent, so a different OS build (e.g. a CI runner vs. the machine that
-  recorded a fixture) can emit extra thread started/exited events. Every *recorded* thread event
+  recorded a fixture) can emit extra thread started/exited events. Every *recorded* thread-start
   must still appear.
+- **Missing** recorded thread-*exit* events are forgiven once every non-thread message (including
+  `exited`/`terminated`) has matched: dbgeng folds the exit of a thread that is still alive at
+  process teardown into the process exit and may never report it individually, so which exits get
+  delivered varies run to run.

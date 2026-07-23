@@ -90,6 +90,7 @@ nav:
   - Troubleshooting: troubleshooting.md
   - Development:
       - Request coverage: development/request-coverage.md
+      - Recording fixtures: development/recording-fixtures.md
 
 plugins:
   - search

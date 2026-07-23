@@ -280,6 +280,42 @@ TEST(DebuggerSessionIntegration, LaunchGetLocalsTreeExpandsNestedStruct)
     cleanup_launched_session(session);
 }
 
+TEST(DebuggerSessionIntegration, GetLocalValueReadsNestedStructFields)
+{
+    const std::string dbgeng = resolve_dbgeng_path();
+    DAP_REQUIRE_OR_SKIP(dbgeng, "dbgeng.dll not found (set DAP_DBGENG_WINDBG_PATH).");
+    const std::string target = resolve_struct_target_path();
+    DAP_REQUIRE_OR_SKIP(target, "test_struct_1.exe not found (build test-targets/testapp).");
+    const std::string source = resolve_struct_target_source();
+    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/struct-1.cpp not found.");
+
+    std::unique_ptr<debugger_session> session;
+    try
+    {
+        session = std::make_unique<debugger_session>(dbgeng);
+        session->launch(target);
+        session->set_symbol_path({resolve_struct_target_directory()});
+        session->set_source_path({fs::path(source).parent_path().string()});
+        session->enable_source_line_support();
+        session->set_source_breakpoints(source, std::vector<int>{37});
+        session->continue_();
+        session->wait_for_event(10000);
+
+        // The watch-pane read path: nested member expressions resolve natively.
+        const variable_node px = session->get_local_value(0, "p.x");
+        EXPECT_EQ(px.value, "3") << "p is point2{3, 7}.";
+        const variable_node py = session->get_local_value(0, "p.y");
+        EXPECT_EQ(py.value, "7");
+        EXPECT_THROW(session->get_local_value(0, "no_such_symbol"), std::exception);
+    }
+    catch (...)
+    {
+        cleanup_launched_session(session);
+        throw;
+    }
+    cleanup_launched_session(session);
+}
+
 TEST(DebuggerSessionIntegration, SetLocalValueWritesNestedStructFields)
 {
     const std::string dbgeng = resolve_dbgeng_path();
@@ -332,6 +368,268 @@ TEST(DebuggerSessionIntegration, SetLocalValueWritesNestedStructFields)
         const variable_node *id = find_child(t->children, "id");
         ASSERT_NE(id, nullptr);
         EXPECT_EQ(id->value, "7") << "t.id should reflect the native write.";
+    }
+    catch (...)
+    {
+        cleanup_launched_session(session);
+        throw;
+    }
+    cleanup_launched_session(session);
+}
+
+TEST(DebuggerSessionIntegration, LaunchGetModulesListsTheDebuggee)
+{
+    const std::string dbgeng = resolve_dbgeng_path();
+    DAP_REQUIRE_OR_SKIP(dbgeng, "dbgeng.dll not found (set DAP_DBGENG_WINDBG_PATH).");
+    const std::string target = resolve_launch_target_path();
+    DAP_REQUIRE_OR_SKIP(target, "test_launch.exe not found (build test-targets/testapp or set DAP_DBGENG_NATIVE_APP).");
+
+    std::unique_ptr<debugger_session> session;
+    try
+    {
+        session = std::make_unique<debugger_session>(dbgeng);
+        session->launch(target);
+
+        const auto modules = session->get_modules();
+        ASSERT_GT(modules.size(), 0u) << "Expected at least the debuggee module after launch.";
+        bool found_debuggee = false;
+        for (const auto &module : modules)
+        {
+            EXPECT_FALSE(module.name.empty()) << "Every module should carry a name.";
+            EXPECT_NE(module.base, 0u) << "Every module should carry a base address.";
+            if (module.image_path.find("test_launch") != std::string::npos)
+            {
+                found_debuggee = true;
+            }
+        }
+        EXPECT_TRUE(found_debuggee) << "Expected the launched debuggee among the modules.";
+    }
+    catch (...)
+    {
+        cleanup_launched_session(session);
+        throw;
+    }
+    cleanup_launched_session(session);
+}
+
+TEST(DebuggerSessionIntegration, ReadAndWriteMemoryRoundTripsAtALocalsAddress)
+{
+    const std::string dbgeng = resolve_dbgeng_path();
+    DAP_REQUIRE_OR_SKIP(dbgeng, "dbgeng.dll not found (set DAP_DBGENG_WINDBG_PATH).");
+    const std::string target = resolve_struct_target_path();
+    DAP_REQUIRE_OR_SKIP(target, "test_struct_1.exe not found (build test-targets/testapp).");
+    const std::string source = resolve_struct_target_source();
+    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/struct-1.cpp not found.");
+
+    std::unique_ptr<debugger_session> session;
+    try
+    {
+        session = std::make_unique<debugger_session>(dbgeng);
+        session->launch(target);
+        session->set_symbol_path({resolve_struct_target_directory()});
+        session->set_source_path({fs::path(source).parent_path().string()});
+        session->enable_source_line_support();
+        session->set_source_breakpoints(source, std::vector<int>{37});
+        session->continue_();
+        session->wait_for_event(10000);
+
+        // p is point2{3, 7}: its address must read back 3 as the first int.
+        const auto [address, size] = session->get_symbol_address(0, "p");
+        ASSERT_NE(address, 0u);
+        ASSERT_EQ(size, 8u) << "point2 is two ints.";
+
+        const auto bytes = session->read_memory(address, 8);
+        ASSERT_EQ(bytes.size(), 8u);
+        EXPECT_EQ(bytes[0], 3u) << "p.x is 3.";
+        EXPECT_EQ(bytes[4], 7u) << "p.y is 7.";
+
+        // Overwrite p.x with 42 and read it back through the locals tree.
+        const std::vector<unsigned char> new_x = {42, 0, 0, 0};
+        EXPECT_EQ(session->write_memory(address, new_x), 4u);
+        const auto after = session->read_memory(address, 4);
+        ASSERT_EQ(after.size(), 4u);
+        EXPECT_EQ(after[0], 42u) << "p.x should reflect the memory write.";
+    }
+    catch (...)
+    {
+        cleanup_launched_session(session);
+        throw;
+    }
+    cleanup_launched_session(session);
+}
+
+TEST(DebuggerSessionIntegration, FunctionBreakpointStopsInMain)
+{
+    const std::string dbgeng = resolve_dbgeng_path();
+    DAP_REQUIRE_OR_SKIP(dbgeng, "dbgeng.dll not found (set DAP_DBGENG_WINDBG_PATH).");
+    const std::string target = resolve_launch_target_path();
+    DAP_REQUIRE_OR_SKIP(target, "test_launch.exe not found (build test-targets/testapp or set DAP_DBGENG_NATIVE_APP).");
+
+    std::unique_ptr<debugger_session> session;
+    try
+    {
+        session = std::make_unique<debugger_session>(dbgeng);
+        session->launch(target);
+        session->set_symbol_path({resolve_launch_target_directory()});
+
+        const auto results = session->set_function_breakpoints({"test_launch!main"});
+        ASSERT_EQ(results.size(), 1u);
+        EXPECT_TRUE(results[0].verified) << results[0].message.value_or("");
+
+        session->continue_();
+        session->wait_for_event(10000);
+
+        const auto frames = session->get_stack_trace();
+        ASSERT_GT(frames.size(), 0u);
+        ASSERT_TRUE(frames[0].name.has_value());
+        EXPECT_NE(frames[0].name->find("main"), std::string::npos)
+            << "Expected to stop in main, got: " << *frames[0].name;
+
+        // Replace-all: an empty set clears the function breakpoint.
+        EXPECT_TRUE(session->set_function_breakpoints({}).empty());
+    }
+    catch (...)
+    {
+        cleanup_launched_session(session);
+        throw;
+    }
+    cleanup_launched_session(session);
+}
+
+TEST(DebuggerSessionIntegration, InstructionBreakpointStopsAtAddress)
+{
+    const std::string dbgeng = resolve_dbgeng_path();
+    DAP_REQUIRE_OR_SKIP(dbgeng, "dbgeng.dll not found (set DAP_DBGENG_WINDBG_PATH).");
+    const std::string target = resolve_struct_target_path();
+    DAP_REQUIRE_OR_SKIP(target, "test_struct_1.exe not found (build test-targets/testapp).");
+    const std::string source = resolve_struct_target_source();
+    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/struct-1.cpp not found.");
+
+    std::unique_ptr<debugger_session> session;
+    try
+    {
+        session = std::make_unique<debugger_session>(dbgeng);
+        session->launch(target);
+        session->set_symbol_path({resolve_struct_target_directory()});
+        session->set_source_path({fs::path(source).parent_path().string()});
+        session->enable_source_line_support();
+        session->set_source_breakpoints(source, std::vector<int>{37});
+        session->continue_();
+        session->wait_for_event(10000);
+
+        // Break at the second instruction after the current one; it executes
+        // next when this straight-line code continues.
+        const auto frames = session->get_stack_trace(1);
+        ASSERT_GT(frames.size(), 0u);
+        const auto instructions = session->disassemble(frames[0].instruction_offset, 0, 3, false);
+        ASSERT_GE(instructions.size(), 2u);
+        const std::uint64_t stop_address = instructions[1].address;
+
+        const auto results = session->set_instruction_breakpoints({stop_address});
+        ASSERT_EQ(results.size(), 1u);
+        EXPECT_TRUE(results[0].verified) << results[0].message.value_or("");
+
+        session->continue_();
+        session->wait_for_event(10000);
+
+        const auto stopped_frames = session->get_stack_trace(1);
+        ASSERT_GT(stopped_frames.size(), 0u);
+        EXPECT_EQ(stopped_frames[0].instruction_offset, stop_address)
+            << "Expected to stop exactly at the instruction breakpoint.";
+    }
+    catch (...)
+    {
+        cleanup_launched_session(session);
+        throw;
+    }
+    cleanup_launched_session(session);
+}
+
+TEST(DebuggerSessionIntegration, CppFirstChanceFilterStopsOnCaughtThrow)
+{
+    const std::string dbgeng = resolve_dbgeng_path();
+    DAP_REQUIRE_OR_SKIP(dbgeng, "dbgeng.dll not found (set DAP_DBGENG_WINDBG_PATH).");
+    const std::string target = resolve_test_target_path("test_exception_1.exe");
+    DAP_REQUIRE_OR_SKIP(target, "test_exception_1.exe not found (build test-targets/testapp).");
+
+    std::unique_ptr<debugger_session> session;
+    try
+    {
+        session = std::make_unique<debugger_session>(dbgeng);
+        session->launch(target);
+        session->set_cpp_first_chance_break(true);
+        session->continue_();
+        session->wait_for_event(10000);
+
+        const auto exception = session->get_last_exception();
+        ASSERT_TRUE(exception.has_value()) << "Expected a first-chance C++ exception stop.";
+        EXPECT_EQ(exception->code, 0xE06D7363u) << "Expected the MSVC C++ EH exception code.";
+        EXPECT_TRUE(exception->first_chance);
+        EXPECT_NE(exception->address, 0u);
+    }
+    catch (...)
+    {
+        cleanup_launched_session(session);
+        throw;
+    }
+    cleanup_launched_session(session);
+}
+
+TEST(DebuggerSessionIntegration, DataBreakpointStopsOnWatchedWrite)
+{
+    const std::string dbgeng = resolve_dbgeng_path();
+    DAP_REQUIRE_OR_SKIP(dbgeng, "dbgeng.dll not found (set DAP_DBGENG_WINDBG_PATH).");
+    const std::string target = resolve_test_target_path("test_data_1.exe");
+    DAP_REQUIRE_OR_SKIP(target, "test_data_1.exe not found (build test-targets/testapp).");
+    const std::string source = resolve_test_target_source("data-1.cpp");
+    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/data-1.cpp not found.");
+
+    const auto find_child = [](const std::vector<variable_node> &nodes,
+                               const std::string &name) -> const variable_node * {
+        for (const auto &node : nodes)
+        {
+            if (node.name == name)
+            {
+                return &node;
+            }
+        }
+        return nullptr;
+    };
+
+    std::unique_ptr<debugger_session> session;
+    try
+    {
+        session = std::make_unique<debugger_session>(dbgeng);
+        session->launch(target);
+        session->set_symbol_path({fs::path(target).parent_path().string()});
+        session->set_source_path({fs::path(source).parent_path().string()});
+        session->enable_source_line_support();
+        // Line 15 prints "data-1 armed"; watched/next are initialized there.
+        session->set_source_breakpoints(source, std::vector<int>{15});
+        session->continue_();
+        session->wait_for_event(10000);
+
+        const auto [address, size] = session->get_symbol_address(0, "watched");
+        ASSERT_NE(address, 0u);
+        ASSERT_EQ(size, 4u) << "watched is an int.";
+
+        const auto results = session->set_data_breakpoints({data_breakpoint_spec{address, 4, false}});
+        ASSERT_EQ(results.size(), 1u);
+        EXPECT_TRUE(results[0].verified) << results[0].message.value_or("");
+
+        // Continue: line 17 writes watched = next * 2 = 4 and the watchpoint fires.
+        session->continue_();
+        session->wait_for_event(10000);
+
+        const auto locals = session->get_locals_tree(0);
+        const variable_node *watched = find_child(locals, "watched");
+        ASSERT_NE(watched, nullptr);
+        EXPECT_EQ(watched->value, "4") << "The data breakpoint should fire right after the write.";
+
+        // Clear the watchpoint before detaching: the watched stack slot is
+        // reused after main returns, and a leftover hardware breakpoint in the
+        // detached process re-fires forever so test_data_1 never exits.
+        EXPECT_TRUE(session->set_data_breakpoints({}).empty());
     }
     catch (...)
     {

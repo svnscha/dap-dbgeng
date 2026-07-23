@@ -9,21 +9,27 @@ namespace dap_dbgeng::debugger
 // ---------------------------------------------------------------------------
 void debugger_session::continue_()
 {
+    // Resuming invalidates the captured exception; exceptionInfo must never
+    // describe a previous stop.
+    last_exception_.reset();
     execute_debugger_command("g", "Could not continue execution");
 }
 
 void debugger_session::step_into()
 {
+    last_exception_.reset();
     execute_debugger_command("t", "Could not step into");
 }
 
 void debugger_session::step_over()
 {
+    last_exception_.reset();
     execute_debugger_command("p", "Could not step over");
 }
 
 void debugger_session::step_out()
 {
+    last_exception_.reset();
     execute_debugger_command("gu", "Could not step out");
 }
 

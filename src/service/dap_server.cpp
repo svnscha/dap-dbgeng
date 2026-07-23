@@ -747,6 +747,11 @@ protocol::Variable dap_server::build_variable_tree(const debugger::variable_node
     {
         variable.type = node.type;
     }
+    if (node.address != 0)
+    {
+        // Feeds readMemory (hex views) and asAddress data breakpoints.
+        variable.memory_reference = fmt::format("0x{:x}", node.address);
+    }
 
     // Full access path: a field appends ".field" to its parent; an array element
     // ("[0]") appends directly. A child with no name (anonymous union / base
@@ -851,20 +856,18 @@ void dap_server::clear_conditional_breakpoint_state(const std::string &source_pa
     conditional_breakpoint_ids_by_path_.erase(it);
 }
 
-std::vector<debugger::source_breakpoint_result> dap_server::set_breakpoints_while_running(
-    debugger::debugger_session &session, const std::string &source_path,
-    const std::vector<debugger::source_breakpoint_spec> &specs)
+void dap_server::apply_breakpoint_update_while_running(debugger::debugger_session &session,
+                                                       const std::function<void()> &apply)
 {
     // The target is running, so the dispatcher is blocked in the wait loop's
     // wait_for_event. Interrupt to a clean stop with events suppressed, let the
-    // wait loop unwind (freeing the dispatcher), then apply the breakpoints exactly
+    // wait loop unwind (freeing the dispatcher), then apply the update exactly
     // as in the stopped state and resume. The user never sees the transient stop.
-    std::vector<debugger::source_breakpoint_result> configured;
     run_with_suppressed_session_events([&]() {
         session.interrupt();
         join_wait_loop(); // returns once the suppressed break unwinds the wait loop
 
-        configured = dispatcher_.invoke([&]() { return session.set_source_breakpoints(source_path, specs); });
+        apply();
 
         is_execution_running_.store(true);
         dispatcher_.invoke([&]() {
@@ -873,6 +876,16 @@ std::vector<debugger::source_breakpoint_result> dap_server::set_breakpoints_whil
         });
     });
     start_waiting_for_session_event(session);
+}
+
+std::vector<debugger::source_breakpoint_result> dap_server::set_breakpoints_while_running(
+    debugger::debugger_session &session, const std::string &source_path,
+    const std::vector<debugger::source_breakpoint_spec> &specs)
+{
+    std::vector<debugger::source_breakpoint_result> configured;
+    apply_breakpoint_update_while_running(session, [&]() {
+        configured = dispatcher_.invoke([&]() { return session.set_source_breakpoints(source_path, specs); });
+    });
     return configured;
 }
 

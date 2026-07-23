@@ -43,6 +43,18 @@ nlohmann::json make_request(int seq, const std::string &command, nlohmann::json 
     return nlohmann::json{{"seq", seq}, {"type", "request"}, {"command", command}, {"arguments", std::move(arguments)}};
 }
 
+// Build a variable_node without relying on aggregate field order.
+dap_dbgeng::debugger::variable_node make_node(std::string name, std::string value, std::string type,
+                                              std::vector<dap_dbgeng::debugger::variable_node> children = {})
+{
+    dap_dbgeng::debugger::variable_node node;
+    node.name = std::move(name);
+    node.value = std::move(value);
+    node.type = std::move(type);
+    node.children = std::move(children);
+    return node;
+}
+
 std::string error_format(const nlohmann::json &response)
 {
     return response.at("body").at("error").at("format").get<std::string>();
@@ -62,11 +74,15 @@ TEST(DapServerHandlers, InitializeAdvertisesImplementedCapabilities)
     EXPECT_TRUE(response->at("success").get<bool>());
     const nlohmann::json &body = response->at("body");
     EXPECT_TRUE(body.at("supportsSetVariable").get<bool>());
-    EXPECT_FALSE(body.at("supportsFunctionBreakpoints").get<bool>());
+    EXPECT_TRUE(body.at("supportsSetExpression").get<bool>());
+    EXPECT_TRUE(body.at("supportsFunctionBreakpoints").get<bool>());
+    EXPECT_TRUE(body.at("supportsInstructionBreakpoints").get<bool>());
+    EXPECT_TRUE(body.at("supportsDataBreakpoints").get<bool>());
     EXPECT_TRUE(body.at("supportsConditionalBreakpoints").get<bool>());
-    EXPECT_FALSE(body.at("supportsReadMemoryRequest").get<bool>());
-    EXPECT_FALSE(body.at("supportsWriteMemoryRequest").get<bool>());
-    EXPECT_FALSE(body.at("supportsModulesRequest").get<bool>());
+    EXPECT_TRUE(body.at("supportsReadMemoryRequest").get<bool>());
+    EXPECT_TRUE(body.at("supportsWriteMemoryRequest").get<bool>());
+    EXPECT_TRUE(body.at("supportsModulesRequest").get<bool>());
+    EXPECT_TRUE(body.at("supportsExceptionInfoRequest").get<bool>());
     EXPECT_FALSE(body.at("supportsRestartRequest").get<bool>());
     EXPECT_TRUE(body.at("supportsDisassembleRequest").get<bool>());
     EXPECT_FALSE(body.at("supportsEvaluateForHovers").get<bool>());
@@ -77,6 +93,12 @@ TEST(DapServerHandlers, InitializeAdvertisesImplementedCapabilities)
     EXPECT_TRUE(body.at("supportsTerminateRequest").get<bool>());
     EXPECT_TRUE(body.at("supportTerminateDebuggee").get<bool>());
 
+    // One exception filter: first-chance C++ exceptions, off by default.
+    const nlohmann::json &filters = body.at("exceptionBreakpointFilters");
+    ASSERT_EQ(filters.size(), 1u);
+    EXPECT_EQ(filters[0].at("filter"), "cpp");
+    EXPECT_FALSE(filters[0].at("default").get<bool>());
+
     // initialized event follows the response on the same ordered path.
     ASSERT_GE(writer.messages.size(), 2u);
     EXPECT_EQ(writer.messages.back().at("event"), "initialized");
@@ -84,17 +106,17 @@ TEST(DapServerHandlers, InitializeAdvertisesImplementedCapabilities)
 
 // --- default handler / unsupported requests ---------------------------------
 
-TEST(DapServerHandlers, ModulesReturnsUnsupportedFromDefaultHandler)
+TEST(DapServerHandlers, RestartReturnsUnsupportedFromDefaultHandler)
 {
     recording_message_writer writer;
     dap_server server(writer);
 
-    server.handle_request(make_request(1, "modules", {{"startModule", 0}, {"moduleCount", 20}}));
+    server.handle_request(make_request(1, "restart", nlohmann::json::object()));
 
-    const nlohmann::json *response = writer.find_response("modules", 1);
+    const nlohmann::json *response = writer.find_response("restart", 1);
     ASSERT_NE(response, nullptr);
     EXPECT_FALSE(response->at("success").get<bool>());
-    EXPECT_EQ(error_format(*response), "Unsupported command: <modules>");
+    EXPECT_EQ(error_format(*response), "Unsupported command: <restart>");
 }
 
 // --- continue ----------------------------------------------------------------
@@ -358,11 +380,11 @@ TEST(DapServerHandlers, ScopesBuildsExpandableNestedStructVariables)
     dap_server server(writer);
 
     // t { origin { x, y }, id } - one level of nesting plus a scalar leaf.
-    dap_dbgeng::debugger::variable_node x{"x", "10", "int", false, {}};
-    dap_dbgeng::debugger::variable_node y{"y", "20", "int", false, {}};
-    dap_dbgeng::debugger::variable_node origin{"origin", "{...}", "point2", false, {x, y}};
-    dap_dbgeng::debugger::variable_node id{"id", "42", "int", false, {}};
-    dap_dbgeng::debugger::variable_node t{"t", "{...}", "transform", false, {origin, id}};
+    const auto x = make_node("x", "10", "int");
+    const auto y = make_node("y", "20", "int");
+    const auto origin = make_node("origin", "{...}", "point2", {x, y});
+    const auto id = make_node("id", "42", "int");
+    const auto t = make_node("t", "{...}", "transform", {origin, id});
 
     const dap_dbgeng::protocol::Variable t_var = server.build_variable_tree_for_test(t);
 
@@ -458,8 +480,7 @@ TEST(DapServerHandlers, SetVariableOnStructFieldContainerRoutesToSession)
     // now accepted and routed to the debugger (which assigns it natively); without
     // a live session here it surfaces the no-session error rather than a rejection,
     // proving struct containers are no longer turned away by the handler itself.
-    dap_dbgeng::debugger::variable_node x{"x", "10", "int", false, {}};
-    dap_dbgeng::debugger::variable_node origin{"origin", "{...}", "point2", false, {x}};
+    const auto origin = make_node("origin", "{...}", "point2", {make_node("x", "10", "int")});
     const dap_dbgeng::protocol::Variable origin_var = server.build_variable_tree_for_test(origin);
     ASSERT_GT(origin_var.variables_reference, 0);
 
@@ -470,6 +491,173 @@ TEST(DapServerHandlers, SetVariableOnStructFieldContainerRoutesToSession)
     ASSERT_NE(response, nullptr);
     EXPECT_FALSE(response->at("success").get<bool>());
     EXPECT_EQ(error_format(*response), "No active debugger session is available.");
+}
+
+// --- modules / memory / setExpression / new breakpoint kinds -----------------
+
+TEST(DapServerHandlers, ModulesWithoutSessionReturnsError)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "modules", nlohmann::json::object()));
+
+    const nlohmann::json *response = writer.find_response("modules", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "The modules request requires an active debugger session.");
+}
+
+TEST(DapServerHandlers, ModulesWhileRunningReturnsError)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+    server.set_execution_running_for_test(true);
+
+    server.handle_request(make_request(1, "modules", nlohmann::json::object()));
+
+    const nlohmann::json *response = writer.find_response("modules", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response),
+              "The debuggee is currently running. The module list is only available while stopped.");
+}
+
+TEST(DapServerHandlers, ReadMemoryRejectsAnInvalidReference)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "readMemory", {{"memoryReference", "garbage"}, {"count", 16}}));
+
+    const nlohmann::json *response = writer.find_response("readMemory", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response),
+              "The readMemory request 'memoryReference' value 'garbage' is not a valid address.");
+}
+
+TEST(DapServerHandlers, ReadMemoryRejectsANegativeReference)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "readMemory", {{"memoryReference", "-8"}, {"count", 16}}));
+
+    const nlohmann::json *response = writer.find_response("readMemory", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "The readMemory request 'memoryReference' value '-8' is not a valid address.");
+}
+
+TEST(DapServerHandlers, ReadMemoryRejectsAnOffsetThatWrapsTheAddressSpace)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(
+        make_request(1, "readMemory", {{"memoryReference", "0xFFFFFFFFFFFFFFF0"}, {"offset", 0x100}, {"count", 16}}));
+
+    const nlohmann::json *response = writer.find_response("readMemory", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response),
+              "The readMemory request 'offset' moves the address outside the 64-bit address space.");
+}
+
+TEST(DapServerHandlers, WriteMemoryRejectsInvalidBase64)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "writeMemory", {{"memoryReference", "0x1000"}, {"data", "!!!"}}));
+
+    const nlohmann::json *response = writer.find_response("writeMemory", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "The writeMemory request 'data' value is not valid base64.");
+}
+
+TEST(DapServerHandlers, WriteMemoryRejectsTruncatedBase64)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    // "KgAAAA==" chopped mid-quantum: must be rejected, not partially written.
+    server.handle_request(make_request(1, "writeMemory", {{"memoryReference", "0x1000"}, {"data", "KgAAA"}}));
+
+    const nlohmann::json *response = writer.find_response("writeMemory", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "The writeMemory request 'data' value is not valid base64.");
+}
+
+TEST(DapServerHandlers, SetExpressionRequiresAFrameId)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "setExpression", {{"expression", "t.origin.x"}, {"value", "5"}}));
+
+    const nlohmann::json *response = writer.find_response("setExpression", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response),
+              "The setExpression request requires a frameId (global assignments are not supported).");
+}
+
+TEST(DapServerHandlers, SetFunctionBreakpointsRejectsAnEmptyName)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "setFunctionBreakpoints", {{"breakpoints", {{{"name", "  "}}}}}));
+
+    const nlohmann::json *response = writer.find_response("setFunctionBreakpoints", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "Every function breakpoint requires a non-empty name.");
+}
+
+TEST(DapServerHandlers, SetInstructionBreakpointsRejectsABadReference)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(
+        make_request(1, "setInstructionBreakpoints", {{"breakpoints", {{{"instructionReference", "nope"}}}}}));
+
+    const nlohmann::json *response = writer.find_response("setInstructionBreakpoints", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "The instruction reference 'nope' is not a valid address.");
+}
+
+TEST(DapServerHandlers, ExceptionInfoWithoutSessionReturnsError)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "exceptionInfo", {{"threadId", 1}}));
+
+    const nlohmann::json *response = writer.find_response("exceptionInfo", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "The exceptionInfo request requires an active debugger session.");
+}
+
+TEST(DapServerHandlers, DataBreakpointInfoRequiresAContainerOrFrame)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "dataBreakpointInfo", {{"name", "watched"}}));
+
+    const nlohmann::json *response = writer.find_response("dataBreakpointInfo", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response), "The dataBreakpointInfo request requires a variablesReference or a frameId.");
+}
+
+TEST(DapServerHandlers, SetDataBreakpointsRejectsABadDataId)
+{
+    recording_message_writer writer;
+    dap_server server(writer);
+
+    server.handle_request(make_request(1, "setDataBreakpoints", {{"breakpoints", {{{"dataId", "bogus"}}}}}));
+
+    const nlohmann::json *response = writer.find_response("setDataBreakpoints", 1);
+    ASSERT_NE(response, nullptr);
+    EXPECT_EQ(error_format(*response),
+              "The dataId 'bogus' is not valid. Request dataBreakpointInfo again for the current stop.");
 }
 
 // --- setBreakpoints ----------------------------------------------------------

@@ -247,4 +247,40 @@ std::vector<disassembled_instruction_info> debugger_session::disassemble(std::ui
 
     return instructions;
 }
+
+std::vector<unsigned char> debugger_session::read_memory(std::uint64_t address, std::uint32_t count)
+{
+    throw_if_disposed();
+    if (count == 0)
+    {
+        return {};
+    }
+
+    std::vector<unsigned char> bytes(count);
+    ULONG read = 0;
+    const HRESULT hr = data_spaces_->ReadVirtual(address, bytes.data(), static_cast<ULONG>(bytes.size()), &read);
+    if (FAILED(hr))
+    {
+        // A fully unreadable range is an empty (not failed) read; the caller
+        // reports it as zero bytes per DAP readMemory semantics.
+        return {};
+    }
+    bytes.resize(read);
+    return bytes;
+}
+
+std::uint32_t debugger_session::write_memory(std::uint64_t address, const std::vector<unsigned char> &bytes)
+{
+    throw_if_disposed();
+    if (bytes.empty())
+    {
+        return 0;
+    }
+
+    ULONG written = 0;
+    check_hr(data_spaces_->WriteVirtual(address, const_cast<unsigned char *>(bytes.data()),
+                                        static_cast<ULONG>(bytes.size()), &written),
+             fmt::format("Could not write {} bytes at 0x{:X}", bytes.size(), address));
+    return written;
+}
 } // namespace dap_dbgeng::debugger

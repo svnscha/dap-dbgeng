@@ -52,6 +52,9 @@
             "configurePreset": "windows-x64",
             "output": {
                 "outputOnFailure": true
+            },
+            "execution": {
+                "timeout": 600
             }
         },
         {
@@ -60,6 +63,9 @@
             "configurePreset": "windows-x64-release",
             "output": {
                 "outputOnFailure": true
+            },
+            "execution": {
+                "timeout": 600
             }
         }
     ]

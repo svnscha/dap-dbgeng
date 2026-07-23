@@ -39,6 +39,12 @@ std::string resolve_struct_target_directory();
 // Resolves the struct target's source (test-targets/testapp/struct-1.cpp). Empty
 // when unavailable.
 std::string resolve_struct_target_source();
+
+// Resolves any testapp debuggee binary (e.g. "test_data_1.exe") from the build
+// tree, and its source (e.g. "data-1.cpp") from the repository. Empty when
+// unavailable.
+std::string resolve_test_target_path(const std::string &executable_name);
+std::string resolve_test_target_source(const std::string &source_name);
 } // namespace dap_dbgeng::test_support
 
 // Skips the current test (GTEST_SKIP) with `reason` when `value` is empty.

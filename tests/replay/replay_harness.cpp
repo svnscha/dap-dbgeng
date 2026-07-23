@@ -336,10 +336,16 @@ class out_of_process_adapter
             }
         }
 
-        // The reader exits when stdout is closed (which happens once the child
-        // exits). Close our read end to unblock a stuck read, then join.
+        // The reader exits when the pipe's last write handle closes - normally
+        // when the child dies. A debuggee that inherited the adapter's stdout
+        // can outlive a terminated adapter and keep the pipe open forever, so
+        // cancel a blocked synchronous read until the reader finishes.
         if (reader_.joinable())
         {
+            while (WaitForSingleObject(reader_.native_handle(), 100) == WAIT_TIMEOUT)
+            {
+                CancelSynchronousIo(reader_.native_handle());
+            }
             reader_.join();
         }
 
@@ -585,6 +591,21 @@ class replay_state
             rewrite_int(*args, "frameId", frame_ids_);
             rewrite_int(*args, "variablesReference", variables_references_);
             rewrite_string(*args, "memoryReference", memory_references_);
+
+            // setInstructionBreakpoints / setDataBreakpoints carry their
+            // volatile references nested in the breakpoints array.
+            auto breakpoints = args->find("breakpoints");
+            if (breakpoints != args->end() && breakpoints->is_array())
+            {
+                for (auto &breakpoint : *breakpoints)
+                {
+                    if (breakpoint.is_object())
+                    {
+                        rewrite_string(breakpoint, "instructionReference", memory_references_);
+                        rewrite_string(breakpoint, "dataId", memory_references_);
+                    }
+                }
+            }
         }
 
         return node;
@@ -599,6 +620,8 @@ class replay_state
         map_array_ids(expected, actual, "variables", "variablesReference", variables_references_);
         map_array_strings(expected, actual, "stackFrames", "instructionPointerReference", memory_references_);
         map_array_strings(expected, actual, "instructions", "address", memory_references_);
+        map_array_strings(expected, actual, "variables", "memoryReference", memory_references_);
+        map_body_string(expected, actual, "dataId", memory_references_);
     }
 
   private:
@@ -674,6 +697,23 @@ class replay_state
             return nullptr;
         }
         return &(*prop);
+    }
+
+    // Maps a top-level body string property (e.g. dataBreakpointInfo's dataId).
+    static void map_body_string(const nlohmann::json &expected, const nlohmann::json &actual, const char *property,
+                                std::map<std::string, std::string> &map)
+    {
+        const nlohmann::json *e = body_property(expected, property);
+        const nlohmann::json *a = body_property(actual, property);
+        if (e != nullptr && a != nullptr && e->is_string() && a->is_string())
+        {
+            const std::string es = e->get<std::string>();
+            const std::string as = a->get<std::string>();
+            if (!es.empty() && !as.empty())
+            {
+                map[es] = as;
+            }
+        }
     }
 
     void map_thread_id(const nlohmann::json &expected, const nlohmann::json &actual)
@@ -959,7 +999,31 @@ replay_result replay_once(const recorded_session &session, int timeout_milliseco
     // Drain recorded thread events whose actual counterpart floats in after the last non-thread message.
     while (!pending_expected_threads.empty())
     {
-        const nlohmann::json actual = pull_actual(); // a genuinely missing thread event surfaces as a timeout
+        nlohmann::json actual;
+        try
+        {
+            actual = pull_actual(); // a genuinely missing thread event surfaces as a timeout
+        }
+        catch (const replay_assertion_error &)
+        {
+            // Thread-EXIT delivery at process teardown is nondeterministic:
+            // dbgeng folds a still-running thread's exit into the process exit
+            // and never reports it individually. Once every non-thread message
+            // (including exited/terminated) has matched, missing recorded
+            // thread-exit events are forgiven; a missing thread-START stays an
+            // error.
+            const bool only_exits = std::all_of(
+                pending_expected_threads.begin(), pending_expected_threads.end(), [](const nlohmann::json &m) {
+                    return m.contains("body") && m.at("body").value("reason", std::string{}) == "exited";
+                });
+            if (only_exits)
+            {
+                spdlog::debug("Replay tolerated {} recorded thread-exit event(s) the live run never delivered.",
+                              pending_expected_threads.size());
+                break;
+            }
+            throw;
+        }
         if (is_thread_event(actual))
         {
             state.record_volatile_ids(pending_expected_threads.front(), actual);
@@ -973,9 +1037,10 @@ replay_result replay_once(const recorded_session &session, int timeout_milliseco
     // the loader/CRT) spins up is environment-dependent, so a different OS build
     // — e.g. a CI runner vs. the machine a fixture was recorded on — can emit one
     // or more extra thread started/exited events. The recording's full set must
-    // still appear (a *missing* recorded thread event surfaces as a timeout in the
-    // drain loop above) and every non-thread message is still matched in strict
-    // order, so this only loosens the inherently nondeterministic thread lifecycle.
+    // still appear (a *missing* recorded thread-start surfaces as a timeout in the
+    // drain loop above; only teardown-time thread exits are forgiven) and every
+    // non-thread message is still matched in strict order, so this only loosens
+    // the inherently nondeterministic thread lifecycle.
     if (!pending_actual_threads.empty())
     {
         spdlog::debug("Replay tolerated {} extra thread event(s) with no recorded counterpart.",

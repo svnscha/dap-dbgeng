@@ -16,6 +16,24 @@ void debugger_session::detach_current_process()
 void debugger_session::detach_all_processes()
 {
     throw_if_disposed();
+    // Drop every breakpoint before letting the target go: a hardware
+    // watchpoint left in the debug registers outlives the detach and freezes
+    // the process when it fires with no debugger attached. `bc *` alone is
+    // not enough - once a watchpoint has fired, the SDK dbgeng leaves the
+    // debug registers armed in the thread contexts, so zero them on every
+    // thread as well. Best effort.
+    try
+    {
+        clear_all_breakpoints();
+        if (!is_kernel_)
+        {
+            execute_command_with_output("~*e r dr7=0; r dr0=0; r dr1=0; r dr2=0; r dr3=0; r dr6=0",
+                                        /*suppress_output_events=*/true);
+        }
+    }
+    catch (...)
+    {
+    }
     terminate_debuggee_on_dispose_ = false;
     try
     {

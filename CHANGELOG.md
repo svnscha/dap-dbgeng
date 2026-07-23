@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Ten new DAP requests, each end-to-end tested with live integration tests and
+  replay fixtures recorded from real VS Code sessions (the recording protocol
+  lives in `docs/development/recording-fixtures.md`):
+  - `modules` lists the loaded modules with image path, address range, and
+    symbol status.
+  - `readMemory` / `writeMemory` give clients (e.g. VS Code's hex editor) raw
+    access to debuggee virtual memory; locals now carry a `memoryReference`.
+  - `setExpression` assigns any in-scope l-value expression (e.g. `t.origin.x`)
+    through the engine's native symbol-group write.
+  - `setFunctionBreakpoints` sets name-based breakpoints (`bu`), deferred until
+    the module loads.
+  - `setInstructionBreakpoints` sets address breakpoints from the disassembly
+    view.
+  - `setExceptionBreakpoints` with one filter: break on first-chance C++
+    exceptions (`sxe e06d7363`).
+  - `exceptionInfo` describes the current exception stop (code, address, first
+    or second chance).
+  - `dataBreakpointInfo` / `setDataBreakpoints` arm hardware write/read-write
+    watchpoints (`ba`) on locals and struct fields.
+- New test debuggees `exception-1.cpp` (caught C++ throw) and `data-1.cpp`
+  (watched write).
 - Expand structs in the Locals view. Locals backed by aggregates (structs, classes,
   nested members) now report a non-zero `variablesReference` and expand to their
   members, read from the dbgeng scope symbol group via `IDebugSymbolGroup2` with
@@ -24,6 +45,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Watch entries are evaluated as C++ expressions (frame-scoped, e.g.
+  `t.origin.x`) instead of being executed as engine commands, which failed for
+  any plain expression and made `setExpression` unreachable from the Watch
+  pane. Input that does not resolve as an expression still runs as a native
+  command.
+- Updating function, instruction, data, or exception breakpoints while the
+  debuggee runs no longer blocks the adapter behind the engine's wait loop;
+  user-mode targets briefly interrupt and resume (like source breakpoints),
+  kernel targets report "pause first".
+- The first-chance C++ exception filter is honored when disabled: a locally
+  caught throw no longer stops the session, and `exceptionInfo` no longer
+  describes a stale exception from an earlier stop.
+- Detach clears all breakpoints and zeroes the per-thread debug registers
+  before letting the target go; a leftover hardware watchpoint used to freeze
+  the detached process on its next hit.
+- `writeMemory` rejects malformed base64 instead of writing a truncated
+  payload, and `readMemory`/`writeMemory`/`setInstructionBreakpoints` reject
+  offsets that wrap the 64-bit address space and negative memory references.
+- The VS Code extension expands `${workspaceFolder}` in the
+  `dap-dbgeng.adapterPath` setting and logs when it falls back to the bundled
+  adapter; the configured path was previously ignored silently.
 - `scripts/Normalize-DapRecording.ps1` now tokenizes a Windows `dbgengPath`
   (backslash form) to `${dbgEngPath}`, matching how the repository root is handled.
 
