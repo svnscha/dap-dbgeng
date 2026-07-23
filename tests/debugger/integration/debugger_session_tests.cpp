@@ -280,6 +280,42 @@ TEST(DebuggerSessionIntegration, LaunchGetLocalsTreeExpandsNestedStruct)
     cleanup_launched_session(session);
 }
 
+TEST(DebuggerSessionIntegration, GetLocalValueReadsNestedStructFields)
+{
+    const std::string dbgeng = resolve_dbgeng_path();
+    DAP_REQUIRE_OR_SKIP(dbgeng, "dbgeng.dll not found (set DAP_DBGENG_WINDBG_PATH).");
+    const std::string target = resolve_struct_target_path();
+    DAP_REQUIRE_OR_SKIP(target, "test_struct_1.exe not found (build test-targets/testapp).");
+    const std::string source = resolve_struct_target_source();
+    DAP_REQUIRE_OR_SKIP(source, "test-targets/testapp/struct-1.cpp not found.");
+
+    std::unique_ptr<debugger_session> session;
+    try
+    {
+        session = std::make_unique<debugger_session>(dbgeng);
+        session->launch(target);
+        session->set_symbol_path({resolve_struct_target_directory()});
+        session->set_source_path({fs::path(source).parent_path().string()});
+        session->enable_source_line_support();
+        session->set_source_breakpoints(source, std::vector<int>{37});
+        session->continue_();
+        session->wait_for_event(10000);
+
+        // The watch-pane read path: nested member expressions resolve natively.
+        const variable_node px = session->get_local_value(0, "p.x");
+        EXPECT_EQ(px.value, "3") << "p is point2{3, 7}.";
+        const variable_node py = session->get_local_value(0, "p.y");
+        EXPECT_EQ(py.value, "7");
+        EXPECT_THROW(session->get_local_value(0, "no_such_symbol"), std::exception);
+    }
+    catch (...)
+    {
+        cleanup_launched_session(session);
+        throw;
+    }
+    cleanup_launched_session(session);
+}
+
 TEST(DebuggerSessionIntegration, SetLocalValueWritesNestedStructFields)
 {
     const std::string dbgeng = resolve_dbgeng_path();

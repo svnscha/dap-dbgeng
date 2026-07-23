@@ -97,6 +97,9 @@ class debugger_session
     // counterpart of get_locals_tree's reads. Returns the field's refreshed
     // value/type. Throws if the expression cannot be resolved or assigned.
     variable_node set_local_value(std::uint32_t frame_number, const std::string &expression, const std::string &value);
+    // Reads a frame-scoped expression (e.g. "t.origin.x") through the scope
+    // symbol group - the read counterpart of set_local_value.
+    variable_node get_local_value(std::uint32_t frame_number, const std::string &expression);
     // Resolves an in-scope expression (e.g. "watched" or "t.origin.x") to its
     // absolute address and byte size, for data breakpoints and memory views.
     // Throws if the expression cannot be resolved or has no address.
@@ -190,6 +193,12 @@ class debugger_session
     std::vector<source_breakpoint_result> set_command_breakpoints(std::vector<int> &tracked_ids,
                                                                   const std::vector<std::string> &commands,
                                                                   const std::vector<std::string> &failure_labels);
+
+    // Scopes to `frame_number`, opens the scope symbol group, and adds
+    // `expression` as a symbol; returns the owned group (caller releases) and
+    // fills `symbol_index`. Shared by the local-value and symbol-address paths.
+    IDebugSymbolGroup2 *open_scope_symbol_group(std::uint32_t frame_number, const std::string &expression,
+                                                ULONG &symbol_index);
 
     // Output capture.
     void begin_output_capture(bool suppress_output_events);

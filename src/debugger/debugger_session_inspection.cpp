@@ -320,14 +320,12 @@ std::vector<variable_node> debugger_session::get_locals_tree(std::uint32_t frame
     return roots;
 }
 
-variable_node debugger_session::set_local_value(std::uint32_t frame_number, const std::string &expression,
-                                                const std::string &value)
+IDebugSymbolGroup2 *debugger_session::open_scope_symbol_group(std::uint32_t frame_number, const std::string &expression,
+                                                              ULONG &symbol_index)
 {
-    throw_if_disposed();
-
-    // Scope to the frame, then add the target expression as a symbol in the scope
-    // group and write its value with the engine's own type-aware text assignment
-    // (the same path WinDbg's Locals editor uses). No expression-command string.
+    // Scope to the frame, then add the target expression as a symbol in the
+    // scope group - the engine's own frame-scoped resolver (the same path
+    // WinDbg's Locals editor uses). No expression-command string.
     execute_command_with_output(fmt::format(".frame {}", frame_number), /*suppress_output_events=*/true);
 
     IDebugSymbolGroup2 *group = nullptr;
@@ -336,32 +334,30 @@ variable_node debugger_session::set_local_value(std::uint32_t frame_number, cons
         const HRESULT hr = symbols_->GetScopeSymbolGroup(kDebugScopeGroupAll, nullptr, &base_group);
         if (FAILED(hr) || base_group == nullptr)
         {
-            throw std::runtime_error("Could not open the scope symbol group to assign a variable.");
+            throw std::runtime_error("Could not open the scope symbol group.");
         }
         const HRESULT qi = base_group->QueryInterface(__uuidof(IDebugSymbolGroup2), reinterpret_cast<PVOID *>(&group));
         base_group->Release();
         if (FAILED(qi) || group == nullptr)
         {
-            throw std::runtime_error("Could not access the scope symbol group to assign a variable.");
+            throw std::runtime_error("Could not access the scope symbol group.");
         }
     }
 
-    struct group_releaser
+    symbol_index = DEBUG_ANY_ID;
+    if (FAILED(group->AddSymbol(expression.c_str(), &symbol_index)) || symbol_index == DEBUG_ANY_ID)
     {
-        IDebugSymbolGroup2 *g;
-        ~group_releaser()
-        {
-            g->Release();
-        }
-    } releaser{group};
-
-    ULONG index = DEBUG_ANY_ID;
-    if (FAILED(group->AddSymbol(expression.c_str(), &index)) || index == DEBUG_ANY_ID)
-    {
+        group->Release();
         throw std::runtime_error(fmt::format("Could not resolve '{}' in the current frame.", expression));
     }
-    check_hr(group->WriteSymbol(index, value.c_str()), fmt::format("Could not assign '{}' to '{}'", value, expression));
+    return group;
+}
 
+namespace
+{
+// Builds the result node for a scope-group symbol resolved by AddSymbol.
+variable_node create_symbol_node(IDebugSymbolGroup2 *group, ULONG index, const std::string &expression)
+{
     variable_node node;
     // Display name is the trailing path segment (after the last '.' or ']').
     const std::size_t separator = expression.find_last_of(".]");
@@ -375,32 +371,15 @@ variable_node debugger_session::set_local_value(std::uint32_t frame_number, cons
     }
     return node;
 }
+} // namespace
 
-std::pair<std::uint64_t, std::uint32_t> debugger_session::get_symbol_address(std::uint32_t frame_number,
-                                                                             const std::string &expression)
+variable_node debugger_session::set_local_value(std::uint32_t frame_number, const std::string &expression,
+                                                const std::string &value)
 {
     throw_if_disposed();
 
-    // Scope to the frame, resolve the expression as a scope-group symbol (same
-    // path set_local_value writes through), then read its address and size.
-    execute_command_with_output(fmt::format(".frame {}", frame_number), /*suppress_output_events=*/true);
-
-    IDebugSymbolGroup2 *group = nullptr;
-    {
-        PDEBUG_SYMBOL_GROUP base_group = nullptr;
-        const HRESULT hr = symbols_->GetScopeSymbolGroup(kDebugScopeGroupAll, nullptr, &base_group);
-        if (FAILED(hr) || base_group == nullptr)
-        {
-            throw std::runtime_error("Could not open the scope symbol group to resolve an expression.");
-        }
-        const HRESULT qi = base_group->QueryInterface(__uuidof(IDebugSymbolGroup2), reinterpret_cast<PVOID *>(&group));
-        base_group->Release();
-        if (FAILED(qi) || group == nullptr)
-        {
-            throw std::runtime_error("Could not access the scope symbol group to resolve an expression.");
-        }
-    }
-
+    ULONG index = DEBUG_ANY_ID;
+    IDebugSymbolGroup2 *group = open_scope_symbol_group(frame_number, expression, index);
     struct group_releaser
     {
         IDebugSymbolGroup2 *g;
@@ -410,11 +389,51 @@ std::pair<std::uint64_t, std::uint32_t> debugger_session::get_symbol_address(std
         }
     } releaser{group};
 
+    // Write the value with the engine's own type-aware text assignment.
+    check_hr(group->WriteSymbol(index, value.c_str()), fmt::format("Could not assign '{}' to '{}'", value, expression));
+    return create_symbol_node(group, index, expression);
+}
+
+variable_node debugger_session::get_local_value(std::uint32_t frame_number, const std::string &expression)
+{
+    throw_if_disposed();
+
     ULONG index = DEBUG_ANY_ID;
-    if (FAILED(group->AddSymbol(expression.c_str(), &index)) || index == DEBUG_ANY_ID)
+    IDebugSymbolGroup2 *group = open_scope_symbol_group(frame_number, expression, index);
+    struct group_releaser
+    {
+        IDebugSymbolGroup2 *g;
+        ~group_releaser()
+        {
+            g->Release();
+        }
+    } releaser{group};
+
+    // AddSymbol accepts unresolved expressions and reads them back as an
+    // engine error banner with no type; only a typed symbol is a real value.
+    variable_node node = create_symbol_node(group, index, expression);
+    if (node.type.empty())
     {
         throw std::runtime_error(fmt::format("Could not resolve '{}' in the current frame.", expression));
     }
+    return node;
+}
+
+std::pair<std::uint64_t, std::uint32_t> debugger_session::get_symbol_address(std::uint32_t frame_number,
+                                                                             const std::string &expression)
+{
+    throw_if_disposed();
+
+    ULONG index = DEBUG_ANY_ID;
+    IDebugSymbolGroup2 *group = open_scope_symbol_group(frame_number, expression, index);
+    struct group_releaser
+    {
+        IDebugSymbolGroup2 *g;
+        ~group_releaser()
+        {
+            g->Release();
+        }
+    } releaser{group};
 
     ULONG64 offset = 0;
     if (FAILED(group->GetSymbolOffset(index, &offset)) || offset == 0)

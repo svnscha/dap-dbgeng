@@ -75,6 +75,15 @@ void dap_server::handle_evaluate_request(const protocol::EvaluateRequest &reques
         return;
     }
 
+    // Watch and clipboard entries are C++ expressions ("t.origin.x"), resolved
+    // through the frame's scope symbol group like setExpression; everything
+    // else (Debug Console) stays a raw engine command. A watch that does not
+    // resolve as an expression falls back to command execution, so native
+    // commands typed into the Watch pane keep working.
+    const bool prefer_expression =
+        context.has_value() && (arguments.context == protocol::EvaluateArgumentsContext::Watch ||
+                                arguments.context == protocol::EvaluateArgumentsContext::Clipboard);
+
     debugger::debugger_session &session = require_debugger_session();
     try
     {
@@ -87,8 +96,25 @@ void dap_server::handle_evaluate_request(const protocol::EvaluateRequest &reques
             try
             {
                 session.set_current_thread(static_cast<std::uint32_t>(context->thread_id));
-                const std::string command = create_evaluate_command(expression, context->frame_number);
-                std::string output = session.execute_command_with_output(command, /*suppress_output_events=*/true);
+                std::string output;
+                bool resolved = false;
+                if (prefer_expression)
+                {
+                    try
+                    {
+                        output = session.get_local_value(context->frame_number, expression).value;
+                        resolved = true;
+                    }
+                    catch (const std::exception &)
+                    {
+                        // Fall through to command execution.
+                    }
+                }
+                if (!resolved)
+                {
+                    const std::string command = create_evaluate_command(expression, context->frame_number);
+                    output = session.execute_command_with_output(command, /*suppress_output_events=*/true);
+                }
                 session.set_current_thread(original_thread_id);
                 return output;
             }
