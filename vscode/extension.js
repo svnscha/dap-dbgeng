@@ -152,6 +152,13 @@ async function pickProcess(config) {
 // Helpers
 // ---------------------------------------------------------------------------
 
+// VS Code substitutes ${workspaceFolder} in launch configs but NOT in
+// extension settings, so the "adapterPath" setting needs manual expansion.
+function expandWorkspaceFolder(value, workspaceFolder) {
+    const folder = workspaceFolder ?? (vscode.workspace.workspaceFolders ?? [])[0];
+    return folder ? value.replace(/\$\{workspaceFolder\}/g, folder.uri.fsPath) : value;
+}
+
 // Resolve the adapter executable, in precedence order:
 //   1. the "dap-dbgeng.adapterPath" setting (explicit override),
 //   2. the adapter bundled in the extension (vscode/bin, the default).
@@ -160,8 +167,16 @@ async function pickProcess(config) {
 function resolveAdapterPath(workspaceFolder) {
     const scope = workspaceFolder ? workspaceFolder.uri : undefined;
     const configured = vscode.workspace.getConfiguration("dap-dbgeng", scope).get("adapterPath");
-    if (typeof configured === "string" && configured.trim() && fs.existsSync(configured.trim())) {
-        return configured.trim();
+    if (typeof configured === "string" && configured.trim()) {
+        const resolved = expandWorkspaceFolder(configured.trim(), workspaceFolder);
+        if (fs.existsSync(resolved)) {
+            return resolved;
+        }
+        // A configured path must not fall back silently to a stale bundled
+        // adapter; say what was looked for.
+        if (output) {
+            output.appendLine(`Configured dap-dbgeng.adapterPath not found, using the bundled adapter: ${resolved}`);
+        }
     }
 
     if (extensionPath) {
