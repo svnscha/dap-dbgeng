@@ -1,0 +1,1875 @@
+{
+  "messages": [
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "adapterID": "dbgeng",
+          "clientID": "vscode",
+          "clientName": "Visual Studio Code",
+          "columnsStartAt1": true,
+          "linesStartAt1": true,
+          "locale": "en",
+          "pathFormat": "path",
+          "supportsANSIStyling": true,
+          "supportsArgsCanBeInterpretedByShell": true,
+          "supportsInvalidatedEvent": true,
+          "supportsMemoryEvent": true,
+          "supportsMemoryReferences": true,
+          "supportsProgressReporting": true,
+          "supportsRunInTerminalRequest": true,
+          "supportsStartDebuggingRequest": true,
+          "supportsVariablePaging": true,
+          "supportsVariableType": true
+        },
+        "command": "initialize",
+        "seq": 1,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "exceptionBreakpointFilters": [
+            {
+              "default": false,
+              "description": "Break when a C++ exception is thrown (first chance).",
+              "filter": "cpp",
+              "label": "C++ exceptions"
+            }
+          ],
+          "supportSuspendDebuggee": false,
+          "supportTerminateDebuggee": true,
+          "supportsClipboardContext": true,
+          "supportsConditionalBreakpoints": true,
+          "supportsConfigurationDoneRequest": true,
+          "supportsDataBreakpoints": true,
+          "supportsDelayedStackTraceLoading": true,
+          "supportsDisassembleRequest": true,
+          "supportsEvaluateForHovers": false,
+          "supportsExceptionInfoRequest": true,
+          "supportsFunctionBreakpoints": true,
+          "supportsHitConditionalBreakpoints": false,
+          "supportsInstructionBreakpoints": true,
+          "supportsLogPoints": false,
+          "supportsModulesRequest": true,
+          "supportsReadMemoryRequest": true,
+          "supportsRestartFrame": false,
+          "supportsRestartRequest": false,
+          "supportsSetExpression": true,
+          "supportsSetVariable": true,
+          "supportsSingleThreadExecutionRequests": false,
+          "supportsStepBack": false,
+          "supportsSteppingGranularity": true,
+          "supportsTerminateRequest": true,
+          "supportsValueFormattingOptions": false,
+          "supportsWriteMemoryRequest": true
+        },
+        "command": "initialize",
+        "request_seq": 1,
+        "seq": 1,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "initialized",
+        "seq": 2,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "__configurationTarget": 6,
+          "__sessionId": "5bf29de5-be55-43ea-968a-2f38a6c8ee36",
+          "cwd": "${workspaceFolder}\\build\\windows-x64\\test-targets",
+          "dbgengPath": "${dbgEngPath}",
+          "name": "Debug Test Target (Launch)",
+          "program": "${workspaceFolder}\\build\\windows-x64\\test-targets\\test_exception_1.exe",
+          "request": "launch",
+          "sources": [
+            "${workspaceFolder}"
+          ],
+          "trace": "${workspaceFolder}/recordings/launch.session.json",
+          "type": "dbgeng"
+        },
+        "command": "launch",
+        "seq": 2,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource search path is: ${workspaceFolder}\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\nNo .natvis files found at C:\\WINDOWS\\SYSTEM32\\Visualizers.\nNo .natvis files found at C:\\Users\\svnscha\\AppData\\Local\\Dbg\\Visualizers.\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.1 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: ${workspaceFolder}\\build\\windows-x64\\test-targets\\test_exception_1.exe\nStarting directory: ${workspaceFolder}\\build\\windows-x64\\test-targets\nUnable to add extension DLL: ntsdexts\nUnable to add extension DLL: uext\nUnable to add extension DLL: exts\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nDeferred                                       srv*\nSymbol search path is: srv*\nExecutable search path is: \nModLoad: 00007ff6`79380000 00007ff6`79395000   test_exception_1.exe\n"
+        },
+        "event": "output",
+        "seq": 33,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "launch",
+        "request_seq": 2,
+        "seq": 34,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "breakpoints": []
+        },
+        "command": "setFunctionBreakpoints",
+        "seq": 3,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "isLocalProcess": true,
+          "name": "${workspaceFolder}\\build\\windows-x64\\test-targets\\test_exception_1.exe",
+          "startMethod": "launch"
+        },
+        "event": "process",
+        "seq": 35,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "breakpoints": []
+        },
+        "command": "setInstructionBreakpoints",
+        "seq": 4,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": []
+        },
+        "command": "setFunctionBreakpoints",
+        "request_seq": 3,
+        "seq": 36,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "filters": [
+            "cpp"
+          ]
+        },
+        "command": "setExceptionBreakpoints",
+        "seq": 5,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": []
+        },
+        "command": "setInstructionBreakpoints",
+        "request_seq": 4,
+        "seq": 37,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "breakpoints": []
+        },
+        "command": "setDataBreakpoints",
+        "seq": 6,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": [
+            {
+              "verified": true
+            }
+          ]
+        },
+        "command": "setExceptionBreakpoints",
+        "request_seq": 5,
+        "seq": 38,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": []
+        },
+        "command": "setDataBreakpoints",
+        "request_seq": 6,
+        "seq": 39,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "configurationDone",
+        "seq": 7,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "configurationDone",
+        "request_seq": 7,
+        "seq": 40,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true,
+          "threadId": 14968
+        },
+        "event": "continued",
+        "seq": 41,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007fff`1bc80000 00007fff`1bee6000   ntdll.dll\n"
+        },
+        "event": "output",
+        "seq": 42,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "seq": 8,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007fff`1ab60000 00007fff`1ac29000   C:\\WINDOWS\\System32\\KERNEL32.DLL\nModLoad: 00007fff`195a0000 00007fff`1999e000   C:\\WINDOWS\\System32\\KERNELBASE.dll\nModLoad: 00007fff`15e80000 00007fff`15f20000   C:\\WINDOWS\\SYSTEM32\\apphelp.dll\nModLoad: 00007fff`08ab0000 00007fff`08ae0000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140D.dll\nModLoad: 00007ffe`f7240000 00007ffe`f7321000   C:\\WINDOWS\\SYSTEM32\\MSVCP140D.dll\nModLoad: 00007ffe`e42b0000 00007ffe`e44b4000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\nModLoad: 00007fff`0a5c0000 00007fff`0a5cf000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140_1D.dll\nModLoad: 0000014c`1c890000 0000014c`1ca94000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\nModLoad: 0000014c`1c890000 0000014c`1c89f000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140_1D.dll\n(2584.3a78): C++ EH exception - code e06d7363 (first chance)\nFirst chance exceptions are reported before any exception handling.\nThis exception may be expected and handled.\n"
+        },
+        "event": "output",
+        "seq": 55,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 15092
+        },
+        "event": "thread",
+        "seq": 56,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 2344
+        },
+        "event": "thread",
+        "seq": 57,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 12604
+        },
+        "event": "thread",
+        "seq": 58,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsStopped": true,
+          "description": "Paused on exception 0xE06D7363.",
+          "reason": "exception",
+          "threadId": 14968
+        },
+        "event": "stopped",
+        "seq": 59,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 14968,
+              "name": "Thread 14968 (current)"
+            },
+            {
+              "id": 15092,
+              "name": "Thread 15092"
+            },
+            {
+              "id": 2344,
+              "name": "Thread 2344"
+            },
+            {
+              "id": 12604,
+              "name": "Thread 12604"
+            }
+          ]
+        },
+        "command": "threads",
+        "request_seq": 8,
+        "seq": 60,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "seq": 9,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 14968,
+              "name": "Thread 14968 (current)"
+            },
+            {
+              "id": 15092,
+              "name": "Thread 15092"
+            },
+            {
+              "id": 2344,
+              "name": "Thread 2344"
+            },
+            {
+              "id": 12604,
+              "name": "Thread 12604"
+            }
+          ]
+        },
+        "command": "threads",
+        "request_seq": 9,
+        "seq": 61,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "levels": 1,
+          "startFrame": 0,
+          "threadId": 14968
+        },
+        "command": "stackTrace",
+        "seq": 10,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "*** WARNING: Unable to verify checksum for test_exception_1.exe\n"
+        },
+        "event": "output",
+        "seq": 64,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "column": 0,
+              "id": 987239759,
+              "instructionPointerReference": "0x7FFF19661ADA",
+              "line": 0,
+              "name": "KERNELBASE!RaiseException+0x8A"
+            }
+          ],
+          "totalFrames": 9
+        },
+        "command": "stackTrace",
+        "request_seq": 10,
+        "seq": 65,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "seq": 11,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 14968,
+              "name": "Thread 14968 (current)"
+            },
+            {
+              "id": 15092,
+              "name": "Thread 15092"
+            },
+            {
+              "id": 2344,
+              "name": "Thread 2344"
+            },
+            {
+              "id": 12604,
+              "name": "Thread 12604"
+            }
+          ]
+        },
+        "command": "threads",
+        "request_seq": 11,
+        "seq": 66,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "levels": 19,
+          "startFrame": 1,
+          "threadId": 14968
+        },
+        "command": "stackTrace",
+        "seq": 12,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "column": 0,
+              "id": 1789646398,
+              "instructionPointerReference": "0x7FFF08AB9362",
+              "line": 0,
+              "name": "VCRUNTIME140D!CxxThrowException+0x132"
+            },
+            {
+              "column": 1,
+              "id": 444569389,
+              "instructionPointerReference": "0x7FF679381667",
+              "line": 17,
+              "name": "test_exception_1!main+0x77",
+              "source": {
+                "name": "exception-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\exception-1.cpp"
+              }
+            },
+            {
+              "column": 1,
+              "id": 1246976028,
+              "instructionPointerReference": "0x7FF679382B19",
+              "line": 79,
+              "name": "test_exception_1!invoke_main+0x39",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              }
+            },
+            {
+              "column": 1,
+              "id": 2049382667,
+              "instructionPointerReference": "0x7FF6793829C2",
+              "line": 288,
+              "name": "test_exception_1!__scrt_common_main_seh+0x132",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              }
+            },
+            {
+              "column": 1,
+              "id": 704305658,
+              "instructionPointerReference": "0x7FF67938287E",
+              "line": 331,
+              "name": "test_exception_1!__scrt_common_main+0xE",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              }
+            },
+            {
+              "column": 1,
+              "id": 1506712297,
+              "instructionPointerReference": "0x7FF679382BAE",
+              "line": 17,
+              "name": "test_exception_1!mainCRTStartup+0xE",
+              "source": {
+                "name": "exe_main.cpp",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
+              }
+            },
+            {
+              "column": 0,
+              "id": 161635288,
+              "instructionPointerReference": "0x7FFF1AB8E957",
+              "line": 0,
+              "name": "KERNEL32!BaseThreadInitThunk+0x17"
+            },
+            {
+              "column": 0,
+              "id": 964041927,
+              "instructionPointerReference": "0x7FFF1BD2AD6C",
+              "line": 0,
+              "name": "ntdll!RtlUserThreadStart+0x2C"
+            }
+          ],
+          "totalFrames": 9
+        },
+        "command": "stackTrace",
+        "request_seq": 12,
+        "seq": 67,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "threadId": 14968
+        },
+        "command": "exceptionInfo",
+        "seq": 13,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakMode": "always",
+          "description": "C++ exception",
+          "details": {
+            "message": "C++ exception at 0x7fff19661ada (first chance)."
+          },
+          "exceptionId": "0xE06D7363"
+        },
+        "command": "exceptionInfo",
+        "request_seq": 13,
+        "seq": 68,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "frameId": 444569389
+        },
+        "command": "scopes",
+        "seq": 14,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "scopes": [
+            {
+              "column": 1,
+              "expensive": false,
+              "line": 17,
+              "name": "Locals",
+              "namedVariables": 2,
+              "presentationHint": "locals",
+              "source": {
+                "name": "exception-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\exception-1.cpp"
+              },
+              "variablesReference": 1
+            },
+            {
+              "expensive": false,
+              "name": "Registers",
+              "namedVariables": 168,
+              "presentationHint": "registers",
+              "variablesReference": 2
+            }
+          ]
+        },
+        "command": "scopes",
+        "request_seq": 14,
+        "seq": 69,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "variablesReference": 1
+        },
+        "command": "variables",
+        "seq": 15,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "variables": [
+            {
+              "evaluateName": "argc",
+              "memoryReference": "0x24504ff7a0",
+              "name": "argc",
+              "type": "int",
+              "value": "1",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "argv",
+              "memoryReference": "0x24504ff7a8",
+              "name": "argv",
+              "type": "char **",
+              "value": "0x0000014c`1c77eeb0",
+              "variablesReference": 0
+            }
+          ]
+        },
+        "command": "variables",
+        "request_seq": 15,
+        "seq": 70,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "variablesReference": 2
+        },
+        "command": "variables",
+        "seq": 16,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "variables": [
+            {
+              "evaluateName": "rax",
+              "name": "rax",
+              "value": "00007ffee4442330",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rcx",
+              "name": "rcx",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rdx",
+              "name": "rdx",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rbx",
+              "name": "rbx",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rsp",
+              "name": "rsp",
+              "value": "00000024504ff710",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rbp",
+              "name": "rbp",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rsi",
+              "name": "rsi",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rdi",
+              "name": "rdi",
+              "value": "00000024504ff790",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r8",
+              "name": "r8",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r9",
+              "name": "r9",
+              "value": "000000000000004c",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r10",
+              "name": "r10",
+              "value": "0000014c1c780f90",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r11",
+              "name": "r11",
+              "value": "0000014c1c780f20",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r12",
+              "name": "r12",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r13",
+              "name": "r13",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r14",
+              "name": "r14",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r15",
+              "name": "r15",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rip",
+              "name": "rip",
+              "value": "00007ff679381667",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "efl",
+              "name": "efl",
+              "value": "00000204",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "cs",
+              "name": "cs",
+              "value": "0033",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ds",
+              "name": "ds",
+              "value": "002b",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "es",
+              "name": "es",
+              "value": "002b",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "fs",
+              "name": "fs",
+              "value": "0053",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "gs",
+              "name": "gs",
+              "value": "002b",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ss",
+              "name": "ss",
+              "value": "002b",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr0",
+              "name": "dr0",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr1",
+              "name": "dr1",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr2",
+              "name": "dr2",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr3",
+              "name": "dr3",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr6",
+              "name": "dr6",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr7",
+              "name": "dr7",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "fpcw",
+              "name": "fpcw",
+              "value": "027f",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "fpsw",
+              "name": "fpsw",
+              "value": "0000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "fptw",
+              "name": "fptw",
+              "value": "0000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "mxcsr",
+              "name": "mxcsr",
+              "value": "00001f80",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm0/0",
+              "name": "xmm0/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm0/1",
+              "name": "xmm0/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm0/2",
+              "name": "xmm0/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm0/3",
+              "name": "xmm0/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm1/0",
+              "name": "xmm1/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm1/1",
+              "name": "xmm1/1",
+              "value": "00004912",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm1/2",
+              "name": "xmm1/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm1/3",
+              "name": "xmm1/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm2/0",
+              "name": "xmm2/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm2/1",
+              "name": "xmm2/1",
+              "value": "00007ffe",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm2/2",
+              "name": "xmm2/2",
+              "value": "504ff234",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm2/3",
+              "name": "xmm2/3",
+              "value": "00000024",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm3/0",
+              "name": "xmm3/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm3/1",
+              "name": "xmm3/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm3/2",
+              "name": "xmm3/2",
+              "value": "e43eb686",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm3/3",
+              "name": "xmm3/3",
+              "value": "00007ffe",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm4/0",
+              "name": "xmm4/0",
+              "value": "504ff1e8",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm4/1",
+              "name": "xmm4/1",
+              "value": "00000024",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm4/2",
+              "name": "xmm4/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm4/3",
+              "name": "xmm4/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm5/0",
+              "name": "xmm5/0",
+              "value": "1c7885b0",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm5/1",
+              "name": "xmm5/1",
+              "value": "0000014c",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm5/2",
+              "name": "xmm5/2",
+              "value": "00000015",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm5/3",
+              "name": "xmm5/3",
+              "value": "00007ffe",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm6/0",
+              "name": "xmm6/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm6/1",
+              "name": "xmm6/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm6/2",
+              "name": "xmm6/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm6/3",
+              "name": "xmm6/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm7/0",
+              "name": "xmm7/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm7/1",
+              "name": "xmm7/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm7/2",
+              "name": "xmm7/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm7/3",
+              "name": "xmm7/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm8/0",
+              "name": "xmm8/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm8/1",
+              "name": "xmm8/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm8/2",
+              "name": "xmm8/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm8/3",
+              "name": "xmm8/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm9/0",
+              "name": "xmm9/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm9/1",
+              "name": "xmm9/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm9/2",
+              "name": "xmm9/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm9/3",
+              "name": "xmm9/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm10/0",
+              "name": "xmm10/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm10/1",
+              "name": "xmm10/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm10/2",
+              "name": "xmm10/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm10/3",
+              "name": "xmm10/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm11/0",
+              "name": "xmm11/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm11/1",
+              "name": "xmm11/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm11/2",
+              "name": "xmm11/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm11/3",
+              "name": "xmm11/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm12/0",
+              "name": "xmm12/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm12/1",
+              "name": "xmm12/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm12/2",
+              "name": "xmm12/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm12/3",
+              "name": "xmm12/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm13/0",
+              "name": "xmm13/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm13/1",
+              "name": "xmm13/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm13/2",
+              "name": "xmm13/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm13/3",
+              "name": "xmm13/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm14/0",
+              "name": "xmm14/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm14/1",
+              "name": "xmm14/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm14/2",
+              "name": "xmm14/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm14/3",
+              "name": "xmm14/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm15/0",
+              "name": "xmm15/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm15/1",
+              "name": "xmm15/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm15/2",
+              "name": "xmm15/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm15/3",
+              "name": "xmm15/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm0/0",
+              "name": "ymm0/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm0/1",
+              "name": "ymm0/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm0/2",
+              "name": "ymm0/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm0/3",
+              "name": "ymm0/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm1/0",
+              "name": "ymm1/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm1/1",
+              "name": "ymm1/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm1/2",
+              "name": "ymm1/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm1/3",
+              "name": "ymm1/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm2/0",
+              "name": "ymm2/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm2/1",
+              "name": "ymm2/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm2/2",
+              "name": "ymm2/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm2/3",
+              "name": "ymm2/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm3/0",
+              "name": "ymm3/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm3/1",
+              "name": "ymm3/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm3/2",
+              "name": "ymm3/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm3/3",
+              "name": "ymm3/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm4/0",
+              "name": "ymm4/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm4/1",
+              "name": "ymm4/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm4/2",
+              "name": "ymm4/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm4/3",
+              "name": "ymm4/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm5/0",
+              "name": "ymm5/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm5/1",
+              "name": "ymm5/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm5/2",
+              "name": "ymm5/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm5/3",
+              "name": "ymm5/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm6/0",
+              "name": "ymm6/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm6/1",
+              "name": "ymm6/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm6/2",
+              "name": "ymm6/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm6/3",
+              "name": "ymm6/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm7/0",
+              "name": "ymm7/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm7/1",
+              "name": "ymm7/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm7/2",
+              "name": "ymm7/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm7/3",
+              "name": "ymm7/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm8/0",
+              "name": "ymm8/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm8/1",
+              "name": "ymm8/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm8/2",
+              "name": "ymm8/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm8/3",
+              "name": "ymm8/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm9/0",
+              "name": "ymm9/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm9/1",
+              "name": "ymm9/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm9/2",
+              "name": "ymm9/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm9/3",
+              "name": "ymm9/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm10/0",
+              "name": "ymm10/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm10/1",
+              "name": "ymm10/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm10/2",
+              "name": "ymm10/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm10/3",
+              "name": "ymm10/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm11/0",
+              "name": "ymm11/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm11/1",
+              "name": "ymm11/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm11/2",
+              "name": "ymm11/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm11/3",
+              "name": "ymm11/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm12/0",
+              "name": "ymm12/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm12/1",
+              "name": "ymm12/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm12/2",
+              "name": "ymm12/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm12/3",
+              "name": "ymm12/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm13/0",
+              "name": "ymm13/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm13/1",
+              "name": "ymm13/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm13/2",
+              "name": "ymm13/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm13/3",
+              "name": "ymm13/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm14/0",
+              "name": "ymm14/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm14/1",
+              "name": "ymm14/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm14/2",
+              "name": "ymm14/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm14/3",
+              "name": "ymm14/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm15/0",
+              "name": "ymm15/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm15/1",
+              "name": "ymm15/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm15/2",
+              "name": "ymm15/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm15/3",
+              "name": "ymm15/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "exfrom",
+              "name": "exfrom",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "exto",
+              "name": "exto",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "brfrom",
+              "name": "brfrom",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "brto",
+              "name": "brto",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ssp",
+              "name": "ssp",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "cetumsr",
+              "name": "cetumsr",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            }
+          ]
+        },
+        "command": "variables",
+        "request_seq": 16,
+        "seq": 71,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "threadId": 14968
+        },
+        "command": "continue",
+        "seq": 17,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true
+        },
+        "command": "continue",
+        "request_seq": 17,
+        "seq": 72,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true,
+          "threadId": 14968
+        },
+        "event": "continued",
+        "seq": 73,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007fff`17b40000 00007fff`17b5b000   C:\\WINDOWS\\SYSTEM32\\kernel.appcore.dll\nModLoad: 00007fff`1ac30000 00007fff`1acd9000   C:\\WINDOWS\\System32\\msvcrt.dll\n"
+        },
+        "event": "output",
+        "seq": 75,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "exited",
+          "threadId": 15092
+        },
+        "event": "thread",
+        "seq": 76,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "exited",
+          "threadId": 12604
+        },
+        "event": "thread",
+        "seq": 77,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "exitCode": 0
+        },
+        "event": "exited",
+        "seq": 78,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "terminated",
+        "seq": 79,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "restart": false,
+          "terminateDebuggee": false
+        },
+        "command": "disconnect",
+        "seq": 18,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "disconnect",
+        "request_seq": 18,
+        "seq": 80,
+        "success": true,
+        "type": "response"
+      }
+    }
+  ],
+  "version": 1
+}
