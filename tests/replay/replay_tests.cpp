@@ -336,22 +336,24 @@ TEST(Replay, MemoryReadWrite)
     REPLAY_OR_SKIP(replay, "memory-read-write.json");
     assert_positive_launch_replay(replay);
 
-    // readMemory before and after a writeMemory.
-    std::size_t read_memory_responses = 0;
+    // readMemory before and after a writeMemory. The hex editor also probes
+    // pages outside the readable region; those reads succeed with empty data
+    // and unreadableBytes, so only data-carrying reads are counted.
+    std::size_t read_memory_responses_with_data = 0;
     std::size_t write_memory_responses = 0;
     for (const auto &m : replay.non_output)
     {
-        if (is_response(m, "readMemory") && m.value("success", false))
+        if (is_response(m, "readMemory") && m.value("success", false) &&
+            !m.at("body").value("data", std::string{}).empty())
         {
-            ++read_memory_responses;
-            EXPECT_FALSE(m.at("body").value("data", std::string{}).empty()) << "readMemory should return base64 data.";
+            ++read_memory_responses_with_data;
         }
         if (is_response(m, "writeMemory") && m.value("success", false))
         {
             ++write_memory_responses;
         }
     }
-    EXPECT_GE(read_memory_responses, 2u) << "Expected reads before and after the write.";
+    EXPECT_GE(read_memory_responses_with_data, 2u) << "Expected data-carrying reads before and after the write.";
     EXPECT_EQ(1u, write_memory_responses);
 }
 

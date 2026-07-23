@@ -11,14 +11,28 @@ that won't appear.
 | --- | --- |
 | **Line breakpoints** | Set them in the editor gutter. |
 | **Conditional breakpoints** | Break only when an expression is true. |
+| **Function breakpoints** | Add by name in the **Breakpoints** view, e.g. `myapp!main`. |
+| **Data breakpoints** | **Break on Value Change** on a variable (hardware watchpoints). |
+| **Instruction breakpoints** | Set in the **Disassembly view** gutter. |
+| **C++ exception breakpoints** | Tick **C++ exceptions** to break on first-chance throws. |
 | **Step over / into / out** | Plus **continue** and **pause**. |
 | **Instruction-level stepping** | Stepping works in the **Disassembly view** too. |
 | **Call stack** | With on-demand (delayed) frame loading for responsiveness. |
 | **Variables & scopes** | Inspect locals, arguments, and registers/scopes. |
 | **Set variable** | Edit a variable's value from the Variables pane. |
+| **Set expression** | Edit a watch value from the **Watch** pane. |
 | **Evaluate expressions** | In the **Watch** pane and **Debug Console**. |
+| **Read / write memory** | **View Binary Data** on a variable; see the note below. |
 | **Disassembly view** | View and step through disassembly. |
 | **Terminate & disconnect** | End the session, or detach and leave the target running. |
+
+!!! note "Viewing and editing memory needs the Hex Editor extension"
+    **View Binary Data** is provided by Microsoft's
+    [Hex Editor](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor)
+    extension. To save an edit back to memory, switch the editor to **Replace**
+    mode first (click the **Insert** indicator in the status bar). Insert-mode
+    edits resize the file, which memory does not support, so saving fails with
+    "Not supported".
 
 ## What is *not* (yet) supported
 
@@ -28,14 +42,9 @@ roadmap; the rest are out of scope for now.
 
 | Feature | Status |
 | --- | --- |
-| Function breakpoints | **Planned** - `dbgeng` breaks on symbols natively |
 | Hit-conditional breakpoints (break after N hits) | **Planned** - engine breakpoints carry a pass count |
-| Data breakpoints (watchpoints) | **Planned** - `dbgeng` break-on-access (`ba`) |
-| Instruction breakpoints | **Planned** - breakpoints by address |
 | Logpoints | **Planned** - adapter-side, like conditional breakpoints |
-| Read / write memory | **Planned** - engine read/write virtual memory |
-| Set expression | **Planned** - engine evaluator can assign |
-| Modules view | **Planned** - engine enumerates loaded modules |
+| Modules view | **No VS Code UI** - the adapter answers the `modules` request, but VS Code has no Modules view to show it |
 | Evaluate on hover | **Planned** - same path as the Watch pane |
 | Value formatting options (hex toggle, etc.) | **Planned** - engine formats hex/decimal |
 | Reverse debugging / step back | **Not supported** - would require Time Travel Debugging traces |
