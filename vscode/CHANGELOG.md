@@ -4,6 +4,41 @@ All notable changes to the Native Windows Debugging (dbgeng) extension are docum
 here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-07-23
+
+### Added
+
+- Raw memory access: locals carry a memory reference, so a variable's memory can be
+  inspected and edited in a binary/hex editor (right-click a variable, "View Binary
+  Data").
+- Data breakpoints: break when a local or a struct field is written (or read), backed
+  by hardware watchpoints (right-click a variable, "Break on Value Change").
+- Function breakpoints: break on a function by name from the Breakpoints pane;
+  deferred until the containing module loads.
+- Instruction breakpoints: set breakpoints on individual instructions in the
+  Disassembly view.
+- First-chance C++ exceptions: opt in from the Breakpoints pane to stop where an
+  exception is thrown, with the exception's code, address, and chance reported on the
+  stop.
+- Assignment from the Watch pane: any in-scope l-value expression (for example
+  `t.origin.x`) can be assigned a new value.
+- Structs, classes, and nested members expand in the Variables view, and struct fields
+  can be edited in place.
+- Loaded modules are reported with image path, address range, and symbol status for
+  DAP clients that surface them.
+
+### Fixed
+
+- Watch entries are evaluated as C++ expressions instead of being run as engine
+  commands; input that does not resolve as an expression still runs as a native command.
+- Changing breakpoints while the target is running takes effect without blocking the
+  debug session.
+- Detach removes all breakpoints, including hardware watchpoints, before letting the
+  target go; a leftover watchpoint used to freeze the detached process.
+- The `dap-dbgeng.adapterPath` setting expands `${workspaceFolder}` and logs when the
+  extension falls back to the bundled adapter; a configured path was previously ignored
+  silently.
+
 ## [0.1.2] - 2026-06-08
 
 ### Changed
@@ -48,6 +83,7 @@ Initial release.
   host.
 - `dap-dbgeng.adapterPath` setting to override the bundled adapter.
 
+[0.2.0]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.2.0
 [0.1.2]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.2
 [0.1.1]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.1
 [0.1.0]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.0
