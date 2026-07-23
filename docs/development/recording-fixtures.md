@@ -58,9 +58,13 @@ Target: `test_struct_1` (the test asserts `p` at `{3, 7}`, then `42` written bac
 1. Set a source breakpoint on `struct-1.cpp` line 37 (the `std::cout` line), then F5.
 2. In the Variables view, select `p` and use **View Binary Data** (the inline button on the
    variable, provided by the Hex Editor extension). This sends `readMemory`.
-3. In the hex editor, change the first byte from `03` to `2A` (42 little-endian) and save. This
-   sends `writeMemory` followed by a re-read.
-4. Close the hex editor, then continue to exit.
+3. Switch the hex editor to **Replace** mode first: click the **Insert** indicator in the status
+   bar (bottom right) so it reads **Replace**. The hex editor defaults to Insert mode, and an
+   insert edit cannot be saved to debug memory (memory cannot be resized) - Save then fails
+   client-side with "Not supported" and no `writeMemory` is ever sent.
+4. Change the first byte from `03` to `2A` (42 little-endian) and save. This sends `writeMemory`
+   followed by a re-read.
+5. Close the hex editor, then continue to exit.
 
 Note: the `modules` request cannot be recorded from VS Code (see
 [what cannot be recorded](#what-cannot-be-recorded-from-vs-code)); it has no replay fixture and is
