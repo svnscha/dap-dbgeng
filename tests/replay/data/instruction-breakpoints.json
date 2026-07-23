@@ -1,0 +1,4806 @@
+{
+  "messages": [
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "adapterID": "dbgeng",
+          "clientID": "vscode",
+          "clientName": "Visual Studio Code",
+          "columnsStartAt1": true,
+          "linesStartAt1": true,
+          "locale": "en",
+          "pathFormat": "path",
+          "supportsANSIStyling": true,
+          "supportsArgsCanBeInterpretedByShell": true,
+          "supportsInvalidatedEvent": true,
+          "supportsMemoryEvent": true,
+          "supportsMemoryReferences": true,
+          "supportsProgressReporting": true,
+          "supportsRunInTerminalRequest": true,
+          "supportsStartDebuggingRequest": true,
+          "supportsVariablePaging": true,
+          "supportsVariableType": true
+        },
+        "command": "initialize",
+        "seq": 1,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "exceptionBreakpointFilters": [
+            {
+              "default": false,
+              "description": "Break when a C++ exception is thrown (first chance).",
+              "filter": "cpp",
+              "label": "C++ exceptions"
+            }
+          ],
+          "supportSuspendDebuggee": false,
+          "supportTerminateDebuggee": true,
+          "supportsClipboardContext": true,
+          "supportsConditionalBreakpoints": true,
+          "supportsConfigurationDoneRequest": true,
+          "supportsDataBreakpoints": true,
+          "supportsDelayedStackTraceLoading": true,
+          "supportsDisassembleRequest": true,
+          "supportsEvaluateForHovers": false,
+          "supportsExceptionInfoRequest": true,
+          "supportsFunctionBreakpoints": true,
+          "supportsHitConditionalBreakpoints": false,
+          "supportsInstructionBreakpoints": true,
+          "supportsLogPoints": false,
+          "supportsModulesRequest": true,
+          "supportsReadMemoryRequest": true,
+          "supportsRestartFrame": false,
+          "supportsRestartRequest": false,
+          "supportsSetExpression": true,
+          "supportsSetVariable": true,
+          "supportsSingleThreadExecutionRequests": false,
+          "supportsStepBack": false,
+          "supportsSteppingGranularity": true,
+          "supportsTerminateRequest": true,
+          "supportsValueFormattingOptions": false,
+          "supportsWriteMemoryRequest": true
+        },
+        "command": "initialize",
+        "request_seq": 1,
+        "seq": 1,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "initialized",
+        "seq": 2,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "__configurationTarget": 6,
+          "__sessionId": "57f13cb8-89b7-4b71-9a8d-45b92b27e08d",
+          "cwd": "${workspaceFolder}\\build\\windows-x64\\test-targets",
+          "dbgengPath": "${dbgEngPath}",
+          "name": "Debug Test Target (Launch)",
+          "program": "${workspaceFolder}\\build\\windows-x64\\test-targets\\test_struct_1.exe",
+          "request": "launch",
+          "sources": [
+            "${workspaceFolder}"
+          ],
+          "trace": "${workspaceFolder}/recordings/launch.session.json",
+          "type": "dbgeng"
+        },
+        "command": "launch",
+        "seq": 2,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource search path is: ${workspaceFolder}\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\nNo .natvis files found at C:\\WINDOWS\\SYSTEM32\\Visualizers.\nNo .natvis files found at C:\\Users\\svnscha\\AppData\\Local\\Dbg\\Visualizers.\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.1 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nCommandLine: ${workspaceFolder}\\build\\windows-x64\\test-targets\\test_struct_1.exe\nStarting directory: ${workspaceFolder}\\build\\windows-x64\\test-targets\nUnable to add extension DLL: ntsdexts\nUnable to add extension DLL: uext\nUnable to add extension DLL: exts\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nDeferred                                       srv*\nSymbol search path is: srv*\nExecutable search path is: \nModLoad: 00007ff7`fc640000 00007ff7`fc655000   test_struct_1.exe\n"
+        },
+        "event": "output",
+        "seq": 33,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "launch",
+        "request_seq": 2,
+        "seq": 34,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "isLocalProcess": true,
+          "name": "${workspaceFolder}\\build\\windows-x64\\test-targets\\test_struct_1.exe",
+          "startMethod": "launch"
+        },
+        "event": "process",
+        "seq": 35,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "breakpoints": [
+            {
+              "line": 37
+            }
+          ],
+          "lines": [
+            37
+          ],
+          "source": {
+            "name": "struct-1.cpp",
+            "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+          },
+          "sourceModified": false
+        },
+        "command": "setBreakpoints",
+        "seq": 3,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "breakpoints": []
+        },
+        "command": "setFunctionBreakpoints",
+        "seq": 4,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": [
+            {
+              "id": 0,
+              "line": 37,
+              "source": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              },
+              "verified": true
+            }
+          ]
+        },
+        "command": "setBreakpoints",
+        "request_seq": 3,
+        "seq": 36,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "breakpoints": []
+        },
+        "command": "setInstructionBreakpoints",
+        "seq": 5,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": []
+        },
+        "command": "setFunctionBreakpoints",
+        "request_seq": 4,
+        "seq": 37,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "filters": []
+        },
+        "command": "setExceptionBreakpoints",
+        "seq": 6,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": []
+        },
+        "command": "setInstructionBreakpoints",
+        "request_seq": 5,
+        "seq": 38,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "breakpoints": []
+        },
+        "command": "setDataBreakpoints",
+        "seq": 7,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": []
+        },
+        "command": "setExceptionBreakpoints",
+        "request_seq": 6,
+        "seq": 39,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": []
+        },
+        "command": "setDataBreakpoints",
+        "request_seq": 7,
+        "seq": 40,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "configurationDone",
+        "seq": 8,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "configurationDone",
+        "request_seq": 8,
+        "seq": 41,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true,
+          "threadId": 4440
+        },
+        "event": "continued",
+        "seq": 42,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007fff`1bc80000 00007fff`1bee6000   ntdll.dll\n"
+        },
+        "event": "output",
+        "seq": 43,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "seq": 9,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007fff`1ab60000 00007fff`1ac29000   C:\\WINDOWS\\System32\\KERNEL32.DLL\nModLoad: 00007fff`195a0000 00007fff`1999e000   C:\\WINDOWS\\System32\\KERNELBASE.dll\nModLoad: 00007fff`15e80000 00007fff`15f20000   C:\\WINDOWS\\SYSTEM32\\apphelp.dll\nModLoad: 00007fff`08ad0000 00007fff`08adf000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140_1D.dll\nModLoad: 00007fff`084d0000 00007fff`08500000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140D.dll\nModLoad: 00007ffe`e42b0000 00007ffe`e44b4000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\nModLoad: 00007ffe`fd580000 00007ffe`fd661000   C:\\WINDOWS\\SYSTEM32\\MSVCP140D.dll\nModLoad: 00000279`f2330000 00000279`f2534000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\nBreakpoint 0 hit\n"
+        },
+        "event": "output",
+        "seq": 52,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 460
+        },
+        "event": "thread",
+        "seq": 53,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 7120
+        },
+        "event": "thread",
+        "seq": 54,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 5336
+        },
+        "event": "thread",
+        "seq": 55,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsStopped": true,
+          "description": "Paused on breakpoint 0.",
+          "hitBreakpointIds": [
+            0
+          ],
+          "reason": "breakpoint",
+          "threadId": 4440
+        },
+        "event": "stopped",
+        "seq": 56,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 4440,
+              "name": "Thread 4440 (current)"
+            },
+            {
+              "id": 460,
+              "name": "Thread 460"
+            },
+            {
+              "id": 7120,
+              "name": "Thread 7120"
+            },
+            {
+              "id": 5336,
+              "name": "Thread 5336"
+            }
+          ]
+        },
+        "command": "threads",
+        "request_seq": 9,
+        "seq": 57,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "seq": 10,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 4440,
+              "name": "Thread 4440 (current)"
+            },
+            {
+              "id": 460,
+              "name": "Thread 460"
+            },
+            {
+              "id": 7120,
+              "name": "Thread 7120"
+            },
+            {
+              "id": 5336,
+              "name": "Thread 5336"
+            }
+          ]
+        },
+        "command": "threads",
+        "request_seq": 10,
+        "seq": 58,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "levels": 1,
+          "startFrame": 0,
+          "threadId": 4440
+        },
+        "command": "stackTrace",
+        "seq": 11,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "column": 1,
+              "id": 363529970,
+              "instructionPointerReference": "0x7FF7FC641613",
+              "line": 37,
+              "name": "test_struct_1!main+0xC3",
+              "source": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              }
+            }
+          ],
+          "totalFrames": 7
+        },
+        "command": "stackTrace",
+        "request_seq": 11,
+        "seq": 59,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "seq": 12,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 4440,
+              "name": "Thread 4440 (current)"
+            },
+            {
+              "id": 460,
+              "name": "Thread 460"
+            },
+            {
+              "id": 7120,
+              "name": "Thread 7120"
+            },
+            {
+              "id": 5336,
+              "name": "Thread 5336"
+            }
+          ]
+        },
+        "command": "threads",
+        "request_seq": 12,
+        "seq": 60,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "levels": 19,
+          "startFrame": 1,
+          "threadId": 4440
+        },
+        "command": "stackTrace",
+        "seq": 13,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "column": 1,
+              "id": 1708606979,
+              "instructionPointerReference": "0x7FF7FC642999",
+              "line": 79,
+              "name": "test_struct_1!invoke_main+0x39",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              }
+            },
+            {
+              "column": 1,
+              "id": 1968343248,
+              "instructionPointerReference": "0x7FF7FC642842",
+              "line": 288,
+              "name": "test_struct_1!__scrt_common_main_seh+0x132",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              }
+            },
+            {
+              "column": 1,
+              "id": 1165936609,
+              "instructionPointerReference": "0x7FF7FC6426FE",
+              "line": 331,
+              "name": "test_struct_1!__scrt_common_main+0xE",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              }
+            },
+            {
+              "column": 1,
+              "id": 1448870710,
+              "instructionPointerReference": "0x7FF7FC642A2E",
+              "line": 17,
+              "name": "test_struct_1!mainCRTStartup+0xE",
+              "source": {
+                "name": "exe_main.cpp",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
+              }
+            },
+            {
+              "column": 0,
+              "id": 646464071,
+              "instructionPointerReference": "0x7FFF1AB8E957",
+              "line": 0,
+              "name": "KERNEL32!BaseThreadInitThunk+0x17"
+            },
+            {
+              "column": 0,
+              "id": 906200340,
+              "instructionPointerReference": "0x7FFF1BD2AD6C",
+              "line": 0,
+              "name": "ntdll!RtlUserThreadStart+0x2C"
+            }
+          ],
+          "totalFrames": 7
+        },
+        "command": "stackTrace",
+        "request_seq": 13,
+        "seq": 61,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "frameId": 363529970
+        },
+        "command": "scopes",
+        "seq": 14,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "scopes": [
+            {
+              "column": 1,
+              "expensive": false,
+              "line": 37,
+              "name": "Locals",
+              "namedVariables": 5,
+              "presentationHint": "locals",
+              "source": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              },
+              "variablesReference": 6
+            },
+            {
+              "expensive": false,
+              "name": "Registers",
+              "namedVariables": 168,
+              "presentationHint": "registers",
+              "variablesReference": 7
+            }
+          ]
+        },
+        "command": "scopes",
+        "request_seq": 14,
+        "seq": 62,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "variablesReference": 6
+        },
+        "command": "variables",
+        "seq": 15,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "variables": [
+            {
+              "evaluateName": "argc",
+              "memoryReference": "0xbb968ff970",
+              "name": "argc",
+              "type": "int",
+              "value": "1",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "argv",
+              "memoryReference": "0xbb968ff978",
+              "name": "argv",
+              "type": "char **",
+              "value": "0x00000279`f20deeb0",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "p",
+              "memoryReference": "0xbb968ff8a8",
+              "name": "p",
+              "namedVariables": 2,
+              "type": "struct point2",
+              "value": "struct point2",
+              "variablesReference": 1
+            },
+            {
+              "evaluateName": "t",
+              "memoryReference": "0xbb968ff8f8",
+              "name": "t",
+              "namedVariables": 3,
+              "type": "struct transform",
+              "value": "struct transform",
+              "variablesReference": 4
+            },
+            {
+              "evaluateName": "v",
+              "memoryReference": "0xbb968ff8c8",
+              "name": "v",
+              "namedVariables": 3,
+              "type": "struct vector3",
+              "value": "struct vector3",
+              "variablesReference": 5
+            }
+          ]
+        },
+        "command": "variables",
+        "request_seq": 15,
+        "seq": 63,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "instructionCount": 400,
+          "instructionOffset": -200,
+          "memoryReference": "0x7FF7FC641613",
+          "offset": 0,
+          "resolveSymbols": true
+        },
+        "command": "disassemble",
+        "seq": 16,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "instructions": [
+            {
+              "address": "0x7FF7FC6414A5",
+              "instruction": "<invalid instruction>",
+              "location": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              },
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414A6",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414A7",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414A8",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414A9",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414AA",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414AB",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414AC",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414AD",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414AE",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414AF",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B0",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B1",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B2",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B3",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B4",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B5",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B6",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B7",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B8",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414B9",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414BA",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414BB",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414BC",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414BD",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414BE",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414BF",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C0",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C1",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C2",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C3",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C4",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C5",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C6",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C7",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C8",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414C9",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414CA",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414CB",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414CC",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414CD",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414CE",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414CF",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D0",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D1",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D2",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D3",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D4",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D5",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D6",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D7",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D8",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414D9",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414DA",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414DB",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414DC",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414DD",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414DE",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414DF",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E0",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E1",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E2",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E3",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E4",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E5",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E6",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E7",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E8",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414E9",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414EA",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414EB",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414EC",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414ED",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414EE",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414EF",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F0",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F1",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F2",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F3",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F4",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F5",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F6",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F7",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F8",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414F9",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414FA",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414FB",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414FC",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414FD",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414FE",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC6414FF",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641500",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641501",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641502",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641503",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641504",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641505",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641506",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641507",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641508",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641509",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64150A",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64150B",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64150C",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64150D",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64150E",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64150F",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641510",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641511",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641512",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641513",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641514",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641515",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641516",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641517",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641518",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641519",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64151A",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64151B",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64151C",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64151D",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64151E",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64151F",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641520",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641521",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641522",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641523",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641524",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641525",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641526",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641527",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641528",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641529",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64152A",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64152B",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64152C",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64152D",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64152E",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64152F",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641530",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641531",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641532",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641533",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641534",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641535",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641536",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641537",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641538",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641539",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64153A",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64153B",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64153C",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64153D",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64153E",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64153F",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641540",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641541",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641542",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641543",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641544",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641545",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641546",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641547",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641548",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641549",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154A",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154B",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154C",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154D",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154E",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154F",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641550",
+              "instruction": "mov     qword ptr [rsp+10h],rdx",
+              "instructionBytes": "4889542410",
+              "symbol": "test_struct_1!main"
+            },
+            {
+              "address": "0x7FF7FC641555",
+              "instruction": "mov     dword ptr [rsp+8],ecx",
+              "instructionBytes": "894c2408",
+              "symbol": "test_struct_1!main+0x5"
+            },
+            {
+              "address": "0x7FF7FC641559",
+              "instruction": "push    rdi",
+              "instructionBytes": "57",
+              "symbol": "test_struct_1!main+0x9"
+            },
+            {
+              "address": "0x7FF7FC64155A",
+              "instruction": "sub     rsp,0E0h",
+              "instructionBytes": "4881ece0000000",
+              "symbol": "test_struct_1!main+0xA"
+            },
+            {
+              "address": "0x7FF7FC641561",
+              "instruction": "lea     rdi,[rsp+20h]",
+              "instructionBytes": "488d7c2420",
+              "symbol": "test_struct_1!main+0x11"
+            },
+            {
+              "address": "0x7FF7FC641566",
+              "instruction": "mov     ecx,30h",
+              "instructionBytes": "b930000000",
+              "symbol": "test_struct_1!main+0x16"
+            },
+            {
+              "address": "0x7FF7FC64156B",
+              "instruction": "mov     eax,0CCCCCCCCh",
+              "instructionBytes": "b8cccccccc",
+              "symbol": "test_struct_1!main+0x1B"
+            },
+            {
+              "address": "0x7FF7FC641570",
+              "instruction": "rep stos dword ptr [rdi]",
+              "instructionBytes": "f3ab",
+              "symbol": "test_struct_1!main+0x20"
+            },
+            {
+              "address": "0x7FF7FC641572",
+              "instruction": "mov     ecx,dword ptr [rsp+0F0h]",
+              "instructionBytes": "8b8c24f0000000",
+              "symbol": "test_struct_1!main+0x22"
+            },
+            {
+              "address": "0x7FF7FC641579",
+              "instruction": "mov     rax,qword ptr [test_struct_1!__security_cookie (00007ff7`fc64e000)]",
+              "instructionBytes": "488b0580ca0000",
+              "symbol": "test_struct_1!main+0x29"
+            },
+            {
+              "address": "0x7FF7FC641580",
+              "instruction": "xor     rax,rsp",
+              "instructionBytes": "4833c4",
+              "symbol": "test_struct_1!main+0x30"
+            },
+            {
+              "address": "0x7FF7FC641583",
+              "instruction": "mov     qword ptr [rsp+0D0h],rax",
+              "instructionBytes": "48898424d0000000",
+              "symbol": "test_struct_1!main+0x33"
+            },
+            {
+              "address": "0x7FF7FC64158B",
+              "instruction": "mov     dword ptr [rsp+28h],3",
+              "instructionBytes": "c744242803000000",
+              "symbol": "test_struct_1!main+0x3B"
+            },
+            {
+              "address": "0x7FF7FC641593",
+              "instruction": "mov     dword ptr [rsp+2Ch],7",
+              "instructionBytes": "c744242c07000000",
+              "symbol": "test_struct_1!main+0x43"
+            },
+            {
+              "address": "0x7FF7FC64159B",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64aea8)]",
+              "instructionBytes": "f20f100505990000",
+              "symbol": "test_struct_1!main+0x4B"
+            },
+            {
+              "address": "0x7FF7FC6415A3",
+              "instruction": "movsd   mmword ptr [rsp+48h],xmm0",
+              "instructionBytes": "f20f11442448",
+              "symbol": "test_struct_1!main+0x53"
+            },
+            {
+              "address": "0x7FF7FC6415A9",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64aeb8)]",
+              "instructionBytes": "f20f100507990000",
+              "symbol": "test_struct_1!main+0x59"
+            },
+            {
+              "address": "0x7FF7FC6415B1",
+              "instruction": "movsd   mmword ptr [rsp+50h],xmm0",
+              "instructionBytes": "f20f11442450",
+              "symbol": "test_struct_1!main+0x61"
+            },
+            {
+              "address": "0x7FF7FC6415B7",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64aec8)]",
+              "instructionBytes": "f20f100509990000",
+              "symbol": "test_struct_1!main+0x67"
+            },
+            {
+              "address": "0x7FF7FC6415BF",
+              "instruction": "movsd   mmword ptr [rsp+58h],xmm0",
+              "instructionBytes": "f20f11442458",
+              "symbol": "test_struct_1!main+0x6F"
+            },
+            {
+              "address": "0x7FF7FC6415C5",
+              "instruction": "mov     dword ptr [rsp+78h],0Ah",
+              "instructionBytes": "c74424780a000000",
+              "symbol": "test_struct_1!main+0x75"
+            },
+            {
+              "address": "0x7FF7FC6415CD",
+              "instruction": "mov     dword ptr [rsp+7Ch],14h",
+              "instructionBytes": "c744247c14000000",
+              "symbol": "test_struct_1!main+0x7D"
+            },
+            {
+              "address": "0x7FF7FC6415D5",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64ae88)]",
+              "instructionBytes": "f20f1005ab980000",
+              "symbol": "test_struct_1!main+0x85"
+            },
+            {
+              "address": "0x7FF7FC6415DD",
+              "instruction": "movsd mmword ptr [rsp+80h],xmm0",
+              "instructionBytes": "f20f11842480000000",
+              "symbol": "test_struct_1!main+0x8D"
+            },
+            {
+              "address": "0x7FF7FC6415E6",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64ae88)]",
+              "instructionBytes": "f20f10059a980000",
+              "symbol": "test_struct_1!main+0x96"
+            },
+            {
+              "address": "0x7FF7FC6415EE",
+              "instruction": "movsd mmword ptr [rsp+88h],xmm0",
+              "instructionBytes": "f20f11842488000000",
+              "symbol": "test_struct_1!main+0x9E"
+            },
+            {
+              "address": "0x7FF7FC6415F7",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64ae98)]",
+              "instructionBytes": "f20f100599980000",
+              "symbol": "test_struct_1!main+0xA7"
+            },
+            {
+              "address": "0x7FF7FC6415FF",
+              "instruction": "movsd mmword ptr [rsp+90h],xmm0",
+              "instructionBytes": "f20f11842490000000",
+              "symbol": "test_struct_1!main+0xAF"
+            },
+            {
+              "address": "0x7FF7FC641608",
+              "instruction": "mov dword ptr [rsp+98h],2Ah",
+              "instructionBytes": "c78424980000002a000000",
+              "symbol": "test_struct_1!main+0xB8"
+            },
+            {
+              "address": "0x7FF7FC641613",
+              "column": 1,
+              "instruction": "mov     edx,dword ptr [rsp+28h]",
+              "instructionBytes": "8b542428",
+              "line": 37,
+              "location": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              },
+              "symbol": "test_struct_1!main+0xC3"
+            },
+            {
+              "address": "0x7FF7FC641617",
+              "instruction": "mov     rcx,qword ptr [test_struct_1!_imp_?coutstd (00007ff7`fc650190)]",
+              "instructionBytes": "488b0d72eb0000",
+              "symbol": "test_struct_1!main+0xC7"
+            },
+            {
+              "address": "0x7FF7FC64161E",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01HZ (00007ff7`fc650170)]",
+              "instructionBytes": "ff154ceb0000",
+              "symbol": "test_struct_1!main+0xCE"
+            },
+            {
+              "address": "0x7FF7FC641624",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x1a4 (00007ff7`fc64ac44)]",
+              "instructionBytes": "488d1519960000",
+              "symbol": "test_struct_1!main+0xD4"
+            },
+            {
+              "address": "0x7FF7FC64162B",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0xDB"
+            },
+            {
+              "address": "0x7FF7FC64162E",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e813faffff",
+              "symbol": "test_struct_1!main+0xDE"
+            },
+            {
+              "address": "0x7FF7FC641633",
+              "instruction": "mov     qword ptr [rsp+0B0h],rax",
+              "instructionBytes": "48898424b0000000",
+              "symbol": "test_struct_1!main+0xE3"
+            },
+            {
+              "address": "0x7FF7FC64163B",
+              "instruction": "movsd   xmm1,mmword ptr [rsp+58h]",
+              "instructionBytes": "f20f104c2458",
+              "symbol": "test_struct_1!main+0xEB"
+            },
+            {
+              "address": "0x7FF7FC641641",
+              "instruction": "mov     rcx,qword ptr [rsp+0B0h]",
+              "instructionBytes": "488b8c24b0000000",
+              "symbol": "test_struct_1!main+0xF1"
+            },
+            {
+              "address": "0x7FF7FC641649",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01NZ (00007ff7`fc650168)]",
+              "instructionBytes": "ff1519eb0000",
+              "symbol": "test_struct_1!main+0xF9"
+            },
+            {
+              "address": "0x7FF7FC64164F",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x1a0 (00007ff7`fc64ac40)]",
+              "instructionBytes": "488d15ea950000",
+              "symbol": "test_struct_1!main+0xFF"
+            },
+            {
+              "address": "0x7FF7FC641656",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0x106"
+            },
+            {
+              "address": "0x7FF7FC641659",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e8e8f9ffff",
+              "symbol": "test_struct_1!main+0x109"
+            },
+            {
+              "address": "0x7FF7FC64165E",
+              "instruction": "mov     qword ptr [rsp+0B8h],rax",
+              "instructionBytes": "48898424b8000000",
+              "symbol": "test_struct_1!main+0x10E"
+            },
+            {
+              "address": "0x7FF7FC641666",
+              "instruction": "movsd xmm1,mmword ptr [rsp+90h]",
+              "instructionBytes": "f20f108c2490000000",
+              "symbol": "test_struct_1!main+0x116"
+            },
+            {
+              "address": "0x7FF7FC64166F",
+              "instruction": "mov     rcx,qword ptr [rsp+0B8h]",
+              "instructionBytes": "488b8c24b8000000",
+              "symbol": "test_struct_1!main+0x11F"
+            },
+            {
+              "address": "0x7FF7FC641677",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01NZ (00007ff7`fc650168)]",
+              "instructionBytes": "ff15ebea0000",
+              "symbol": "test_struct_1!main+0x127"
+            },
+            {
+              "address": "0x7FF7FC64167D",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x19c (00007ff7`fc64ac3c)]",
+              "instructionBytes": "488d15b8950000",
+              "symbol": "test_struct_1!main+0x12D"
+            },
+            {
+              "address": "0x7FF7FC641684",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0x134"
+            },
+            {
+              "address": "0x7FF7FC641687",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e8baf9ffff",
+              "symbol": "test_struct_1!main+0x137"
+            },
+            {
+              "address": "0x7FF7FC64168C",
+              "instruction": "mov     qword ptr [rsp+0C0h],rax",
+              "instructionBytes": "48898424c0000000",
+              "symbol": "test_struct_1!main+0x13C"
+            },
+            {
+              "address": "0x7FF7FC641694",
+              "instruction": "mov     edx,dword ptr [rsp+98h]",
+              "instructionBytes": "8b942498000000",
+              "symbol": "test_struct_1!main+0x144"
+            },
+            {
+              "address": "0x7FF7FC64169B",
+              "instruction": "mov     rcx,qword ptr [rsp+0C0h]",
+              "instructionBytes": "488b8c24c0000000",
+              "symbol": "test_struct_1!main+0x14B"
+            },
+            {
+              "address": "0x7FF7FC6416A3",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01HZ (00007ff7`fc650170)]",
+              "instructionBytes": "ff15c7ea0000",
+              "symbol": "test_struct_1!main+0x153"
+            },
+            {
+              "address": "0x7FF7FC6416A9",
+              "instruction": "mov     qword ptr [rsp+0C8h],rax",
+              "instructionBytes": "48898424c8000000",
+              "symbol": "test_struct_1!main+0x159"
+            },
+            {
+              "address": "0x7FF7FC6416B1",
+              "instruction": "lea     rdx,[test_struct_1!ILT+15(??$endlDU?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641014)]",
+              "instructionBytes": "488d155cf9ffff",
+              "symbol": "test_struct_1!main+0x161"
+            },
+            {
+              "address": "0x7FF7FC6416B8",
+              "instruction": "mov     rcx,qword ptr [rsp+0C8h]",
+              "instructionBytes": "488b8c24c8000000",
+              "symbol": "test_struct_1!main+0x168"
+            },
+            {
+              "address": "0x7FF7FC6416C0",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01P6AAEAV01AEAV01ZZ (00007ff7`fc650178)]",
+              "instructionBytes": "ff15b2ea0000",
+              "symbol": "test_struct_1!main+0x170"
+            },
+            {
+              "address": "0x7FF7FC6416C6",
+              "instruction": "xor     eax,eax",
+              "instructionBytes": "33c0",
+              "symbol": "test_struct_1!main+0x176"
+            },
+            {
+              "address": "0x7FF7FC6416C8",
+              "instruction": "mov     edi,eax",
+              "instructionBytes": "8bf8",
+              "symbol": "test_struct_1!main+0x178"
+            },
+            {
+              "address": "0x7FF7FC6416CA",
+              "instruction": "mov     rcx,rsp",
+              "instructionBytes": "488bcc",
+              "symbol": "test_struct_1!main+0x17A"
+            },
+            {
+              "address": "0x7FF7FC6416CD",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x2f0 (00007ff7`fc64ad90)]",
+              "instructionBytes": "488d15bc960000",
+              "symbol": "test_struct_1!main+0x17D"
+            },
+            {
+              "address": "0x7FF7FC6416D4",
+              "instruction": "call    test_struct_1!ILT+550(_RTC_CheckStackVars) (00007ff7`fc64122b)",
+              "instructionBytes": "e852fbffff",
+              "symbol": "test_struct_1!main+0x184"
+            },
+            {
+              "address": "0x7FF7FC6416D9",
+              "instruction": "mov     eax,edi",
+              "instructionBytes": "8bc7",
+              "symbol": "test_struct_1!main+0x189"
+            },
+            {
+              "address": "0x7FF7FC6416DB",
+              "instruction": "mov     rcx,qword ptr [rsp+0D0h]",
+              "instructionBytes": "488b8c24d0000000",
+              "symbol": "test_struct_1!main+0x18B"
+            },
+            {
+              "address": "0x7FF7FC6416E3",
+              "instruction": "xor     rcx,rsp",
+              "instructionBytes": "4833cc",
+              "symbol": "test_struct_1!main+0x193"
+            },
+            {
+              "address": "0x7FF7FC6416E6",
+              "instruction": "call    test_struct_1!ILT+310(__security_check_cookie) (00007ff7`fc64113b)",
+              "instructionBytes": "e850faffff",
+              "symbol": "test_struct_1!main+0x196"
+            },
+            {
+              "address": "0x7FF7FC6416EB",
+              "instruction": "add     rsp,0E0h",
+              "instructionBytes": "4881c4e0000000",
+              "symbol": "test_struct_1!main+0x19B"
+            },
+            {
+              "address": "0x7FF7FC6416F2",
+              "instruction": "pop     rdi",
+              "instructionBytes": "5f",
+              "symbol": "test_struct_1!main+0x1A2"
+            },
+            {
+              "address": "0x7FF7FC6416F3",
+              "instruction": "ret",
+              "instructionBytes": "c3",
+              "symbol": "test_struct_1!main+0x1A3"
+            },
+            {
+              "address": "0x7FF7FC6416F4",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A4"
+            },
+            {
+              "address": "0x7FF7FC6416F5",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A5"
+            },
+            {
+              "address": "0x7FF7FC6416F6",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A6"
+            },
+            {
+              "address": "0x7FF7FC6416F7",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A7"
+            },
+            {
+              "address": "0x7FF7FC6416F8",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A8"
+            },
+            {
+              "address": "0x7FF7FC6416F9",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A9"
+            },
+            {
+              "address": "0x7FF7FC6416FA",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AA"
+            },
+            {
+              "address": "0x7FF7FC6416FB",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AB"
+            },
+            {
+              "address": "0x7FF7FC6416FC",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AC"
+            },
+            {
+              "address": "0x7FF7FC6416FD",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AD"
+            },
+            {
+              "address": "0x7FF7FC6416FE",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AE"
+            },
+            {
+              "address": "0x7FF7FC6416FF",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AF"
+            },
+            {
+              "address": "0x7FF7FC641700",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B0"
+            },
+            {
+              "address": "0x7FF7FC641701",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B1"
+            },
+            {
+              "address": "0x7FF7FC641702",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B2"
+            },
+            {
+              "address": "0x7FF7FC641703",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B3"
+            },
+            {
+              "address": "0x7FF7FC641704",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B4"
+            },
+            {
+              "address": "0x7FF7FC641705",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B5"
+            },
+            {
+              "address": "0x7FF7FC641706",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B6"
+            },
+            {
+              "address": "0x7FF7FC641707",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B7"
+            },
+            {
+              "address": "0x7FF7FC641708",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B8"
+            },
+            {
+              "address": "0x7FF7FC641709",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B9"
+            },
+            {
+              "address": "0x7FF7FC64170A",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1BA"
+            },
+            {
+              "address": "0x7FF7FC64170B",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1BB"
+            },
+            {
+              "address": "0x7FF7FC64170C",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1BC"
+            },
+            {
+              "address": "0x7FF7FC64170D",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1BD"
+            },
+            {
+              "address": "0x7FF7FC64170E",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1BE"
+            },
+            {
+              "address": "0x7FF7FC64170F",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1BF"
+            },
+            {
+              "address": "0x7FF7FC641710",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C0"
+            },
+            {
+              "address": "0x7FF7FC641711",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C1"
+            },
+            {
+              "address": "0x7FF7FC641712",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C2"
+            },
+            {
+              "address": "0x7FF7FC641713",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C3"
+            },
+            {
+              "address": "0x7FF7FC641714",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C4"
+            },
+            {
+              "address": "0x7FF7FC641715",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C5"
+            },
+            {
+              "address": "0x7FF7FC641716",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C6"
+            },
+            {
+              "address": "0x7FF7FC641717",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C7"
+            },
+            {
+              "address": "0x7FF7FC641718",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C8"
+            },
+            {
+              "address": "0x7FF7FC641719",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1C9"
+            },
+            {
+              "address": "0x7FF7FC64171A",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1CA"
+            },
+            {
+              "address": "0x7FF7FC64171B",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1CB"
+            },
+            {
+              "address": "0x7FF7FC64171C",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1CC"
+            },
+            {
+              "address": "0x7FF7FC64171D",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1CD"
+            },
+            {
+              "address": "0x7FF7FC64171E",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1CE"
+            },
+            {
+              "address": "0x7FF7FC64171F",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1CF"
+            },
+            {
+              "address": "0x7FF7FC641720",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D0"
+            },
+            {
+              "address": "0x7FF7FC641721",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D1"
+            },
+            {
+              "address": "0x7FF7FC641722",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D2"
+            },
+            {
+              "address": "0x7FF7FC641723",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D3"
+            },
+            {
+              "address": "0x7FF7FC641724",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D4"
+            },
+            {
+              "address": "0x7FF7FC641725",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D5"
+            },
+            {
+              "address": "0x7FF7FC641726",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D6"
+            },
+            {
+              "address": "0x7FF7FC641727",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D7"
+            },
+            {
+              "address": "0x7FF7FC641728",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D8"
+            },
+            {
+              "address": "0x7FF7FC641729",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1D9"
+            },
+            {
+              "address": "0x7FF7FC64172A",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1DA"
+            },
+            {
+              "address": "0x7FF7FC64172B",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1DB"
+            },
+            {
+              "address": "0x7FF7FC64172C",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1DC"
+            },
+            {
+              "address": "0x7FF7FC64172D",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1DD"
+            },
+            {
+              "address": "0x7FF7FC64172E",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1DE"
+            },
+            {
+              "address": "0x7FF7FC64172F",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1DF"
+            },
+            {
+              "address": "0x7FF7FC641730",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E0"
+            },
+            {
+              "address": "0x7FF7FC641731",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E1"
+            },
+            {
+              "address": "0x7FF7FC641732",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E2"
+            },
+            {
+              "address": "0x7FF7FC641733",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E3"
+            },
+            {
+              "address": "0x7FF7FC641734",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E4"
+            },
+            {
+              "address": "0x7FF7FC641735",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E5"
+            },
+            {
+              "address": "0x7FF7FC641736",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E6"
+            },
+            {
+              "address": "0x7FF7FC641737",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E7"
+            },
+            {
+              "address": "0x7FF7FC641738",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E8"
+            },
+            {
+              "address": "0x7FF7FC641739",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1E9"
+            },
+            {
+              "address": "0x7FF7FC64173A",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1EA"
+            },
+            {
+              "address": "0x7FF7FC64173B",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1EB"
+            },
+            {
+              "address": "0x7FF7FC64173C",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1EC"
+            },
+            {
+              "address": "0x7FF7FC64173D",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1ED"
+            },
+            {
+              "address": "0x7FF7FC64173E",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1EE"
+            },
+            {
+              "address": "0x7FF7FC64173F",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1EF"
+            },
+            {
+              "address": "0x7FF7FC641740",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F0"
+            },
+            {
+              "address": "0x7FF7FC641741",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F1"
+            },
+            {
+              "address": "0x7FF7FC641742",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F2"
+            },
+            {
+              "address": "0x7FF7FC641743",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F3"
+            },
+            {
+              "address": "0x7FF7FC641744",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F4"
+            },
+            {
+              "address": "0x7FF7FC641745",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F5"
+            },
+            {
+              "address": "0x7FF7FC641746",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F6"
+            },
+            {
+              "address": "0x7FF7FC641747",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F7"
+            },
+            {
+              "address": "0x7FF7FC641748",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F8"
+            },
+            {
+              "address": "0x7FF7FC641749",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1F9"
+            },
+            {
+              "address": "0x7FF7FC64174A",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1FA"
+            },
+            {
+              "address": "0x7FF7FC64174B",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1FB"
+            },
+            {
+              "address": "0x7FF7FC64174C",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1FC"
+            },
+            {
+              "address": "0x7FF7FC64174D",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1FD"
+            },
+            {
+              "address": "0x7FF7FC64174E",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1FE"
+            },
+            {
+              "address": "0x7FF7FC64174F",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1FF"
+            },
+            {
+              "address": "0x7FF7FC641750",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x200"
+            },
+            {
+              "address": "0x7FF7FC641751",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x201"
+            },
+            {
+              "address": "0x7FF7FC641752",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x202"
+            },
+            {
+              "address": "0x7FF7FC641753",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x203"
+            },
+            {
+              "address": "0x7FF7FC641754",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x204"
+            },
+            {
+              "address": "0x7FF7FC641755",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x205"
+            },
+            {
+              "address": "0x7FF7FC641756",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x206"
+            },
+            {
+              "address": "0x7FF7FC641757",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x207"
+            },
+            {
+              "address": "0x7FF7FC641758",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x208"
+            },
+            {
+              "address": "0x7FF7FC641759",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x209"
+            },
+            {
+              "address": "0x7FF7FC64175A",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x20A"
+            },
+            {
+              "address": "0x7FF7FC64175B",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x20B"
+            },
+            {
+              "address": "0x7FF7FC64175C",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x20C"
+            },
+            {
+              "address": "0x7FF7FC64175D",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x20D"
+            },
+            {
+              "address": "0x7FF7FC64175E",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x20E"
+            },
+            {
+              "address": "0x7FF7FC64175F",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x20F"
+            },
+            {
+              "address": "0x7FF7FC641760",
+              "instruction": "mov     qword ptr [rsp+10h],rdx",
+              "instructionBytes": "4889542410",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >"
+            },
+            {
+              "address": "0x7FF7FC641765",
+              "instruction": "mov     qword ptr [rsp+8],rcx",
+              "instructionBytes": "48894c2408",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x5"
+            },
+            {
+              "address": "0x7FF7FC64176A",
+              "instruction": "push    rdi",
+              "instructionBytes": "57",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xA"
+            },
+            {
+              "address": "0x7FF7FC64176B",
+              "instruction": "sub     rsp,0D0h",
+              "instructionBytes": "4881ecd0000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xB"
+            },
+            {
+              "address": "0x7FF7FC641772",
+              "instruction": "lea     rdi,[rsp+20h]",
+              "instructionBytes": "488d7c2420",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x12"
+            },
+            {
+              "address": "0x7FF7FC641777",
+              "instruction": "mov     ecx,2Ch",
+              "instructionBytes": "b92c000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x17"
+            },
+            {
+              "address": "0x7FF7FC64177C",
+              "instruction": "mov     eax,0CCCCCCCCh",
+              "instructionBytes": "b8cccccccc",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x1C"
+            },
+            {
+              "address": "0x7FF7FC641781",
+              "instruction": "rep stos dword ptr [rdi]",
+              "instructionBytes": "f3ab",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x21"
+            },
+            {
+              "address": "0x7FF7FC641783",
+              "instruction": "mov     rcx,qword ptr [rsp+0E0h]",
+              "instructionBytes": "488b8c24e0000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x23"
+            },
+            {
+              "address": "0x7FF7FC64178B",
+              "instruction": "mov     dword ptr [rsp+20h],0",
+              "instructionBytes": "c744242000000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x2B"
+            },
+            {
+              "address": "0x7FF7FC641793",
+              "instruction": "mov     rcx,qword ptr [rsp+0E8h]",
+              "instructionBytes": "488b8c24e8000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x33"
+            },
+            {
+              "address": "0x7FF7FC64179B",
+              "instruction": "call    test_struct_1!ILT+215(?length?$_Narrow_char_traitsDHstdSA_KQEBDZ) (00007ff7`fc6410dc)",
+              "instructionBytes": "e83cf9ffff",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x3B"
+            },
+            {
+              "address": "0x7FF7FC6417A0",
+              "instruction": "mov     qword ptr [rsp+28h],rax",
+              "instructionBytes": "4889442428",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x40"
+            },
+            {
+              "address": "0x7FF7FC6417A5",
+              "instruction": "mov     rax,qword ptr [rsp+0E0h]",
+              "instructionBytes": "488b8424e0000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x45"
+            },
+            {
+              "address": "0x7FF7FC6417AD",
+              "instruction": "mov     rax,qword ptr [rax]",
+              "instructionBytes": "488b00",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x4D"
+            },
+            {
+              "address": "0x7FF7FC6417B0",
+              "instruction": "movsxd  rax,dword ptr [rax+4]",
+              "instructionBytes": "48634004",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x50"
+            },
+            {
+              "address": "0x7FF7FC6417B4",
+              "instruction": "mov     rcx,qword ptr [rsp+0E0h]",
+              "instructionBytes": "488b8c24e0000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x54"
+            },
+            {
+              "address": "0x7FF7FC6417BC",
+              "instruction": "add     rcx,rax",
+              "instructionBytes": "4803c8",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x5C"
+            },
+            {
+              "address": "0x7FF7FC6417BF",
+              "instruction": "mov     rax,rcx",
+              "instructionBytes": "488bc1",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x5F"
+            },
+            {
+              "address": "0x7FF7FC6417C2",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x62"
+            },
+            {
+              "address": "0x7FF7FC6417C5",
+              "instruction": "call    qword ptr [test_struct_1!_imp_?widthios_basestdQEBA_JXZ (00007ff7`fc6501c8)]",
+              "instructionBytes": "ff15fde90000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x65"
+            },
+            {
+              "address": "0x7FF7FC6417CB",
+              "instruction": "test    rax,rax",
+              "instructionBytes": "4885c0",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x6B"
+            },
+            {
+              "address": "0x7FF7FC6417CE",
+              "instruction": "jle     test_struct_1!std::operator<<<std::char_traits<char> >+0xcf (00007ff7`fc64182f)",
+              "instructionBytes": "7e5f",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x6E"
+            },
+            {
+              "address": "0x7FF7FC6417D0",
+              "instruction": "mov     rax,qword ptr [rsp+0E0h]",
+              "instructionBytes": "488b8424e0000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x70"
+            },
+            {
+              "address": "0x7FF7FC6417D8",
+              "instruction": "mov     rax,qword ptr [rax]",
+              "instructionBytes": "488b00",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x78"
+            },
+            {
+              "address": "0x7FF7FC6417DB",
+              "instruction": "movsxd  rax,dword ptr [rax+4]",
+              "instructionBytes": "48634004",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x7B"
+            },
+            {
+              "address": "0x7FF7FC6417DF",
+              "instruction": "mov     rcx,qword ptr [rsp+0E0h]",
+              "instructionBytes": "488b8c24e0000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x7F"
+            },
+            {
+              "address": "0x7FF7FC6417E7",
+              "instruction": "add     rcx,rax",
+              "instructionBytes": "4803c8",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x87"
+            },
+            {
+              "address": "0x7FF7FC6417EA",
+              "instruction": "mov     rax,rcx",
+              "instructionBytes": "488bc1",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x8A"
+            },
+            {
+              "address": "0x7FF7FC6417ED",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x8D"
+            },
+            {
+              "address": "0x7FF7FC6417F0",
+              "instruction": "call    qword ptr [test_struct_1!_imp_?widthios_basestdQEBA_JXZ (00007ff7`fc6501c8)]",
+              "instructionBytes": "ff15d2e90000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x90"
+            },
+            {
+              "address": "0x7FF7FC6417F6",
+              "instruction": "cmp     rax,qword ptr [rsp+28h]",
+              "instructionBytes": "483b442428",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x96"
+            },
+            {
+              "address": "0x7FF7FC6417FB",
+              "instruction": "jle     test_struct_1!std::operator<<<std::char_traits<char> >+0xcf (00007ff7`fc64182f)",
+              "instructionBytes": "7e32",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x9B"
+            },
+            {
+              "address": "0x7FF7FC6417FD",
+              "instruction": "mov     rax,qword ptr [rsp+0E0h]",
+              "instructionBytes": "488b8424e0000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0x9D"
+            },
+            {
+              "address": "0x7FF7FC641805",
+              "instruction": "mov     rax,qword ptr [rax]",
+              "instructionBytes": "488b00",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xA5"
+            },
+            {
+              "address": "0x7FF7FC641808",
+              "instruction": "movsxd  rax,dword ptr [rax+4]",
+              "instructionBytes": "48634004",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xA8"
+            },
+            {
+              "address": "0x7FF7FC64180C",
+              "instruction": "mov     rcx,qword ptr [rsp+0E0h]",
+              "instructionBytes": "488b8c24e0000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xAC"
+            },
+            {
+              "address": "0x7FF7FC641814",
+              "instruction": "add     rcx,rax",
+              "instructionBytes": "4803c8",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xB4"
+            },
+            {
+              "address": "0x7FF7FC641817",
+              "instruction": "mov     rax,rcx",
+              "instructionBytes": "488bc1",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xB7"
+            },
+            {
+              "address": "0x7FF7FC64181A",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xBA"
+            },
+            {
+              "address": "0x7FF7FC64181D",
+              "instruction": "call    qword ptr [test_struct_1!_imp_?widthios_basestdQEBA_JXZ (00007ff7`fc6501c8)]",
+              "instructionBytes": "ff15a5e90000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xBD"
+            },
+            {
+              "address": "0x7FF7FC641823",
+              "instruction": "sub     rax,qword ptr [rsp+28h]",
+              "instructionBytes": "482b442428",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xC3"
+            },
+            {
+              "address": "0x7FF7FC641828",
+              "instruction": "mov     qword ptr [rsp+70h],rax",
+              "instructionBytes": "4889442470",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xC8"
+            },
+            {
+              "address": "0x7FF7FC64182D",
+              "instruction": "jmp     test_struct_1!std::operator<<<std::char_traits<char> >+0xd8 (00007ff7`fc641838)",
+              "instructionBytes": "eb09",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xCD"
+            },
+            {
+              "address": "0x7FF7FC64182F",
+              "instruction": "mov   qword ptr [rsp+70h],0",
+              "instructionBytes": "48c744247000000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xCF"
+            },
+            {
+              "address": "0x7FF7FC641838",
+              "instruction": "mov     rax,qword ptr [rsp+70h]",
+              "instructionBytes": "488b442470",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xD8"
+            },
+            {
+              "address": "0x7FF7FC64183D",
+              "instruction": "mov     qword ptr [rsp+30h],rax",
+              "instructionBytes": "4889442430",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xDD"
+            },
+            {
+              "address": "0x7FF7FC641842",
+              "instruction": "mov     rdx,qword ptr [rsp+0E0h]",
+              "instructionBytes": "488b9424e0000000",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xE2"
+            },
+            {
+              "address": "0x7FF7FC64184A",
+              "instruction": "lea     rcx,[rsp+48h]",
+              "instructionBytes": "488d4c2448",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xEA"
+            },
+            {
+              "address": "0x7FF7FC64184F",
+              "instruction": "call    test_struct_1!ILT+110(??0sentry?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV12Z) (00007ff7`fc641073)",
+              "instructionBytes": "e81ff8ffff",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xEF"
+            },
+            {
+              "address": "0x7FF7FC641854",
+              "instruction": "nop",
+              "instructionBytes": "90",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xF4"
+            },
+            {
+              "address": "0x7FF7FC641855",
+              "instruction": "lea     rcx,[rsp+48h]",
+              "instructionBytes": "488d4c2448",
+              "symbol": "test_struct_1!std::operator<<<std::char_traits<char> >+0xF5"
+            }
+          ]
+        },
+        "command": "disassemble",
+        "request_seq": 16,
+        "seq": 64,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "instructionCount": 50,
+          "instructionOffset": 0,
+          "memoryReference": "0x7FF7FC641613",
+          "offset": 0,
+          "resolveSymbols": true
+        },
+        "command": "disassemble",
+        "seq": 17,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "instructions": [
+            {
+              "address": "0x7FF7FC641613",
+              "column": 1,
+              "instruction": "mov     edx,dword ptr [rsp+28h]",
+              "instructionBytes": "8b542428",
+              "line": 37,
+              "location": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              },
+              "symbol": "test_struct_1!main+0xC3"
+            },
+            {
+              "address": "0x7FF7FC641617",
+              "instruction": "mov     rcx,qword ptr [test_struct_1!_imp_?coutstd (00007ff7`fc650190)]",
+              "instructionBytes": "488b0d72eb0000",
+              "symbol": "test_struct_1!main+0xC7"
+            },
+            {
+              "address": "0x7FF7FC64161E",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01HZ (00007ff7`fc650170)]",
+              "instructionBytes": "ff154ceb0000",
+              "symbol": "test_struct_1!main+0xCE"
+            },
+            {
+              "address": "0x7FF7FC641624",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x1a4 (00007ff7`fc64ac44)]",
+              "instructionBytes": "488d1519960000",
+              "symbol": "test_struct_1!main+0xD4"
+            },
+            {
+              "address": "0x7FF7FC64162B",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0xDB"
+            },
+            {
+              "address": "0x7FF7FC64162E",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e813faffff",
+              "symbol": "test_struct_1!main+0xDE"
+            },
+            {
+              "address": "0x7FF7FC641633",
+              "instruction": "mov     qword ptr [rsp+0B0h],rax",
+              "instructionBytes": "48898424b0000000",
+              "symbol": "test_struct_1!main+0xE3"
+            },
+            {
+              "address": "0x7FF7FC64163B",
+              "instruction": "movsd   xmm1,mmword ptr [rsp+58h]",
+              "instructionBytes": "f20f104c2458",
+              "symbol": "test_struct_1!main+0xEB"
+            },
+            {
+              "address": "0x7FF7FC641641",
+              "instruction": "mov     rcx,qword ptr [rsp+0B0h]",
+              "instructionBytes": "488b8c24b0000000",
+              "symbol": "test_struct_1!main+0xF1"
+            },
+            {
+              "address": "0x7FF7FC641649",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01NZ (00007ff7`fc650168)]",
+              "instructionBytes": "ff1519eb0000",
+              "symbol": "test_struct_1!main+0xF9"
+            },
+            {
+              "address": "0x7FF7FC64164F",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x1a0 (00007ff7`fc64ac40)]",
+              "instructionBytes": "488d15ea950000",
+              "symbol": "test_struct_1!main+0xFF"
+            },
+            {
+              "address": "0x7FF7FC641656",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0x106"
+            },
+            {
+              "address": "0x7FF7FC641659",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e8e8f9ffff",
+              "symbol": "test_struct_1!main+0x109"
+            },
+            {
+              "address": "0x7FF7FC64165E",
+              "instruction": "mov     qword ptr [rsp+0B8h],rax",
+              "instructionBytes": "48898424b8000000",
+              "symbol": "test_struct_1!main+0x10E"
+            },
+            {
+              "address": "0x7FF7FC641666",
+              "instruction": "movsd xmm1,mmword ptr [rsp+90h]",
+              "instructionBytes": "f20f108c2490000000",
+              "symbol": "test_struct_1!main+0x116"
+            },
+            {
+              "address": "0x7FF7FC64166F",
+              "instruction": "mov     rcx,qword ptr [rsp+0B8h]",
+              "instructionBytes": "488b8c24b8000000",
+              "symbol": "test_struct_1!main+0x11F"
+            },
+            {
+              "address": "0x7FF7FC641677",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01NZ (00007ff7`fc650168)]",
+              "instructionBytes": "ff15ebea0000",
+              "symbol": "test_struct_1!main+0x127"
+            },
+            {
+              "address": "0x7FF7FC64167D",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x19c (00007ff7`fc64ac3c)]",
+              "instructionBytes": "488d15b8950000",
+              "symbol": "test_struct_1!main+0x12D"
+            },
+            {
+              "address": "0x7FF7FC641684",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0x134"
+            },
+            {
+              "address": "0x7FF7FC641687",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e8baf9ffff",
+              "symbol": "test_struct_1!main+0x137"
+            },
+            {
+              "address": "0x7FF7FC64168C",
+              "instruction": "mov     qword ptr [rsp+0C0h],rax",
+              "instructionBytes": "48898424c0000000",
+              "symbol": "test_struct_1!main+0x13C"
+            },
+            {
+              "address": "0x7FF7FC641694",
+              "instruction": "mov     edx,dword ptr [rsp+98h]",
+              "instructionBytes": "8b942498000000",
+              "symbol": "test_struct_1!main+0x144"
+            },
+            {
+              "address": "0x7FF7FC64169B",
+              "instruction": "mov     rcx,qword ptr [rsp+0C0h]",
+              "instructionBytes": "488b8c24c0000000",
+              "symbol": "test_struct_1!main+0x14B"
+            },
+            {
+              "address": "0x7FF7FC6416A3",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01HZ (00007ff7`fc650170)]",
+              "instructionBytes": "ff15c7ea0000",
+              "symbol": "test_struct_1!main+0x153"
+            },
+            {
+              "address": "0x7FF7FC6416A9",
+              "instruction": "mov     qword ptr [rsp+0C8h],rax",
+              "instructionBytes": "48898424c8000000",
+              "symbol": "test_struct_1!main+0x159"
+            },
+            {
+              "address": "0x7FF7FC6416B1",
+              "instruction": "lea     rdx,[test_struct_1!ILT+15(??$endlDU?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641014)]",
+              "instructionBytes": "488d155cf9ffff",
+              "symbol": "test_struct_1!main+0x161"
+            },
+            {
+              "address": "0x7FF7FC6416B8",
+              "instruction": "mov     rcx,qword ptr [rsp+0C8h]",
+              "instructionBytes": "488b8c24c8000000",
+              "symbol": "test_struct_1!main+0x168"
+            },
+            {
+              "address": "0x7FF7FC6416C0",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01P6AAEAV01AEAV01ZZ (00007ff7`fc650178)]",
+              "instructionBytes": "ff15b2ea0000",
+              "symbol": "test_struct_1!main+0x170"
+            },
+            {
+              "address": "0x7FF7FC6416C6",
+              "instruction": "xor     eax,eax",
+              "instructionBytes": "33c0",
+              "symbol": "test_struct_1!main+0x176"
+            },
+            {
+              "address": "0x7FF7FC6416C8",
+              "instruction": "mov     edi,eax",
+              "instructionBytes": "8bf8",
+              "symbol": "test_struct_1!main+0x178"
+            },
+            {
+              "address": "0x7FF7FC6416CA",
+              "instruction": "mov     rcx,rsp",
+              "instructionBytes": "488bcc",
+              "symbol": "test_struct_1!main+0x17A"
+            },
+            {
+              "address": "0x7FF7FC6416CD",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x2f0 (00007ff7`fc64ad90)]",
+              "instructionBytes": "488d15bc960000",
+              "symbol": "test_struct_1!main+0x17D"
+            },
+            {
+              "address": "0x7FF7FC6416D4",
+              "instruction": "call    test_struct_1!ILT+550(_RTC_CheckStackVars) (00007ff7`fc64122b)",
+              "instructionBytes": "e852fbffff",
+              "symbol": "test_struct_1!main+0x184"
+            },
+            {
+              "address": "0x7FF7FC6416D9",
+              "instruction": "mov     eax,edi",
+              "instructionBytes": "8bc7",
+              "symbol": "test_struct_1!main+0x189"
+            },
+            {
+              "address": "0x7FF7FC6416DB",
+              "instruction": "mov     rcx,qword ptr [rsp+0D0h]",
+              "instructionBytes": "488b8c24d0000000",
+              "symbol": "test_struct_1!main+0x18B"
+            },
+            {
+              "address": "0x7FF7FC6416E3",
+              "instruction": "xor     rcx,rsp",
+              "instructionBytes": "4833cc",
+              "symbol": "test_struct_1!main+0x193"
+            },
+            {
+              "address": "0x7FF7FC6416E6",
+              "instruction": "call    test_struct_1!ILT+310(__security_check_cookie) (00007ff7`fc64113b)",
+              "instructionBytes": "e850faffff",
+              "symbol": "test_struct_1!main+0x196"
+            },
+            {
+              "address": "0x7FF7FC6416EB",
+              "instruction": "add     rsp,0E0h",
+              "instructionBytes": "4881c4e0000000",
+              "symbol": "test_struct_1!main+0x19B"
+            },
+            {
+              "address": "0x7FF7FC6416F2",
+              "instruction": "pop     rdi",
+              "instructionBytes": "5f",
+              "symbol": "test_struct_1!main+0x1A2"
+            },
+            {
+              "address": "0x7FF7FC6416F3",
+              "instruction": "ret",
+              "instructionBytes": "c3",
+              "symbol": "test_struct_1!main+0x1A3"
+            },
+            {
+              "address": "0x7FF7FC6416F4",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A4"
+            },
+            {
+              "address": "0x7FF7FC6416F5",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A5"
+            },
+            {
+              "address": "0x7FF7FC6416F6",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A6"
+            },
+            {
+              "address": "0x7FF7FC6416F7",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A7"
+            },
+            {
+              "address": "0x7FF7FC6416F8",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A8"
+            },
+            {
+              "address": "0x7FF7FC6416F9",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A9"
+            },
+            {
+              "address": "0x7FF7FC6416FA",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AA"
+            },
+            {
+              "address": "0x7FF7FC6416FB",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AB"
+            },
+            {
+              "address": "0x7FF7FC6416FC",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AC"
+            },
+            {
+              "address": "0x7FF7FC6416FD",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AD"
+            }
+          ]
+        },
+        "command": "disassemble",
+        "request_seq": 17,
+        "seq": 65,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "breakpoints": [
+            {
+              "instructionReference": "0x7FF7FC641613",
+              "offset": 27
+            }
+          ]
+        },
+        "command": "setInstructionBreakpoints",
+        "seq": 18,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "breakpoints": [
+            {
+              "id": 1,
+              "instructionReference": "0x7ff7fc64162e",
+              "verified": true
+            }
+          ]
+        },
+        "command": "setInstructionBreakpoints",
+        "request_seq": 18,
+        "seq": 66,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "threadId": 4440
+        },
+        "command": "continue",
+        "seq": 19,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true
+        },
+        "command": "continue",
+        "request_seq": 19,
+        "seq": 67,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true,
+          "threadId": 4440
+        },
+        "event": "continued",
+        "seq": 68,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "Breakpoint 1 hit\n"
+        },
+        "event": "output",
+        "seq": 69,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsStopped": true,
+          "description": "Paused on breakpoint 1.",
+          "hitBreakpointIds": [
+            1
+          ],
+          "reason": "breakpoint",
+          "threadId": 4440
+        },
+        "event": "stopped",
+        "seq": 70,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "command": "threads",
+        "seq": 20,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 4440,
+              "name": "Thread 4440 (current)"
+            },
+            {
+              "id": 460,
+              "name": "Thread 460"
+            },
+            {
+              "id": 7120,
+              "name": "Thread 7120"
+            },
+            {
+              "id": 5336,
+              "name": "Thread 5336"
+            }
+          ]
+        },
+        "command": "threads",
+        "request_seq": 20,
+        "seq": 71,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "levels": 1,
+          "startFrame": 0,
+          "threadId": 4440
+        },
+        "command": "stackTrace",
+        "seq": 21,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "column": 1,
+              "id": 363529970,
+              "instructionPointerReference": "0x7FF7FC64162E",
+              "line": 37,
+              "name": "test_struct_1!main+0xDE",
+              "source": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              }
+            }
+          ],
+          "totalFrames": 7
+        },
+        "command": "stackTrace",
+        "request_seq": 21,
+        "seq": 72,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "instructionCount": 100,
+          "instructionOffset": -50,
+          "memoryReference": "0x7FF7FC64162E",
+          "offset": 0,
+          "resolveSymbols": true
+        },
+        "command": "disassemble",
+        "seq": 22,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "instructions": [
+            {
+              "address": "0x7FF7FC641540",
+              "instruction": "<invalid instruction>",
+              "location": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              },
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641541",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641542",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641543",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641544",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641545",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641546",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641547",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641548",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641549",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154A",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154B",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154C",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154D",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154E",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC64154F",
+              "instruction": "<invalid instruction>",
+              "presentationHint": "invalid"
+            },
+            {
+              "address": "0x7FF7FC641550",
+              "instruction": "mov     qword ptr [rsp+10h],rdx",
+              "instructionBytes": "4889542410",
+              "symbol": "test_struct_1!main"
+            },
+            {
+              "address": "0x7FF7FC641555",
+              "instruction": "mov     dword ptr [rsp+8],ecx",
+              "instructionBytes": "894c2408",
+              "symbol": "test_struct_1!main+0x5"
+            },
+            {
+              "address": "0x7FF7FC641559",
+              "instruction": "push    rdi",
+              "instructionBytes": "57",
+              "symbol": "test_struct_1!main+0x9"
+            },
+            {
+              "address": "0x7FF7FC64155A",
+              "instruction": "sub     rsp,0E0h",
+              "instructionBytes": "4881ece0000000",
+              "symbol": "test_struct_1!main+0xA"
+            },
+            {
+              "address": "0x7FF7FC641561",
+              "instruction": "lea     rdi,[rsp+20h]",
+              "instructionBytes": "488d7c2420",
+              "symbol": "test_struct_1!main+0x11"
+            },
+            {
+              "address": "0x7FF7FC641566",
+              "instruction": "mov     ecx,30h",
+              "instructionBytes": "b930000000",
+              "symbol": "test_struct_1!main+0x16"
+            },
+            {
+              "address": "0x7FF7FC64156B",
+              "instruction": "mov     eax,0CCCCCCCCh",
+              "instructionBytes": "b8cccccccc",
+              "symbol": "test_struct_1!main+0x1B"
+            },
+            {
+              "address": "0x7FF7FC641570",
+              "instruction": "rep stos dword ptr [rdi]",
+              "instructionBytes": "f3ab",
+              "symbol": "test_struct_1!main+0x20"
+            },
+            {
+              "address": "0x7FF7FC641572",
+              "instruction": "mov     ecx,dword ptr [rsp+0F0h]",
+              "instructionBytes": "8b8c24f0000000",
+              "symbol": "test_struct_1!main+0x22"
+            },
+            {
+              "address": "0x7FF7FC641579",
+              "instruction": "mov     rax,qword ptr [test_struct_1!__security_cookie (00007ff7`fc64e000)]",
+              "instructionBytes": "488b0580ca0000",
+              "symbol": "test_struct_1!main+0x29"
+            },
+            {
+              "address": "0x7FF7FC641580",
+              "instruction": "xor     rax,rsp",
+              "instructionBytes": "4833c4",
+              "symbol": "test_struct_1!main+0x30"
+            },
+            {
+              "address": "0x7FF7FC641583",
+              "instruction": "mov     qword ptr [rsp+0D0h],rax",
+              "instructionBytes": "48898424d0000000",
+              "symbol": "test_struct_1!main+0x33"
+            },
+            {
+              "address": "0x7FF7FC64158B",
+              "instruction": "mov     dword ptr [rsp+28h],3",
+              "instructionBytes": "c744242803000000",
+              "symbol": "test_struct_1!main+0x3B"
+            },
+            {
+              "address": "0x7FF7FC641593",
+              "instruction": "mov     dword ptr [rsp+2Ch],7",
+              "instructionBytes": "c744242c07000000",
+              "symbol": "test_struct_1!main+0x43"
+            },
+            {
+              "address": "0x7FF7FC64159B",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64aea8)]",
+              "instructionBytes": "f20f100505990000",
+              "symbol": "test_struct_1!main+0x4B"
+            },
+            {
+              "address": "0x7FF7FC6415A3",
+              "instruction": "movsd   mmword ptr [rsp+48h],xmm0",
+              "instructionBytes": "f20f11442448",
+              "symbol": "test_struct_1!main+0x53"
+            },
+            {
+              "address": "0x7FF7FC6415A9",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64aeb8)]",
+              "instructionBytes": "f20f100507990000",
+              "symbol": "test_struct_1!main+0x59"
+            },
+            {
+              "address": "0x7FF7FC6415B1",
+              "instruction": "movsd   mmword ptr [rsp+50h],xmm0",
+              "instructionBytes": "f20f11442450",
+              "symbol": "test_struct_1!main+0x61"
+            },
+            {
+              "address": "0x7FF7FC6415B7",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64aec8)]",
+              "instructionBytes": "f20f100509990000",
+              "symbol": "test_struct_1!main+0x67"
+            },
+            {
+              "address": "0x7FF7FC6415BF",
+              "instruction": "movsd   mmword ptr [rsp+58h],xmm0",
+              "instructionBytes": "f20f11442458",
+              "symbol": "test_struct_1!main+0x6F"
+            },
+            {
+              "address": "0x7FF7FC6415C5",
+              "instruction": "mov     dword ptr [rsp+78h],0Ah",
+              "instructionBytes": "c74424780a000000",
+              "symbol": "test_struct_1!main+0x75"
+            },
+            {
+              "address": "0x7FF7FC6415CD",
+              "instruction": "mov     dword ptr [rsp+7Ch],14h",
+              "instructionBytes": "c744247c14000000",
+              "symbol": "test_struct_1!main+0x7D"
+            },
+            {
+              "address": "0x7FF7FC6415D5",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64ae88)]",
+              "instructionBytes": "f20f1005ab980000",
+              "symbol": "test_struct_1!main+0x85"
+            },
+            {
+              "address": "0x7FF7FC6415DD",
+              "instruction": "movsd mmword ptr [rsp+80h],xmm0",
+              "instructionBytes": "f20f11842480000000",
+              "symbol": "test_struct_1!main+0x8D"
+            },
+            {
+              "address": "0x7FF7FC6415E6",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64ae88)]",
+              "instructionBytes": "f20f10059a980000",
+              "symbol": "test_struct_1!main+0x96"
+            },
+            {
+              "address": "0x7FF7FC6415EE",
+              "instruction": "movsd mmword ptr [rsp+88h],xmm0",
+              "instructionBytes": "f20f11842488000000",
+              "symbol": "test_struct_1!main+0x9E"
+            },
+            {
+              "address": "0x7FF7FC6415F7",
+              "instruction": "movsd   xmm0,mmword ptr [test_struct_1!_real (00007ff7`fc64ae98)]",
+              "instructionBytes": "f20f100599980000",
+              "symbol": "test_struct_1!main+0xA7"
+            },
+            {
+              "address": "0x7FF7FC6415FF",
+              "instruction": "movsd mmword ptr [rsp+90h],xmm0",
+              "instructionBytes": "f20f11842490000000",
+              "symbol": "test_struct_1!main+0xAF"
+            },
+            {
+              "address": "0x7FF7FC641608",
+              "instruction": "mov dword ptr [rsp+98h],2Ah",
+              "instructionBytes": "c78424980000002a000000",
+              "symbol": "test_struct_1!main+0xB8"
+            },
+            {
+              "address": "0x7FF7FC641613",
+              "instruction": "mov     edx,dword ptr [rsp+28h]",
+              "instructionBytes": "8b542428",
+              "symbol": "test_struct_1!main+0xC3"
+            },
+            {
+              "address": "0x7FF7FC641617",
+              "instruction": "mov     rcx,qword ptr [test_struct_1!_imp_?coutstd (00007ff7`fc650190)]",
+              "instructionBytes": "488b0d72eb0000",
+              "symbol": "test_struct_1!main+0xC7"
+            },
+            {
+              "address": "0x7FF7FC64161E",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01HZ (00007ff7`fc650170)]",
+              "instructionBytes": "ff154ceb0000",
+              "symbol": "test_struct_1!main+0xCE"
+            },
+            {
+              "address": "0x7FF7FC641624",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x1a4 (00007ff7`fc64ac44)]",
+              "instructionBytes": "488d1519960000",
+              "symbol": "test_struct_1!main+0xD4"
+            },
+            {
+              "address": "0x7FF7FC64162B",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0xDB"
+            },
+            {
+              "address": "0x7FF7FC64162E",
+              "column": 1,
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e813faffff",
+              "line": 37,
+              "location": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              },
+              "symbol": "test_struct_1!main+0xDE"
+            },
+            {
+              "address": "0x7FF7FC641633",
+              "instruction": "mov     qword ptr [rsp+0B0h],rax",
+              "instructionBytes": "48898424b0000000",
+              "symbol": "test_struct_1!main+0xE3"
+            },
+            {
+              "address": "0x7FF7FC64163B",
+              "instruction": "movsd   xmm1,mmword ptr [rsp+58h]",
+              "instructionBytes": "f20f104c2458",
+              "symbol": "test_struct_1!main+0xEB"
+            },
+            {
+              "address": "0x7FF7FC641641",
+              "instruction": "mov     rcx,qword ptr [rsp+0B0h]",
+              "instructionBytes": "488b8c24b0000000",
+              "symbol": "test_struct_1!main+0xF1"
+            },
+            {
+              "address": "0x7FF7FC641649",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01NZ (00007ff7`fc650168)]",
+              "instructionBytes": "ff1519eb0000",
+              "symbol": "test_struct_1!main+0xF9"
+            },
+            {
+              "address": "0x7FF7FC64164F",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x1a0 (00007ff7`fc64ac40)]",
+              "instructionBytes": "488d15ea950000",
+              "symbol": "test_struct_1!main+0xFF"
+            },
+            {
+              "address": "0x7FF7FC641656",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0x106"
+            },
+            {
+              "address": "0x7FF7FC641659",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e8e8f9ffff",
+              "symbol": "test_struct_1!main+0x109"
+            },
+            {
+              "address": "0x7FF7FC64165E",
+              "instruction": "mov     qword ptr [rsp+0B8h],rax",
+              "instructionBytes": "48898424b8000000",
+              "symbol": "test_struct_1!main+0x10E"
+            },
+            {
+              "address": "0x7FF7FC641666",
+              "instruction": "movsd xmm1,mmword ptr [rsp+90h]",
+              "instructionBytes": "f20f108c2490000000",
+              "symbol": "test_struct_1!main+0x116"
+            },
+            {
+              "address": "0x7FF7FC64166F",
+              "instruction": "mov     rcx,qword ptr [rsp+0B8h]",
+              "instructionBytes": "488b8c24b8000000",
+              "symbol": "test_struct_1!main+0x11F"
+            },
+            {
+              "address": "0x7FF7FC641677",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01NZ (00007ff7`fc650168)]",
+              "instructionBytes": "ff15ebea0000",
+              "symbol": "test_struct_1!main+0x127"
+            },
+            {
+              "address": "0x7FF7FC64167D",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x19c (00007ff7`fc64ac3c)]",
+              "instructionBytes": "488d15b8950000",
+              "symbol": "test_struct_1!main+0x12D"
+            },
+            {
+              "address": "0x7FF7FC641684",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0x134"
+            },
+            {
+              "address": "0x7FF7FC641687",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e8baf9ffff",
+              "symbol": "test_struct_1!main+0x137"
+            },
+            {
+              "address": "0x7FF7FC64168C",
+              "instruction": "mov     qword ptr [rsp+0C0h],rax",
+              "instructionBytes": "48898424c0000000",
+              "symbol": "test_struct_1!main+0x13C"
+            },
+            {
+              "address": "0x7FF7FC641694",
+              "instruction": "mov     edx,dword ptr [rsp+98h]",
+              "instructionBytes": "8b942498000000",
+              "symbol": "test_struct_1!main+0x144"
+            },
+            {
+              "address": "0x7FF7FC64169B",
+              "instruction": "mov     rcx,qword ptr [rsp+0C0h]",
+              "instructionBytes": "488b8c24c0000000",
+              "symbol": "test_struct_1!main+0x14B"
+            },
+            {
+              "address": "0x7FF7FC6416A3",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01HZ (00007ff7`fc650170)]",
+              "instructionBytes": "ff15c7ea0000",
+              "symbol": "test_struct_1!main+0x153"
+            },
+            {
+              "address": "0x7FF7FC6416A9",
+              "instruction": "mov     qword ptr [rsp+0C8h],rax",
+              "instructionBytes": "48898424c8000000",
+              "symbol": "test_struct_1!main+0x159"
+            },
+            {
+              "address": "0x7FF7FC6416B1",
+              "instruction": "lea     rdx,[test_struct_1!ILT+15(??$endlDU?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641014)]",
+              "instructionBytes": "488d155cf9ffff",
+              "symbol": "test_struct_1!main+0x161"
+            },
+            {
+              "address": "0x7FF7FC6416B8",
+              "instruction": "mov     rcx,qword ptr [rsp+0C8h]",
+              "instructionBytes": "488b8c24c8000000",
+              "symbol": "test_struct_1!main+0x168"
+            },
+            {
+              "address": "0x7FF7FC6416C0",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01P6AAEAV01AEAV01ZZ (00007ff7`fc650178)]",
+              "instructionBytes": "ff15b2ea0000",
+              "symbol": "test_struct_1!main+0x170"
+            },
+            {
+              "address": "0x7FF7FC6416C6",
+              "instruction": "xor     eax,eax",
+              "instructionBytes": "33c0",
+              "symbol": "test_struct_1!main+0x176"
+            },
+            {
+              "address": "0x7FF7FC6416C8",
+              "instruction": "mov     edi,eax",
+              "instructionBytes": "8bf8",
+              "symbol": "test_struct_1!main+0x178"
+            },
+            {
+              "address": "0x7FF7FC6416CA",
+              "instruction": "mov     rcx,rsp",
+              "instructionBytes": "488bcc",
+              "symbol": "test_struct_1!main+0x17A"
+            },
+            {
+              "address": "0x7FF7FC6416CD",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x2f0 (00007ff7`fc64ad90)]",
+              "instructionBytes": "488d15bc960000",
+              "symbol": "test_struct_1!main+0x17D"
+            },
+            {
+              "address": "0x7FF7FC6416D4",
+              "instruction": "call    test_struct_1!ILT+550(_RTC_CheckStackVars) (00007ff7`fc64122b)",
+              "instructionBytes": "e852fbffff",
+              "symbol": "test_struct_1!main+0x184"
+            },
+            {
+              "address": "0x7FF7FC6416D9",
+              "instruction": "mov     eax,edi",
+              "instructionBytes": "8bc7",
+              "symbol": "test_struct_1!main+0x189"
+            },
+            {
+              "address": "0x7FF7FC6416DB",
+              "instruction": "mov     rcx,qword ptr [rsp+0D0h]",
+              "instructionBytes": "488b8c24d0000000",
+              "symbol": "test_struct_1!main+0x18B"
+            },
+            {
+              "address": "0x7FF7FC6416E3",
+              "instruction": "xor     rcx,rsp",
+              "instructionBytes": "4833cc",
+              "symbol": "test_struct_1!main+0x193"
+            },
+            {
+              "address": "0x7FF7FC6416E6",
+              "instruction": "call    test_struct_1!ILT+310(__security_check_cookie) (00007ff7`fc64113b)",
+              "instructionBytes": "e850faffff",
+              "symbol": "test_struct_1!main+0x196"
+            },
+            {
+              "address": "0x7FF7FC6416EB",
+              "instruction": "add     rsp,0E0h",
+              "instructionBytes": "4881c4e0000000",
+              "symbol": "test_struct_1!main+0x19B"
+            },
+            {
+              "address": "0x7FF7FC6416F2",
+              "instruction": "pop     rdi",
+              "instructionBytes": "5f",
+              "symbol": "test_struct_1!main+0x1A2"
+            },
+            {
+              "address": "0x7FF7FC6416F3",
+              "instruction": "ret",
+              "instructionBytes": "c3",
+              "symbol": "test_struct_1!main+0x1A3"
+            },
+            {
+              "address": "0x7FF7FC6416F4",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A4"
+            },
+            {
+              "address": "0x7FF7FC6416F5",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A5"
+            },
+            {
+              "address": "0x7FF7FC6416F6",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A6"
+            },
+            {
+              "address": "0x7FF7FC6416F7",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A7"
+            },
+            {
+              "address": "0x7FF7FC6416F8",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A8"
+            },
+            {
+              "address": "0x7FF7FC6416F9",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A9"
+            },
+            {
+              "address": "0x7FF7FC6416FA",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AA"
+            },
+            {
+              "address": "0x7FF7FC6416FB",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AB"
+            },
+            {
+              "address": "0x7FF7FC6416FC",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AC"
+            },
+            {
+              "address": "0x7FF7FC6416FD",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AD"
+            },
+            {
+              "address": "0x7FF7FC6416FE",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AE"
+            },
+            {
+              "address": "0x7FF7FC6416FF",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AF"
+            },
+            {
+              "address": "0x7FF7FC641700",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B0"
+            },
+            {
+              "address": "0x7FF7FC641701",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B1"
+            },
+            {
+              "address": "0x7FF7FC641702",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B2"
+            }
+          ]
+        },
+        "command": "disassemble",
+        "request_seq": 22,
+        "seq": 73,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "instructionCount": 50,
+          "instructionOffset": 0,
+          "memoryReference": "0x7FF7FC64162E",
+          "offset": 0,
+          "resolveSymbols": true
+        },
+        "command": "disassemble",
+        "seq": 23,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "instructions": [
+            {
+              "address": "0x7FF7FC64162E",
+              "column": 1,
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e813faffff",
+              "line": 37,
+              "location": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              },
+              "symbol": "test_struct_1!main+0xDE"
+            },
+            {
+              "address": "0x7FF7FC641633",
+              "instruction": "mov     qword ptr [rsp+0B0h],rax",
+              "instructionBytes": "48898424b0000000",
+              "symbol": "test_struct_1!main+0xE3"
+            },
+            {
+              "address": "0x7FF7FC64163B",
+              "instruction": "movsd   xmm1,mmword ptr [rsp+58h]",
+              "instructionBytes": "f20f104c2458",
+              "symbol": "test_struct_1!main+0xEB"
+            },
+            {
+              "address": "0x7FF7FC641641",
+              "instruction": "mov     rcx,qword ptr [rsp+0B0h]",
+              "instructionBytes": "488b8c24b0000000",
+              "symbol": "test_struct_1!main+0xF1"
+            },
+            {
+              "address": "0x7FF7FC641649",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01NZ (00007ff7`fc650168)]",
+              "instructionBytes": "ff1519eb0000",
+              "symbol": "test_struct_1!main+0xF9"
+            },
+            {
+              "address": "0x7FF7FC64164F",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x1a0 (00007ff7`fc64ac40)]",
+              "instructionBytes": "488d15ea950000",
+              "symbol": "test_struct_1!main+0xFF"
+            },
+            {
+              "address": "0x7FF7FC641656",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0x106"
+            },
+            {
+              "address": "0x7FF7FC641659",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e8e8f9ffff",
+              "symbol": "test_struct_1!main+0x109"
+            },
+            {
+              "address": "0x7FF7FC64165E",
+              "instruction": "mov     qword ptr [rsp+0B8h],rax",
+              "instructionBytes": "48898424b8000000",
+              "symbol": "test_struct_1!main+0x10E"
+            },
+            {
+              "address": "0x7FF7FC641666",
+              "instruction": "movsd xmm1,mmword ptr [rsp+90h]",
+              "instructionBytes": "f20f108c2490000000",
+              "symbol": "test_struct_1!main+0x116"
+            },
+            {
+              "address": "0x7FF7FC64166F",
+              "instruction": "mov     rcx,qword ptr [rsp+0B8h]",
+              "instructionBytes": "488b8c24b8000000",
+              "symbol": "test_struct_1!main+0x11F"
+            },
+            {
+              "address": "0x7FF7FC641677",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01NZ (00007ff7`fc650168)]",
+              "instructionBytes": "ff15ebea0000",
+              "symbol": "test_struct_1!main+0x127"
+            },
+            {
+              "address": "0x7FF7FC64167D",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x19c (00007ff7`fc64ac3c)]",
+              "instructionBytes": "488d15b8950000",
+              "symbol": "test_struct_1!main+0x12D"
+            },
+            {
+              "address": "0x7FF7FC641684",
+              "instruction": "mov     rcx,rax",
+              "instructionBytes": "488bc8",
+              "symbol": "test_struct_1!main+0x134"
+            },
+            {
+              "address": "0x7FF7FC641687",
+              "instruction": "call    test_struct_1!ILT+65(??$?6U?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641046)",
+              "instructionBytes": "e8baf9ffff",
+              "symbol": "test_struct_1!main+0x137"
+            },
+            {
+              "address": "0x7FF7FC64168C",
+              "instruction": "mov     qword ptr [rsp+0C0h],rax",
+              "instructionBytes": "48898424c0000000",
+              "symbol": "test_struct_1!main+0x13C"
+            },
+            {
+              "address": "0x7FF7FC641694",
+              "instruction": "mov     edx,dword ptr [rsp+98h]",
+              "instructionBytes": "8b942498000000",
+              "symbol": "test_struct_1!main+0x144"
+            },
+            {
+              "address": "0x7FF7FC64169B",
+              "instruction": "mov     rcx,qword ptr [rsp+0C0h]",
+              "instructionBytes": "488b8c24c0000000",
+              "symbol": "test_struct_1!main+0x14B"
+            },
+            {
+              "address": "0x7FF7FC6416A3",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01HZ (00007ff7`fc650170)]",
+              "instructionBytes": "ff15c7ea0000",
+              "symbol": "test_struct_1!main+0x153"
+            },
+            {
+              "address": "0x7FF7FC6416A9",
+              "instruction": "mov     qword ptr [rsp+0C8h],rax",
+              "instructionBytes": "48898424c8000000",
+              "symbol": "test_struct_1!main+0x159"
+            },
+            {
+              "address": "0x7FF7FC6416B1",
+              "instruction": "lea     rdx,[test_struct_1!ILT+15(??$endlDU?$char_traitsDstdstdYAAEAV?$basic_ostreamDU?$char_traitsDstd (00007ff7`fc641014)]",
+              "instructionBytes": "488d155cf9ffff",
+              "symbol": "test_struct_1!main+0x161"
+            },
+            {
+              "address": "0x7FF7FC6416B8",
+              "instruction": "mov     rcx,qword ptr [rsp+0C8h]",
+              "instructionBytes": "488b8c24c8000000",
+              "symbol": "test_struct_1!main+0x168"
+            },
+            {
+              "address": "0x7FF7FC6416C0",
+              "instruction": "call    qword ptr [test_struct_1!_imp_??6?$basic_ostreamDU?$char_traitsDstdstdQEAAAEAV01P6AAEAV01AEAV01ZZ (00007ff7`fc650178)]",
+              "instructionBytes": "ff15b2ea0000",
+              "symbol": "test_struct_1!main+0x170"
+            },
+            {
+              "address": "0x7FF7FC6416C6",
+              "instruction": "xor     eax,eax",
+              "instructionBytes": "33c0",
+              "symbol": "test_struct_1!main+0x176"
+            },
+            {
+              "address": "0x7FF7FC6416C8",
+              "instruction": "mov     edi,eax",
+              "instructionBytes": "8bf8",
+              "symbol": "test_struct_1!main+0x178"
+            },
+            {
+              "address": "0x7FF7FC6416CA",
+              "instruction": "mov     rcx,rsp",
+              "instructionBytes": "488bcc",
+              "symbol": "test_struct_1!main+0x17A"
+            },
+            {
+              "address": "0x7FF7FC6416CD",
+              "instruction": "lea     rdx,[test_struct_1!__xt_z+0x2f0 (00007ff7`fc64ad90)]",
+              "instructionBytes": "488d15bc960000",
+              "symbol": "test_struct_1!main+0x17D"
+            },
+            {
+              "address": "0x7FF7FC6416D4",
+              "instruction": "call    test_struct_1!ILT+550(_RTC_CheckStackVars) (00007ff7`fc64122b)",
+              "instructionBytes": "e852fbffff",
+              "symbol": "test_struct_1!main+0x184"
+            },
+            {
+              "address": "0x7FF7FC6416D9",
+              "instruction": "mov     eax,edi",
+              "instructionBytes": "8bc7",
+              "symbol": "test_struct_1!main+0x189"
+            },
+            {
+              "address": "0x7FF7FC6416DB",
+              "instruction": "mov     rcx,qword ptr [rsp+0D0h]",
+              "instructionBytes": "488b8c24d0000000",
+              "symbol": "test_struct_1!main+0x18B"
+            },
+            {
+              "address": "0x7FF7FC6416E3",
+              "instruction": "xor     rcx,rsp",
+              "instructionBytes": "4833cc",
+              "symbol": "test_struct_1!main+0x193"
+            },
+            {
+              "address": "0x7FF7FC6416E6",
+              "instruction": "call    test_struct_1!ILT+310(__security_check_cookie) (00007ff7`fc64113b)",
+              "instructionBytes": "e850faffff",
+              "symbol": "test_struct_1!main+0x196"
+            },
+            {
+              "address": "0x7FF7FC6416EB",
+              "instruction": "add     rsp,0E0h",
+              "instructionBytes": "4881c4e0000000",
+              "symbol": "test_struct_1!main+0x19B"
+            },
+            {
+              "address": "0x7FF7FC6416F2",
+              "instruction": "pop     rdi",
+              "instructionBytes": "5f",
+              "symbol": "test_struct_1!main+0x1A2"
+            },
+            {
+              "address": "0x7FF7FC6416F3",
+              "instruction": "ret",
+              "instructionBytes": "c3",
+              "symbol": "test_struct_1!main+0x1A3"
+            },
+            {
+              "address": "0x7FF7FC6416F4",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A4"
+            },
+            {
+              "address": "0x7FF7FC6416F5",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A5"
+            },
+            {
+              "address": "0x7FF7FC6416F6",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A6"
+            },
+            {
+              "address": "0x7FF7FC6416F7",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A7"
+            },
+            {
+              "address": "0x7FF7FC6416F8",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A8"
+            },
+            {
+              "address": "0x7FF7FC6416F9",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1A9"
+            },
+            {
+              "address": "0x7FF7FC6416FA",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AA"
+            },
+            {
+              "address": "0x7FF7FC6416FB",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AB"
+            },
+            {
+              "address": "0x7FF7FC6416FC",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AC"
+            },
+            {
+              "address": "0x7FF7FC6416FD",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AD"
+            },
+            {
+              "address": "0x7FF7FC6416FE",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AE"
+            },
+            {
+              "address": "0x7FF7FC6416FF",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1AF"
+            },
+            {
+              "address": "0x7FF7FC641700",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B0"
+            },
+            {
+              "address": "0x7FF7FC641701",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B1"
+            },
+            {
+              "address": "0x7FF7FC641702",
+              "instruction": "int     3",
+              "instructionBytes": "cc",
+              "symbol": "test_struct_1!main+0x1B2"
+            }
+          ]
+        },
+        "command": "disassemble",
+        "request_seq": 23,
+        "seq": 74,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "frameId": 363529970
+        },
+        "command": "scopes",
+        "seq": 24,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "scopes": [
+            {
+              "column": 1,
+              "expensive": false,
+              "line": 37,
+              "name": "Locals",
+              "namedVariables": 5,
+              "presentationHint": "locals",
+              "source": {
+                "name": "struct-1.cpp",
+                "path": "${workspaceFolder}\\test-targets\\testapp\\struct-1.cpp"
+              },
+              "variablesReference": 6
+            },
+            {
+              "expensive": false,
+              "name": "Registers",
+              "namedVariables": 168,
+              "presentationHint": "registers",
+              "variablesReference": 7
+            }
+          ]
+        },
+        "command": "scopes",
+        "request_seq": 24,
+        "seq": 75,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "variablesReference": 6
+        },
+        "command": "variables",
+        "seq": 25,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "variables": [
+            {
+              "evaluateName": "argc",
+              "memoryReference": "0xbb968ff970",
+              "name": "argc",
+              "type": "int",
+              "value": "1",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "argv",
+              "memoryReference": "0xbb968ff978",
+              "name": "argv",
+              "type": "char **",
+              "value": "0x00000279`f20deeb0",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "p",
+              "memoryReference": "0xbb968ff8a8",
+              "name": "p",
+              "namedVariables": 2,
+              "type": "struct point2",
+              "value": "struct point2",
+              "variablesReference": 1
+            },
+            {
+              "evaluateName": "t",
+              "memoryReference": "0xbb968ff8f8",
+              "name": "t",
+              "namedVariables": 3,
+              "type": "struct transform",
+              "value": "struct transform",
+              "variablesReference": 4
+            },
+            {
+              "evaluateName": "v",
+              "memoryReference": "0xbb968ff8c8",
+              "name": "v",
+              "namedVariables": 3,
+              "type": "struct vector3",
+              "value": "struct vector3",
+              "variablesReference": 5
+            }
+          ]
+        },
+        "command": "variables",
+        "request_seq": 25,
+        "seq": 76,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "levels": 19,
+          "startFrame": 1,
+          "threadId": 4440
+        },
+        "command": "stackTrace",
+        "seq": 26,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "column": 1,
+              "id": 1708606979,
+              "instructionPointerReference": "0x7FF7FC642999",
+              "line": 79,
+              "name": "test_struct_1!invoke_main+0x39",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              }
+            },
+            {
+              "column": 1,
+              "id": 1968343248,
+              "instructionPointerReference": "0x7FF7FC642842",
+              "line": 288,
+              "name": "test_struct_1!__scrt_common_main_seh+0x132",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              }
+            },
+            {
+              "column": 1,
+              "id": 1165936609,
+              "instructionPointerReference": "0x7FF7FC6426FE",
+              "line": 331,
+              "name": "test_struct_1!__scrt_common_main+0xE",
+              "source": {
+                "name": "exe_common.inl",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
+              }
+            },
+            {
+              "column": 1,
+              "id": 1448870710,
+              "instructionPointerReference": "0x7FF7FC642A2E",
+              "line": 17,
+              "name": "test_struct_1!mainCRTStartup+0xE",
+              "source": {
+                "name": "exe_main.cpp",
+                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
+              }
+            },
+            {
+              "column": 0,
+              "id": 646464071,
+              "instructionPointerReference": "0x7FFF1AB8E957",
+              "line": 0,
+              "name": "KERNEL32!BaseThreadInitThunk+0x17"
+            },
+            {
+              "column": 0,
+              "id": 906200340,
+              "instructionPointerReference": "0x7FFF1BD2AD6C",
+              "line": 0,
+              "name": "ntdll!RtlUserThreadStart+0x2C"
+            }
+          ],
+          "totalFrames": 7
+        },
+        "command": "stackTrace",
+        "request_seq": 26,
+        "seq": 77,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "threadId": 4440
+        },
+        "command": "continue",
+        "seq": 27,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true
+        },
+        "command": "continue",
+        "request_seq": 27,
+        "seq": 78,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true,
+          "threadId": 4440
+        },
+        "event": "continued",
+        "seq": 79,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007fff`17b40000 00007fff`17b5b000   C:\\WINDOWS\\SYSTEM32\\kernel.appcore.dll\nModLoad: 00007fff`1ac30000 00007fff`1acd9000   C:\\WINDOWS\\System32\\msvcrt.dll\n"
+        },
+        "event": "output",
+        "seq": 81,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "exited",
+          "threadId": 5336
+        },
+        "event": "thread",
+        "seq": 82,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "exited",
+          "threadId": 7120
+        },
+        "event": "thread",
+        "seq": 83,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "exited",
+          "threadId": 460
+        },
+        "event": "thread",
+        "seq": 84,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "exitCode": 0
+        },
+        "event": "exited",
+        "seq": 85,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "terminated",
+        "seq": 86,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "restart": false,
+          "terminateDebuggee": false
+        },
+        "command": "disconnect",
+        "seq": 28,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "disconnect",
+        "request_seq": 28,
+        "seq": 87,
+        "success": true,
+        "type": "response"
+      }
+    }
+  ],
+  "version": 1
+}

@@ -999,7 +999,31 @@ replay_result replay_once(const recorded_session &session, int timeout_milliseco
     // Drain recorded thread events whose actual counterpart floats in after the last non-thread message.
     while (!pending_expected_threads.empty())
     {
-        const nlohmann::json actual = pull_actual(); // a genuinely missing thread event surfaces as a timeout
+        nlohmann::json actual;
+        try
+        {
+            actual = pull_actual(); // a genuinely missing thread event surfaces as a timeout
+        }
+        catch (const replay_assertion_error &)
+        {
+            // Thread-EXIT delivery at process teardown is nondeterministic:
+            // dbgeng folds a still-running thread's exit into the process exit
+            // and never reports it individually. Once every non-thread message
+            // (including exited/terminated) has matched, missing recorded
+            // thread-exit events are forgiven; a missing thread-START stays an
+            // error.
+            const bool only_exits = std::all_of(
+                pending_expected_threads.begin(), pending_expected_threads.end(), [](const nlohmann::json &m) {
+                    return m.contains("body") && m.at("body").value("reason", std::string{}) == "exited";
+                });
+            if (only_exits)
+            {
+                spdlog::debug("Replay tolerated {} recorded thread-exit event(s) the live run never delivered.",
+                              pending_expected_threads.size());
+                break;
+            }
+            throw;
+        }
         if (is_thread_event(actual))
         {
             state.record_volatile_ids(pending_expected_threads.front(), actual);
@@ -1013,9 +1037,10 @@ replay_result replay_once(const recorded_session &session, int timeout_milliseco
     // the loader/CRT) spins up is environment-dependent, so a different OS build
     // — e.g. a CI runner vs. the machine a fixture was recorded on — can emit one
     // or more extra thread started/exited events. The recording's full set must
-    // still appear (a *missing* recorded thread event surfaces as a timeout in the
-    // drain loop above) and every non-thread message is still matched in strict
-    // order, so this only loosens the inherently nondeterministic thread lifecycle.
+    // still appear (a *missing* recorded thread-start surfaces as a timeout in the
+    // drain loop above; only teardown-time thread exits are forgiven) and every
+    // non-thread message is still matched in strict order, so this only loosens
+    // the inherently nondeterministic thread lifecycle.
     if (!pending_actual_threads.empty())
     {
         spdlog::debug("Replay tolerated {} extra thread event(s) with no recorded counterpart.",
