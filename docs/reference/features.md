@@ -21,7 +21,7 @@ that won't appear.
 | **Variables & scopes** | Inspect locals, arguments, and registers/scopes. |
 | **Set variable** | Edit a variable's value from the Variables pane. |
 | **Set expression** | Edit a watch value from the **Watch** pane. |
-| **Evaluate expressions** | In the **Watch** pane and **Debug Console**. |
+| **Evaluate expressions** | Watch entries are C++ expressions (`t.origin.x`); the **Debug Console** takes native debugger commands. |
 | **Read / write memory** | **View Binary Data** on a variable; see the note below. |
 | **Disassembly view** | View and step through disassembly. |
 | **Terminate & disconnect** | End the session, or detach and leave the target running. |
@@ -67,6 +67,6 @@ engine can do it, but the adapter doesn't advertise it yet.
 
 !!! tip "Need a missing capability?"
     Many low-level operations are still reachable by typing native debugger
-    commands into the **Debug Console** / **Watch** expressions, which the
-    adapter evaluates through the engine. For anything else, check the project's
-    issue tracker.
+    commands into the **Debug Console**, which the adapter passes to the engine.
+    A **Watch** entry that does not resolve as a C++ expression is also executed
+    as a native command. For anything else, check the project's issue tracker.

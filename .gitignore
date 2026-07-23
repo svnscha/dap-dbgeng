@@ -25,5 +25,8 @@ protgen/__pycache__/
 # DAP session captures from the "trace" config option are local artifacts.
 recordings/
 
+# Personal working checklist (see docs/development/recording-fixtures.md for the durable protocol)
+TODO.md
+
 # MkDocs rendered output (docs site is built on demand; only sources are tracked)
 site/
