@@ -11,6 +11,7 @@ debugger_session_dispatcher::debugger_session_dispatcher()
     worker_ = std::thread([this, &started] {
         started.set_value(std::this_thread::get_id());
         queue_.run();
+        finished_.set_value();
     });
     worker_id_.store(ready.get());
 }
@@ -18,9 +19,25 @@ debugger_session_dispatcher::debugger_session_dispatcher()
 debugger_session_dispatcher::~debugger_session_dispatcher()
 {
     queue_.stop();
-    if (worker_.joinable())
+    if (!worker_.joinable())
+    {
+        return;
+    }
+
+    // The worker can be parked in an engine call that only the target can end -
+    // disconnecting a kernel session deliberately leaves it inside
+    // WaitForEvent, waiting for a machine that is running again and will not
+    // report anything. Joining unconditionally hangs the adapter there: the
+    // process never exits, its trace is never written, and it keeps the kernel
+    // connection, so the next session cannot attach at all. Wait briefly for an
+    // orderly finish, then leave the thread to the process teardown.
+    if (finished_.get_future().wait_for(kWorkerShutdownGrace) == std::future_status::ready)
     {
         worker_.join();
+    }
+    else
+    {
+        worker_.detach();
     }
 }
 

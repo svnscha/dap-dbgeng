@@ -86,8 +86,15 @@ class debugger_session_dispatcher
     static std::string unwrap_failure_message(const std::exception &exception, const std::string &fallback);
 
   private:
+    // How long the destructor waits for the worker before giving up on it, see
+    // the comment there.
+    static constexpr std::chrono::milliseconds kWorkerShutdownGrace{2000};
+
     core::task_queue queue_;
     std::atomic<std::thread::id> worker_id_;
     std::thread worker_;
+    // Signalled when the worker's queue loop returns, so the destructor can
+    // tell "still working" from "parked in the engine forever".
+    std::promise<void> finished_;
 };
 } // namespace dap_dbgeng::util
