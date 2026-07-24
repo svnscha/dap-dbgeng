@@ -43,15 +43,13 @@ param(
     [string]$Destination,
     # Also ship this certificate and trust it (Root + TrustedPublisher).
     [string]$CertificateFile,
-    [switch]$CheckTestSigning,
-    # Forces the local path regardless of -HostName; also the test seam.
-    [switch]$LocalTest
+    [switch]$CheckTestSigning
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-$isLocal = $LocalTest -or ($HostName -in @('localhost', '127.0.0.1', '.', $env:COMPUTERNAME))
+$isLocal = $HostName -in @('localhost', '127.0.0.1', '.', $env:COMPUTERNAME)
 
 if (-not (Test-Path $Binary)) {
     throw "binary not found: $Binary - build it first."
@@ -104,19 +102,16 @@ if ('__CHECKTS__' -eq '1') {
 '@
 
 # Remote PowerShell returns its error stream as CLIXML when it is redirected.
-# Turn that back into the message a human wants to read.
+# Turn that back into readable lines, dropping the "At line:/+ ..." trailer that
+# says where in the generated script it happened - noise to whoever reads this.
 function Format-RemoteError([string]$text) {
-    if (-not $text) { return '' }
-    $trimmed = $text.Trim()
-    if ($trimmed -notmatch '^#<\s*CLIXML') { return $trimmed }
-    try {
+    $trimmed = "$text".Trim()
+    if ($trimmed -match '^#<\s*CLIXML') {
         $xml = [xml]($trimmed -replace '^#<\s*CLIXML\s*', '')
         $parts = @($xml.Objs.S | Where-Object { $_.S -eq 'Error' } | ForEach-Object { $_.'#text' })
-        $joined = (($parts -join '') -replace '_x000D__x000A_', "`n").Trim()
-        if ($joined) { return $joined }
+        $trimmed = (($parts -join '') -replace '_x000D__x000A_', "`n").Trim()
     }
-    catch { }
-    return $trimmed
+    ($trimmed -split "`n" | Where-Object { $_.Trim() -and $_ -notmatch '^\s*(At line:|\+)' }) -join "`n"
 }
 
 function Escape-Quotes([string]$value) { $value.Replace("'", "''") }
@@ -137,16 +132,10 @@ $payload = "{0}`n{1}`n" -f [Convert]::ToBase64String([IO.File]::ReadAllBytes($Bi
 $encoded = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($remote))
 $remoteCommand = "powershell.exe -NoProfile -NonInteractive -EncodedCommand $encoded"
 
-# The payload reaches the child's stdin as a file, which is the only way that
-# stays byte-exact no matter how this script is hosted:
-#   - a PowerShell pipeline runs the long base64 line through the output
-#     formatter, which can wrap it,
-#   - Process.StandardInput is a StreamWriter created with AutoFlush = true,
-#     and that flush writes the encoding's preamble (a UTF-8 BOM) ahead of
-#     anything we send.
-# Both only misbehave when the host has no console - exactly how an editor runs
-# this script - so they look fine from a terminal and corrupt the payload under
-# the extension.
+# The payload reaches stdin as a file. Piping it corrupts the base64 when the
+# host has no console - the pipeline wraps the long line, and StandardInput
+# writes a BOM ahead of it - which is exactly how an editor runs this script,
+# so both look fine from a terminal.
 function Invoke-WithPayload {
     param([string]$FilePath, [string]$Arguments, [byte[]]$Payload)
 
@@ -178,21 +167,19 @@ else {
 $code = $result.ExitCode
 
 $result.StdOut -split "`r?`n" | Where-Object { $_ } | ForEach-Object { Write-Output $_ }
-$remoteError = Format-RemoteError $result.StdErr
-if ($code -ne 0 -and $remoteError) {
-    Write-Host $remoteError
+if ($code -eq 0) {
+    return
 }
+
 if ($code -eq 3) {
     throw ("service '$ServiceName' is not registered on $HostName. Register it once with: " +
         "sc.exe create $ServiceName type= kernel binPath= <path> (kernel), or " +
         "sc.exe create $ServiceName binPath= <path> (user mode).")
 }
-if ($code -ne 0) {
-    $detail = ($remoteError -split "`n" | Where-Object { $_.Trim() -and $_ -notmatch '^(At line:|\+|\s+\+)' } |
-        Select-Object -First 1)
-    if ($detail -match 'being used by another process') {
-        throw ("the destination file is in use on $HostName, so it cannot be replaced. Deploy with " +
-            '-ServiceName so the service is stopped first, or stop whatever is running it.')
-    }
-    throw ("remote deploy failed (exit $code)" + $(if ($detail) { ": $($detail.Trim())" } else { '.' }))
+
+$detail = (Format-RemoteError $result.StdErr) -split "`n" | Select-Object -First 1
+if ($detail -match 'being used by another process') {
+    throw ("the destination file is in use on $HostName, so it cannot be replaced. Deploy with " +
+        '-ServiceName so the service is stopped first, or stop whatever is running it.')
 }
+throw ("deploy failed on $HostName (exit $code)" + $(if ($detail) { ": $detail" } else { '.' }))

@@ -10,9 +10,7 @@
     Resolution order for the dbgsrv to start:
       1. -DbgsrvPath, when given and present on the target.
       2. ~\.dap-dbgeng\tools\dbgsrv.exe on the target (from an earlier run).
-      3. A local debugger folder copied to that path: -SourcePath, else the
-         installed WinDbg (store package), else the Windows Kits Debugging
-         Tools. Pass -NoAutoDeploy to fail instead of copying.
+      3. the locally installed debugger, copied to that path.
 
 .EXAMPLE
     ./Ensure-ProcessServer.ps1 -HostName box -Transport tcp:port=5005
@@ -32,11 +30,7 @@ param(
     # The dbgsrv transport, e.g. tcp:port=5005 (no client-side server= part).
     [Parameter(Mandatory)] [string]$Transport,
     # An existing dbgsrv.exe on the target; skips deployment when it is there.
-    [string]$DbgsrvPath,
-    # Local folder holding dbgsrv.exe and its dependencies, when auto-detection
-    # picks the wrong one.
-    [string]$SourcePath,
-    [switch]$NoAutoDeploy
+    [string]$DbgsrvPath
 )
 
 Set-StrictMode -Version Latest
@@ -69,27 +63,16 @@ function Invoke-Remote {
 }
 
 function Resolve-LocalDebuggerFolder {
-    if ($SourcePath) {
-        if (-not (Test-Path (Join-Path $SourcePath 'dbgsrv.exe'))) {
-            throw "no dbgsrv.exe in -SourcePath '$SourcePath'."
-        }
-        return (Resolve-Path $SourcePath).Path
-    }
-
-    $candidates = @()
-    try {
-        $windbg = Get-AppxPackage -Name Microsoft.WinDbg -ErrorAction SilentlyContinue
-        if ($windbg) { $candidates += (Join-Path $windbg.InstallLocation 'amd64') }
-    }
-    catch { }
-    $candidates += "${env:ProgramFiles(x86)}\Windows Kits\10\Debuggers\x64"
-    $candidates += "$env:ProgramFiles\Windows Kits\10\Debuggers\x64"
-
+    $windbg = Get-AppxPackage -Name Microsoft.WinDbg -ErrorAction SilentlyContinue
+    $candidates = @(
+        $(if ($windbg) { Join-Path $windbg.InstallLocation 'amd64' }),
+        "${env:ProgramFiles(x86)}\Windows Kits\10\Debuggers\x64",
+        "$env:ProgramFiles\Windows Kits\10\Debuggers\x64"
+    )
     foreach ($candidate in $candidates) {
         if ($candidate -and (Test-Path (Join-Path $candidate 'dbgsrv.exe'))) { return $candidate }
     }
-    throw ('no local dbgsrv.exe found to deploy (looked for an installed WinDbg and the Windows Kits ' +
-        'Debugging Tools). Install the Debugging Tools for Windows, or pass -SourcePath.')
+    throw 'no local dbgsrv.exe found. Install the Debugging Tools for Windows.'
 }
 
 if ((Invoke-Remote '(Get-Process dbgsrv -ErrorAction SilentlyContinue | Measure-Object).Count') -ne '0') {
@@ -99,13 +82,8 @@ if ((Invoke-Remote '(Get-Process dbgsrv -ErrorAction SilentlyContinue | Measure-
 # 1/2: an existing dbgsrv on the target.
 $remoteDbgsrv = "(Join-Path $remoteTools 'dbgsrv.exe')"
 $target = $null
-if ($DbgsrvPath) {
-    if ((Invoke-Remote "Test-Path '$DbgsrvPath'") -eq 'True') {
-        $target = "'$DbgsrvPath'"
-    }
-    elseif ($NoAutoDeploy) {
-        throw "dbgsrv not found at '$DbgsrvPath' on $HostName."
-    }
+if ($DbgsrvPath -and (Invoke-Remote "Test-Path '$DbgsrvPath'") -eq 'True') {
+    $target = "'$DbgsrvPath'"
 }
 if (-not $target -and (Invoke-Remote "Test-Path $remoteDbgsrv") -eq 'True') {
     $target = $remoteDbgsrv
@@ -118,9 +96,6 @@ if (-not $target -and $isLocal) {
 
 # 3b: copy the debugger to the target.
 if (-not $target) {
-    if ($NoAutoDeploy) {
-        throw "no dbgsrv on $HostName and -NoAutoDeploy was given."
-    }
     $source = Resolve-LocalDebuggerFolder
     $files = @(Get-ChildItem -Path $source -File)
     $megabytes = [math]::Round((($files | Measure-Object Length -Sum).Sum / 1MB), 1)

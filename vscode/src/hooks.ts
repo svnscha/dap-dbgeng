@@ -98,8 +98,9 @@ function expandTokens(command: string, target: Target): string {
     return expanded.replace(/\$\{dbgengScripts\}/g, scriptsDir);
 }
 
-// The first line that carries a message, skipping PowerShell's CLIXML framing
-// and the "At line:N char:M" / "+ ..." / "+ CategoryInfo ..." trailer.
+// The first line carrying a message, skipping PowerShell's CLIXML framing and
+// the "At line:N" / "+ ..." trailer. Only reached when a command fails without
+// reporting through the marker, so a bare `ssh ...` still says something.
 function firstMeaningfulLine(text: string): string | undefined {
     return text
         .split(/\r?\n/)
@@ -148,11 +149,9 @@ function runCommand(label: string, command: string, output: vscode.OutputChannel
     ].join("\n");
     const encoded = Buffer.from(script, "utf16le").toString("base64");
 
-    // The editor's environment can carry a PSModulePath aimed at PowerShell 7.
-    // Inheriting it into Windows PowerShell breaks module discovery there - the
-    // certificate provider never loads, so Cert:\ does not even exist and
-    // signing fails - and it only shows up when a command runs under the
-    // extension. Dropping it lets each host compute its own default.
+    // The editor's PSModulePath points at PowerShell 7; inheriting it into
+    // Windows PowerShell breaks module discovery there, down to Cert:\ not
+    // existing. Dropping it lets each host compute its own default.
     const env = { ...process.env };
     delete env.PSModulePath;
 

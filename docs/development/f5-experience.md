@@ -71,9 +71,9 @@ form - a missing service fails with the one-time `sc.exe create` command);
 stops the service (a running service's image file is locked); replaces the
 file; trusts the certificate (Root + TrustedPublisher); reports markers
 (`DEST=`, and `TESTSIGNING=` with `-CheckTestSigning`, which the extension
-turns into a warning notification). A `-LocalTest` switch runs the generated
-script on the local machine instead of over ssh - that seam is how its
-behavior is verified.
+turns into a warning notification). Passing `localhost` as the host runs the
+same steps without ssh, which is both a supported mode and how its behavior is
+verified.
 
 ## Adapter capabilities this builds on
 
