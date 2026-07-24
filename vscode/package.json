@@ -79,10 +79,6 @@
             {
                 "type": "dbgeng",
                 "label": "Native Windows Debugging (dbgeng)",
-                "variables": {
-                    "FileBasenameNoExt": "code-debug.getFileBasenameNoExt",
-                    "FileNameNoExt": "code-debug.getFileNameNoExt"
-                },
                 "configurationAttributes": {
                     "launch": {
                         "properties": {

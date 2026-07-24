@@ -393,7 +393,7 @@ debugger_session::~debugger_session()
 
     try
     {
-        disconnect_process_server_core();
+        disconnect_process_server();
     }
     catch (const std::exception &)
     {

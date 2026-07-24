@@ -85,13 +85,8 @@ void debugger_session::connect_process_server(const std::string &connection_stri
     process_server_handle_ = server;
 }
 
+// Runs as part of disposal, so it tolerates a session that is already torn down.
 void debugger_session::disconnect_process_server()
-{
-    throw_if_disposed();
-    disconnect_process_server_core();
-}
-
-void debugger_session::disconnect_process_server_core()
 {
     if (process_server_handle_ == 0 || client_ == nullptr)
     {
