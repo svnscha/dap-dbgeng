@@ -51,10 +51,21 @@ class debugger_session
     // Targets -----------------------------------------------------------------
     void launch(const std::string &executable_path, std::optional<std::string> arguments = std::nullopt,
                 std::optional<std::string> working_directory = std::nullopt);
+    // Create the process on a dbgsrv process server host. Paths (program, cwd)
+    // are paths on that host.
+    void launch_remote(const std::string &connection_string, const std::string &executable_path,
+                       std::optional<std::string> arguments = std::nullopt,
+                       std::optional<std::string> working_directory = std::nullopt);
+    // Attach through whatever process server is currently connected; with none
+    // connected (the default) this attaches to a local process. The attach-by-name
+    // flow uses this after connecting the server itself to resolve the pid there.
     void attach(int process_id);
     void attach_remote(const std::string &connection_string, int process_id);
     void attach_kernel(const std::string &connection_string);
     void open_dump_file(const std::string &dump_file_path);
+    // Resolve a pid from an executable basename (e.g. "myservice.exe"), locally
+    // or on the connected process server. Empty when no such process exists.
+    std::optional<std::uint32_t> try_find_process_id_by_executable_name(const std::string &executable_name);
 
     // Execution ---------------------------------------------------------------
     void continue_();
@@ -208,6 +219,9 @@ class debugger_session
 
     // The engine handle (QI'd into every IDebugXxx interface we need).
     HMODULE dbgeng_module_ = nullptr;
+    // The engine's own dbghelp, loaded ahead of it so the engine does not bind
+    // to the System32 copy (see the constructor).
+    HMODULE dbghelp_module_ = nullptr;
     IDebugClient5 *client_ = nullptr;
     IDebugControl7 *control_ = nullptr;
     IDebugSymbols3 *symbols_ = nullptr;

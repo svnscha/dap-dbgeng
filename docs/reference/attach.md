@@ -27,6 +27,8 @@ To open a crash dump instead of attaching to a live process, set
 | Attribute | Required | Description |
 | --- | --- | --- |
 | [`processId`](#processid) | - | PID to attach to (local, or on the `dbgsrv` host). |
+| [`processName`](#processname) | - | Attach by executable name; polls until the process appears. |
+| [`processNameTimeout`](#processnametimeout) | - | Wait budget for `processName` (default 15000 ms). |
 | [`dumpFile`](#dumpfile) | - | Open a crash dump instead of attaching. |
 | [`connectionString`](#connectionstring) | - | Remote (`dbgsrv`) or kernel transport string. |
 | [`kernel`](#kernel) | - | Set `true` for kernel / driver debugging. |
@@ -35,6 +37,7 @@ To open a crash dump instead of attaching to a live process, set
 | [`symbolPath`](#symbolpath) | - | Extra locations to load PDB symbols from. |
 | [`sources`](#sources) | - | Folders searched for source files. |
 | [`trace`](#trace) | - | Record the DAP session to a file. |
+| [`target`](#target) | - | Start/stop a driver service around the session (extension-only). |
 
 ## Details
 
@@ -57,6 +60,31 @@ To pick the process interactively at debug time, use the built-in picker:
 
 The picker lists local processes, or - when `connectionString` is set - the
 processes on the `dbgsrv` host, so the same setting covers local and remote attach.
+
+---
+
+### `processName`
+
+- **Type:** string · Optional (alternative to `processId`)
+
+Attach by **executable name** instead of PID. The adapter polls (locally, or on
+the `dbgsrv` host when `connectionString` is set) until a matching process
+appears, then attaches - made for processes that are just spawning, like a
+service being started. See
+[Debug a remote process](../scenarios/remote-debugging.md#attach-by-name-debug-a-remote-service).
+
+```json
+"processName": "myservice.exe"
+```
+
+---
+
+### `processNameTimeout`
+
+- **Type:** integer (milliseconds) · Optional
+- **Default:** `15000`
+
+How long to wait for `processName` to appear before the attach fails.
 
 ---
 
@@ -150,6 +178,10 @@ immediately** on connect.
 "stopAtEntry": false
 ```
 
+For kernel attach, `false` means the machine keeps running once the session is
+configured - the right setting together with [`target`](#target), where the
+driver should load while the debugger watches.
+
 ---
 
 ### `symbolPath`
@@ -190,6 +222,75 @@ Omit to record nothing.
 ```json
 "trace": "${workspaceFolder}/recordings/attach.session.json"
 ```
+
+---
+
+### `target`
+
+- **Type:** object · Optional
+- Handled by the VS Code extension; the adapter ignores it.
+
+Command **hooks** around the session: ordered lists of PowerShell command
+lines, each bound to a session-lifecycle moment. There is no built-in behavior
+beyond running them - what F5 does is exactly what the config says. The
+easiest start is a configuration snippet ("Add Configuration..." offers the
+kernel-driver and remote-service templates prefilled with the commands below).
+
+```json
+"target": {
+  "host": "user@testbox",
+  "hooks": {
+    "beforeSession": [
+      "${dbgengScripts}/Sign-Driver.ps1 -Binary '${workspaceFolder}/build/Debug/hello.sys' -CertSubject 'CN=my-test-signer' -OutCertificate '${workspaceFolder}/build/test-signer.cer'",
+      "${dbgengScripts}/Deploy-Binary.ps1 -HostName '${host}' -Binary '${workspaceFolder}/build/Debug/hello.sys' -CertificateFile '${workspaceFolder}/build/test-signer.cer' -ServiceName hello -CheckTestSigning"
+    ],
+    "afterConfigurationDone": [
+      "${dbgengScripts}/Start-RemoteService.ps1 -HostName '${host}' -ServiceName hello"
+    ],
+    "afterSessionEnd": [
+      "${dbgengScripts}/Stop-RemoteService.ps1 -HostName '${host}' -ServiceName hello"
+    ]
+  }
+}
+```
+
+The four hooks (the timing is the extension's job; the commands are yours):
+
+| Hook | When | Typical use |
+| --- | --- | --- |
+| `beforeSession` | After the `preLaunchTask`, before the adapter starts. A failure aborts the session. | Sign, deploy, ensure `dbgsrv`. |
+| `onAttachRequest` | The attach request is on the wire. | Start a user-mode service, so the adapter's [`processName`](#processname) poll finds the spawning process. |
+| `afterConfigurationDone` | Breakpoints are armed. | Start a kernel driver service - a `DriverEntry` breakpoint hits. |
+| `afterSessionEnd` | The session ended. Failures only log. | Teardown: stop services. |
+
+`host` is just the value of the `${host}` token - typically the SSH
+destination the bundled scripts take as `-HostName`.
+
+**The bundled scripts** are general-purpose, parameterized PowerShell,
+recommended as building blocks but in no way required - any command line works,
+including fully custom scripts. `${dbgengScripts}` expands to their folder
+inside hook commands; anywhere else (e.g. tasks.json) use
+`${command:dap-dbgeng.scriptsPath}`.
+
+| Script | Purpose |
+| --- | --- |
+| `Sign-Driver.ps1 -Binary <file> -CertSubject <CN=...> -OutCertificate <cer>` | Test-sign locally: finds signtool, creates/reuses the self-signed cert, exports it. |
+| `Deploy-Binary.ps1 -HostName <host> -Binary <file> -ServiceName <name>` (or `-Destination <path>`) `[-CertificateFile <cer>] [-CheckTestSigning]` | One-SSH-round-trip deploy: stages the file, derives the destination from the service registration, stops the service, replaces the binary, trusts the cert. |
+| `-HostName localhost` | Both of the above run on this machine instead, doing the same steps without SSH. |
+| `Start-RemoteService.ps1` / `Stop-RemoteService.ps1 -HostName <host> -ServiceName <name>` | `sc.exe start` / `stop` over SSH. |
+| `Ensure-ProcessServer.ps1 -HostName <host> -Transport <spec> [-DbgsrvPath <path>]` | Starts `dbgsrv` on the target when none is running, copying the debugger to `~\.dap-dbgeng\tools` there on first use (about 33 MB) unless `-DbgsrvPath` points at one already on the target. |
+
+The bundled scripts talk SSH (OpenSSH client on `PATH`, key auth, the SSH user
+an administrator on the target) - the only requirement, and only theirs:
+custom hook commands can use any transport. Commands signal failure by
+throwing or exiting non-zero; each command, its output, and its duration are
+logged in the dap-dbgeng output channel.
+
+Two palette commands work the hooks outside F5: **Run Target Hook** (pick a
+target and hook) and **Redeploy and Restart Target** (also in the debug
+toolbar during a session) - runs `afterSessionEnd`, then `beforeSession`, then
+the start hooks, i.e. the edit-rebuild-redeploy inner loop without detaching
+the debugger.
 
 ## Examples
 

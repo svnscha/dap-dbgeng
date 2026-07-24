@@ -25,6 +25,9 @@ that won't appear.
 | **Read / write memory** | **View Binary Data** on a variable; see the note below. |
 | **Disassembly view** | View and step through disassembly. |
 | **Terminate & disconnect** | End the session, or detach and leave the target running. |
+| **Remote launch** | Start the program on a `dbgsrv` host, `stopAtEntry` included. |
+| **Attach by name** | [`processName`](attach.md#processname) waits for a process to appear, then attaches. |
+| **Target hooks** | [`target`](attach.md#target) commands deploy and start the target around the session. |
 
 !!! note "Viewing and editing memory needs the Hex Editor extension"
     **View Binary Data** is provided by Microsoft's

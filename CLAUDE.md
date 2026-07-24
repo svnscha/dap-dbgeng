@@ -16,8 +16,12 @@ npm run build         # cmake --build --preset windows-debug
 npm test              # ctest --preset windows-debug  (unit + integration + replay)
 npm run generate      # regenerate src/protocol from the DAP schema
 npm run matrix        # regenerate the request coverage page (docs/development/request-coverage.md)
+npm run build:vsix    # Release adapter + bundle it into the extension + package the VSIX
 pwsh scripts/Format.ps1   # clang-format changed files (git-aware)
 ```
+
+The extension is TypeScript: `npm --prefix vscode run compile` type-checks and emits `vscode/out`
+(what `main` points at, and what `vscode:prepublish` runs before packaging).
 
 The request coverage matrix is generated, not hand-maintained: `npm run matrix` rewrites
 `docs/development/request-coverage.md` from the dispatch, handlers, and replay fixtures, and CI runs
@@ -51,8 +55,14 @@ tests/            GoogleTest, following the src/ layout; tests/replay drives rec
 test-targets/     native debuggees the tests launch/attach to (testapp), kernel driver (sys)
 protgen/          Python generator that emits src/protocol from the DAP schema
 scripts/          PowerShell helpers (build env, formatting, trace tooling)
-vscode/           VS Code extension manifest
+vscode/           VS Code extension: manifest, TypeScript in src/, target-hook scripts in scripts/
 ```
+
+The extension's `src/` splits by concern: `extension.ts` (activation and registration),
+`adapter.ts` (adapter path + `--list-processes`), `processPicker.ts`, `targetConfig.ts` (the
+launch config's `target` block), `hooks.ts` (running hook command lines), `lifecycle.ts` (binding
+hooks to session moments), `commands.ts` (palette commands). `vscode/scripts/` holds the bundled,
+standalone-usable PowerShell that hook commands call - see `docs/development/f5-experience.md`.
 
 ## Conventions
 

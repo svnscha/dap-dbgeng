@@ -279,6 +279,14 @@ class dap_server : public protocol::dap_service
     static std::optional<bool> try_evaluate_conditional_breakpoint(debugger::debugger_session &session,
                                                                    const std::string &condition);
 
+    // ---- attach helpers ------------------------------------------------------
+    // Polls the target (through the dispatcher) until a process with this
+    // executable name exists, or the timeout elapses. Backs attach by
+    // 'processName', where the process is often still spawning.
+    std::optional<std::uint32_t> poll_for_process_id(debugger::debugger_session &session,
+                                                     const std::string &executable_name,
+                                                     std::chrono::milliseconds timeout);
+
     // ---- Suppressed-events scope --------------------------------------------
     template <class Action> void run_with_suppressed_session_events(Action &&action)
     {

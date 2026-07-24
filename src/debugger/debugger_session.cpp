@@ -4,6 +4,27 @@
 
 namespace dap_dbgeng::debugger
 {
+namespace
+{
+// Loads the engine's own dbghelp.dll, so the engine binds to it rather than to
+// the older copy in System32 (see the constructor). Returns null when there is
+// nothing to load, which only costs the features needing the matched pair.
+HMODULE load_engine_dbghelp(const std::filesystem::path &engine_directory)
+{
+    std::error_code error;
+    const std::filesystem::path source = engine_directory / "dbghelp.dll";
+    if (!std::filesystem::exists(source, error))
+    {
+        return nullptr;
+    }
+
+    // Deliberately no fallback to a copy staged elsewhere: when this directory
+    // denies loading (a packaged Store WinDbg does), the engine cannot load its
+    // own dbghelp either, so a copy we could load would not change what the
+    // engine binds to - it would only hide that remote debugging will not work.
+    return ::LoadLibraryW(source.wstring().c_str());
+}
+} // namespace
 
 // ---------------------------------------------------------------------------
 // COM event-callback sink.
@@ -283,6 +304,17 @@ debugger_session::debugger_session(const std::string &engine_path)
     throw_if_null_or_whitespace(engine_path, "enginePath");
     const std::string dbgeng_directory = get_dbgeng_directory(engine_path);
 
+    // Load the engine's own dbghelp.dll first, by full path. dbgeng loads
+    // dbghelp by name at runtime, and the loader finds System32's copy (older
+    // than the engine, and not matched to it) unless a dbghelp is already
+    // loaded or sits next to our executable. A mismatched dbghelp does not fail
+    // loudly: local debugging still works, while connecting to a process server
+    // fails with ERROR_SERVER_DISABLED. Loading it here binds the name to the
+    // engine's own copy for the life of the process. Adjusting the loader's
+    // search path instead is not an option - the packaged (Store) WinDbg stops
+    // loading at all once SetDllDirectory or SetDefaultDllDirectories is used.
+    dbghelp_module_ = load_engine_dbghelp(std::filesystem::path(dbgeng_directory));
+
     // Load the engine's dbgeng.dll from the resolved directory so the engine and
     // its peers (dbghelp, symsrv, ...) resolve from the same location.
     const std::filesystem::path dll = std::filesystem::path(dbgeng_directory) / "dbgeng.dll";
@@ -413,6 +445,12 @@ debugger_session::~debugger_session()
     {
         ::FreeLibrary(dbgeng_module_);
         dbgeng_module_ = nullptr;
+    }
+
+    if (dbghelp_module_ != nullptr)
+    {
+        ::FreeLibrary(dbghelp_module_);
+        dbghelp_module_ = nullptr;
     }
 
     disposed_ = true;

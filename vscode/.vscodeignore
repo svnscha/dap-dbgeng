@@ -1,4 +1,7 @@
 node_modules/**
+src/**
+tsconfig.json
+out/**/*.map
 *.vsix
 npm-debug.log*
 package-lock.json

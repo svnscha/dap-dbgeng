@@ -40,9 +40,9 @@ Remember JSON path rules: forward slashes or doubled backslashes.
 
 ### “Invalid configuration” / a required field is missing
 
-`launch` requires `program`. `attach` requires one of `processId`, `dumpFile`, or
-`kernel` with a `connectionString`. `dbgengPath` is optional (auto-resolved when
-omitted).
+`launch` requires `program`. `attach` requires one of `processId`, `processName`,
+`dumpFile`, or `kernel` with a `connectionString`. `dbgengPath` is optional
+(auto-resolved when omitted).
 
 **Fix:** check your configuration against the
 [launch](reference/launch.md) / [attach](reference/attach.md) reference.
@@ -89,6 +89,64 @@ A hard-coded `processId` is stale because the process restarted.
 `${input:...}` variable to be prompted each time. See
 [Debug a running process](scenarios/attach.md).
 
+### “No process named … appeared within …”
+
+`processName` attach gave up waiting. Either nothing started the process, it is
+named differently, or it starts on a different machine than the adapter looks at.
+
+**Fix:**
+
+- Confirm the name matches the image name exactly, including `.exe`.
+- If a hook is supposed to start it, check that the hook ran (see below) - for a
+  service, the start belongs in `onAttachRequest`, not `afterConfigurationDone`.
+- With `connectionString` set, the process must appear on the `dbgsrv` host.
+- A slow starter may need a longer
+  [`processNameTimeout`](reference/attach.md#processnametimeout).
+
+---
+
+## Target hooks (deploy and start)
+
+Every hook command, its output, and its duration are logged in the **dap-dbgeng**
+output channel. Read it first: it shows the exact command line that ran, so you
+can paste it into a terminal and iterate there.
+
+### A hook failed and the session did not start
+
+A `beforeSession` command exited non-zero, which aborts the session on purpose
+(no point debugging a stale binary).
+
+**Fix:** run the logged command in a terminal to see the full error. The bundled
+scripts need the OpenSSH client on `PATH`, key-based auth (they use
+`BatchMode`, so they never prompt), and an SSH user who is an administrator on
+the target.
+
+### “service … is not registered on …”
+
+`Deploy-Binary.ps1` derives the destination from the service registration, and
+it never creates services itself.
+
+**Fix:** register it once on the target, then F5 again:
+
+```cmd
+sc.exe create myservice type= kernel binPath= C:\myservice.sys
+```
+
+### “test signing is OFF …”
+
+The deploy succeeded, but the target rejects test-signed drivers, so the service
+start will fail.
+
+**Fix:** on the throwaway target, `bcdedit /set testsigning on` and reboot.
+
+### The service starts, but breakpoints in it never hit
+
+The start ran too early - before breakpoints were applied.
+
+**Fix:** start a kernel driver from `afterConfigurationDone` (breakpoints are
+armed at that point) and a user-mode service from `onAttachRequest`. See
+[target hooks](reference/attach.md#target).
+
 ---
 
 ## Remote problems
@@ -99,11 +157,25 @@ The adapter can't reach `dbgsrv` on the target.
 
 **Fix:**
 
-- Confirm `dbgsrv` is running on the target: `dbgsrv -t tcp:port=5005`.
+- Confirm `dbgsrv` is running on the target: `dbgsrv -t tcp:port=5005`, or let a
+  `Ensure-ProcessServer.ps1` hook start it (see
+  [target hooks](reference/attach.md#target)).
 - Confirm the port is open through the target's firewall.
 - Test reachability from the host: `Test-NetConnection TARGETPC -Port 5005`.
 - Make sure the `port` in your `connectionString` matches `dbgsrv`'s, and
   `server=` is the right hostname/IP.
+
+### “This debug engine cannot be used for remote (dbgsrv) debugging”
+
+The engine could not load its own `dbghelp.dll`, which it needs for
+process-server connections. The **Store version of WinDbg** is the usual cause:
+it does not allow loading DLLs out of its install directory, so the engine ends
+up with the older `dbghelp.dll` from System32 and the connection fails.
+
+**Fix:** install the **Debugging Tools for Windows** (a Windows SDK / WDK
+feature) and either omit [`dbgengPath`](reference/attach.md#dbgengpath), so the
+adapter finds them, or point it at that `dbgeng.dll`. Local and kernel
+debugging with the Store version are unaffected.
 
 ### Connected, but symbols/lines are wrong
 
