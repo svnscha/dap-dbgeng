@@ -245,13 +245,8 @@ void debugger_session::attach_process_native(std::uint64_t process_server_handle
 
 void debugger_session::attach_remote(const std::string &connection_string, int process_id)
 {
-    throw_if_disposed();
-    throw_if_null_or_whitespace(connection_string, "connectionString");
-
-    check_hr(control_->AddEngineOptions(DEBUG_ENGOPT_INITIAL_BREAK), "Could not enable initial break");
     connect_process_server(connection_string);
-    attach_process_native(process_server_handle_, process_id);
-    wait_for_event();
+    attach(process_id);
 }
 
 void debugger_session::attach_kernel(const std::string &connection_string)
