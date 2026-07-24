@@ -260,6 +260,12 @@ void debugger_session::attach_kernel(const std::string &connection_string)
     terminate_debuggee_on_dispose_ = false;
     is_kernel_ = true;
 
+    // AttachKernel only configures the transport; the connection happens when
+    // the target sends its first packet, and this waits for it. A target that
+    // never answers therefore hangs the attach request and holds the dispatcher
+    // thread with it - see the note in docs/development/f5-experience.md. The
+    // wait cannot simply be bounded: the engine rejects a finite timeout here
+    // with E_NOTIMPL, kernel WaitForEvent only accepts INFINITE.
     wait_for_event();
 }
 

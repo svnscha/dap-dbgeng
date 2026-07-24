@@ -133,7 +133,14 @@ bool dap_server::handle_request(const nlohmann::json &root)
         {
             try
             {
-                send_error_response(*request_seq, *command, fmt::format("Failed to handle command: {}", *command));
+                // The exception text is the only explanation the user gets: it
+                // reaches the client's error notification, while the log this
+                // was written to lives somewhere they are not looking. Unwrap
+                // the dispatcher's wrapper the way the individual handlers do,
+                // or the reason is replaced by "failed on the dispatcher thread".
+                send_error_response(
+                    *request_seq, *command,
+                    util::debugger_session_dispatcher::unwrap_failure_message(exception, exception.what()));
             }
             catch (const std::exception &response_exception)
             {
