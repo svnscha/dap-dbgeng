@@ -182,16 +182,14 @@ class dap_server : public protocol::dap_service
         // loop's wait_for_event while the target runs. Invoking anyway does not just
         // fail that one request: it blocks the transport thread behind the
         // dispatcher, so nothing is read from stdin again until the target happens
-        // to stop. A running kernel target never does on its own, and the pause that
-        // would break it in is sitting unread in the same stalled queue - so the
-        // adapter goes silent for the rest of the session. Clients ask routinely
-        // (VS Code requests stackTrace right after configurationDone), so refuse to
-        // reach for the engine and report nothing, which is the truth while running.
-        //
-        // A user-mode target reaches its next stop and unwedges itself, so that path
-        // keeps the historical behaviour for now; the recorded fixtures capture the
-        // late responses it produces.
-        if (is_execution_running_.load() && session->is_kernel())
+        // to stop - and the pause that would break it in is sitting unread in the
+        // same stalled queue, so the adapter goes silent for the rest of the session.
+        // A target that never stops on its own never unwedges it: a running kernel
+        // machine, but equally the service or idle process that attach exists for.
+        // Clients ask routinely (VS Code requests stackTrace right after
+        // configurationDone), so refuse to reach for the engine and report nothing,
+        // which is the truth while running. Clients re-ask at the next stop.
+        if (is_execution_running_.load())
         {
             return fallback;
         }

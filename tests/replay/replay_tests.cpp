@@ -241,6 +241,19 @@ TEST(Replay, AttachRemoteViaProcessServer)
     assert_positive_attach_replay(replay);
 }
 
+// The same hazard in user mode: this fixture asks for a stack while the target
+// runs, which used to park the transport thread until the target next stopped.
+// test_attach never stops on its own, so "until it stops" meant "never".
+TEST(Replay, RequestsWhileUserModeTargetRuns)
+{
+    SKIP_IF_LIVE_ATTACH_DISABLED();
+    REPLAY_OR_SKIP(replay, "attach-remote-process.json");
+    // Asked before configurationDone, again while running, and again at the stop.
+    EXPECT_EQ(3u, count_responses(replay.non_output, "threads"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "disconnect"));
+    EXPECT_FALSE(has_error_response(replay.all));
+}
+
 // A running kernel target must stay answerable. Every one of these reaches the
 // engine through the dispatcher, which is parked in wait_for_event while the
 // machine runs: before, the first one blocked the transport thread and the
