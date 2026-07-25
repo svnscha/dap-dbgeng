@@ -165,7 +165,7 @@ class dap_server : public protocol::dap_service
     std::optional<int> try_get_current_thread_id();
 
     // Run `reader` against the active session, returning `fallback` if there is no
-    // session or the session is no longer available.
+    // session, the session is no longer available, or the target is running.
     template <class Reader, class T> T read_session_data_or_default(Reader &&reader, T fallback)
     {
         // Capture the session pointer once into a local before the dispatcher
@@ -174,6 +174,24 @@ class dap_server : public protocol::dap_service
         // callback) until this read has run.
         debugger::debugger_session *session = debugger_session_.get();
         if (session == nullptr)
+        {
+            return fallback;
+        }
+        // Every reader below asks the engine something that only makes sense at a
+        // stop, and reaches it through the dispatcher - which is parked in the wait
+        // loop's wait_for_event while the target runs. Invoking anyway does not just
+        // fail that one request: it blocks the transport thread behind the
+        // dispatcher, so nothing is read from stdin again until the target happens
+        // to stop. A running kernel target never does on its own, and the pause that
+        // would break it in is sitting unread in the same stalled queue - so the
+        // adapter goes silent for the rest of the session. Clients ask routinely
+        // (VS Code requests stackTrace right after configurationDone), so refuse to
+        // reach for the engine and report nothing, which is the truth while running.
+        //
+        // A user-mode target reaches its next stop and unwedges itself, so that path
+        // keeps the historical behaviour for now; the recorded fixtures capture the
+        // late responses it produces.
+        if (is_execution_running_.load() && session->is_kernel())
         {
             return fallback;
         }

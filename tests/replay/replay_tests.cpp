@@ -241,6 +241,21 @@ TEST(Replay, AttachRemoteViaProcessServer)
     assert_positive_attach_replay(replay);
 }
 
+// A running kernel target must stay answerable. Every one of these reaches the
+// engine through the dispatcher, which is parked in wait_for_event while the
+// machine runs: before, the first one blocked the transport thread and the
+// adapter never read another request - including the pause that would have
+// freed it. What they answer matters less than that they answer at all.
+TEST(Replay, KernelRequestsWhileRunning)
+{
+    REPLAY_OR_SKIP(replay, "kernel-running-requests.json");
+    EXPECT_EQ(1u, count_responses(replay.non_output, "threads"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "stackTrace"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "setBreakpoints"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "pause"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "disconnect"));
+}
+
 // The kernel path, against a machine booted for kernel debugging and reachable
 // on DAP_DBGENG_KERNEL_CONNECTION; the harness skips when there is none. The
 // session attaches to the whole machine, so there is no process id and nothing

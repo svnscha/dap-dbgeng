@@ -144,15 +144,8 @@ void dap_server::handle_set_breakpoints_request(const protocol::SetBreakpointsRe
 
     debugger::debugger_session &session = require_debugger_session();
     // User-mode targets accept breakpoint updates while running (the adapter
-    // briefly interrupts to apply them, then resumes). A kernel target must be
-    // halted first.
+    // briefly interrupts to apply them, then resumes).
     const bool resume_after_update = is_execution_running_.load();
-    if (resume_after_update && session.is_kernel())
-    {
-        send_error_response(request.seq, request.command,
-                            "Breakpoints can only be updated while the kernel target is halted. Pause first.");
-        return;
-    }
 
     std::vector<protocol::SourceBreakpoint> unsupported_breakpoints;
     std::vector<parsed_source_breakpoint> configurable;
