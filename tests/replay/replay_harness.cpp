@@ -1076,6 +1076,20 @@ replay_result replay_file_once(const std::string &file_name, int timeout_millise
         substitutions["${dbgsrvPort}"] = std::to_string(port);
     }
 
+    if (requires_kernel_target(file_name))
+    {
+        // A kernel fixture can only replay against a machine booted for kernel
+        // debugging, which is a property of the setup rather than of this
+        // repository - so the transport comes from the environment, and hosts
+        // without one skip instead of failing.
+        const std::optional<std::string> connection = test_support::env_var("DAP_DBGENG_KERNEL_CONNECTION");
+        if (!connection.has_value() || connection->empty())
+        {
+            throw replay_skip("DAP_DBGENG_KERNEL_CONNECTION is not set: no kernel target to replay against.");
+        }
+        substitutions["${kernelConnection}"] = json_inner(*connection);
+    }
+
     if (requires_attach_target(file_name))
     {
         attach_target = start_process(attach_target_path_or_skip(), L"");
@@ -1227,6 +1241,11 @@ bool requires_attach_target(const std::string &file_name)
 bool requires_process_server(const std::string &file_name)
 {
     return read_fixture_text(file_name).find("${dbgsrvPort}") != std::string::npos;
+}
+
+bool requires_kernel_target(const std::string &file_name)
+{
+    return read_fixture_text(file_name).find("${kernelConnection}") != std::string::npos;
 }
 
 recorded_session load_session(const std::string &file_name, const std::map<std::string, std::string> &substitutions)

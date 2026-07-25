@@ -66,11 +66,20 @@ if (($configArgs.PSObject.Properties.Name -contains 'processId') -and ($null -ne
     $text = $text.Replace(('"processId": {0}' -f $targetPid), '"processId": "${attachProcessId}"')
 }
 
-# 4) dbgsrv connection-string port -> ${dbgsrvPort}. Only the port is volatile per run; the transport/server stay.
+# 4) The connection string. A kernel transport belongs to the target machine - port, key and
+#    transport all differ per setup - so the whole value becomes ${kernelConnection}, which the
+#    replay harness takes from DAP_DBGENG_KERNEL_CONNECTION. For a dbgsrv string only the port is
+#    volatile per run: the harness starts its own process server and fills in ${dbgsrvPort}.
 if (($configArgs.PSObject.Properties.Name -contains 'connectionString') -and $configArgs.connectionString) {
-    $portMatch = [regex]::Match([string]$configArgs.connectionString, 'port=\d+')
-    if ($portMatch.Success) {
-        $text = $text.Replace($portMatch.Value, 'port=${dbgsrvPort}', $ignoreCase)
+    $connection = [string]$configArgs.connectionString
+    if (($configArgs.PSObject.Properties.Name -contains 'kernel') -and $configArgs.kernel) {
+        $text = $text.Replace($connection, '${kernelConnection}', $ignoreCase)
+    }
+    else {
+        $portMatch = [regex]::Match($connection, 'port=\d+')
+        if ($portMatch.Success) {
+            $text = $text.Replace($portMatch.Value, 'port=${dbgsrvPort}', $ignoreCase)
+        }
     }
 }
 

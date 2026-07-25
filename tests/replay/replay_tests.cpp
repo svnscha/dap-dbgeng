@@ -241,6 +241,24 @@ TEST(Replay, AttachRemoteViaProcessServer)
     assert_positive_attach_replay(replay);
 }
 
+// The kernel path, against a machine booted for kernel debugging and reachable
+// on DAP_DBGENG_KERNEL_CONNECTION; the harness skips when there is none. The
+// session attaches to the whole machine, so there is no process id and nothing
+// to terminate: it breaks in, and disconnecting leaves the target running.
+TEST(Replay, KernelAttachAndDisconnect)
+{
+    REPLAY_OR_SKIP(replay, "kernel-attach.json");
+    EXPECT_GT(replay.non_output.size(), 0u);
+    EXPECT_EQ(1u, count_responses(replay.non_output, "initialize"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "attach"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "disconnect"));
+    EXPECT_FALSE(has_error_response(replay.all));
+
+    const nlohmann::json *process = single_process_event(replay.non_output);
+    ASSERT_NE(process, nullptr);
+    EXPECT_EQ("attach", process->at("body").value("startMethod", std::string{}));
+}
+
 TEST(Replay, LaunchSetVariable)
 {
     REPLAY_OR_SKIP(replay, "launch-setVariable.json");
