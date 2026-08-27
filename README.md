@@ -46,7 +46,7 @@ The Ninja build needs the MSVC toolchain. The npm scripts enter the Visual Studi
 shell automatically, so they run from any shell:
 
 ```powershell
-npm run configure   # configure (Ninja, auto-finds vcpkg)
+npm run configure   # configure (Ninja, vcpkg from VCPKG_ROOT)
 npm run build       # build Debug
 ```
 
@@ -57,7 +57,8 @@ cmake --preset windows-x64
 cmake --build --preset windows-debug
 ```
 
-vcpkg is auto-discovered from `$env:VCPKG_ROOT`, a vendored `./vcpkg`, or the bundled VS 2022 copy.
+vcpkg comes from `$env:VCPKG_ROOT`. The developer shell sets that to the copy bundled with
+Visual Studio, so no separate vcpkg install is needed; set it yourself to use a different one.
 
 ## Test
 

@@ -1,67 +1,65 @@
 {
-  "version": 1,
   "messages": [
     {
       "direction": "in",
       "message": {
-        "command": "initialize",
         "arguments": {
+          "adapterID": "dbgeng",
           "clientID": "vscode",
           "clientName": "Visual Studio Code",
-          "adapterID": "dbgeng",
-          "pathFormat": "path",
-          "linesStartAt1": true,
           "columnsStartAt1": true,
-          "supportsVariableType": true,
-          "supportsVariablePaging": true,
-          "supportsRunInTerminalRequest": true,
-          "locale": "en",
-          "supportsProgressReporting": true,
-          "supportsInvalidatedEvent": true,
-          "supportsMemoryReferences": true,
-          "supportsArgsCanBeInterpretedByShell": true,
-          "supportsMemoryEvent": true,
-          "supportsStartDebuggingRequest": true,
-          "supportsANSIStyling": true
+          "linesStartAt1": true,
+          "pathFormat": "path",
+          "supportsVariableType": true
         },
-        "type": "request",
-        "seq": 1
+        "command": "initialize",
+        "seq": 1,
+        "type": "request"
       }
     },
     {
       "direction": "out",
       "message": {
         "body": {
-          "supportsConfigurationDoneRequest": true,
-          "supportsFunctionBreakpoints": false,
-          "supportsConditionalBreakpoints": true,
-          "supportsHitConditionalBreakpoints": false,
-          "supportsEvaluateForHovers": false,
-          "supportsStepBack": false,
-          "supportsSetVariable": true,
-          "supportsRestartFrame": false,
-          "supportsModulesRequest": false,
-          "supportsRestartRequest": false,
-          "supportsValueFormattingOptions": false,
-          "supportsVariablePaging": true,
-          "supportTerminateDebuggee": true,
+          "exceptionBreakpointFilters": [
+            {
+              "default": false,
+              "description": "Break when a C++ exception is thrown (first chance).",
+              "filter": "cpp",
+              "label": "C++ exceptions"
+            }
+          ],
           "supportSuspendDebuggee": false,
-          "supportsDelayedStackTraceLoading": true,
-          "supportsLogPoints": false,
-          "supportsSetExpression": false,
-          "supportsTerminateRequest": true,
-          "supportsReadMemoryRequest": false,
-          "supportsWriteMemoryRequest": false,
-          "supportsDisassembleRequest": true,
+          "supportTerminateDebuggee": true,
           "supportsClipboardContext": true,
+          "supportsConditionalBreakpoints": true,
+          "supportsConfigurationDoneRequest": true,
+          "supportsDataBreakpoints": true,
+          "supportsDelayedStackTraceLoading": true,
+          "supportsDisassembleRequest": true,
+          "supportsEvaluateForHovers": false,
+          "supportsExceptionInfoRequest": true,
+          "supportsFunctionBreakpoints": true,
+          "supportsHitConditionalBreakpoints": false,
+          "supportsInstructionBreakpoints": true,
+          "supportsLogPoints": false,
+          "supportsModulesRequest": true,
+          "supportsReadMemoryRequest": true,
+          "supportsRestartFrame": false,
+          "supportsRestartRequest": false,
+          "supportsSetExpression": true,
+          "supportsSetVariable": true,
+          "supportsSingleThreadExecutionRequests": false,
+          "supportsStepBack": false,
           "supportsSteppingGranularity": true,
-          "supportsInstructionBreakpoints": false,
-          "supportsSingleThreadExecutionRequests": false
+          "supportsTerminateRequest": true,
+          "supportsValueFormattingOptions": false,
+          "supportsWriteMemoryRequest": true
         },
-        "request_seq": 1,
-        "success": true,
         "command": "initialize",
+        "request_seq": 1,
         "seq": 1,
+        "success": true,
         "type": "response"
       }
     },
@@ -76,27 +74,18 @@
     {
       "direction": "in",
       "message": {
-        "command": "attach",
         "arguments": {
-          "name": "Debug (Remote Attach)",
-          "type": "dbgeng",
-          "request": "attach",
           "connectionString": "tcp:port=${dbgsrvPort},server=localhost",
           "dbgengPath": "${dbgEngPath}",
+          "name": "Debug (Remote Attach)",
           "processId": "${attachProcessId}",
-          "sources": [
-            "${workspaceFolder}\\test-targets\\testapp"
-          ],
-          "symbolPath": [
-            "${workspaceFolder}/build/windows-x64/test-targets"
-          ],
-          "trace": "${workspaceFolder}\\test-targets\\testapp/recordings/attach-remote.session.json",
+          "request": "attach",
           "stopAtEntry": false,
-          "__configurationTarget": 6,
-          "__sessionId": "3060b9d1-1207-49a6-a634-7065da61c642"
+          "type": "dbgeng"
         },
-        "type": "request",
-        "seq": 2
+        "command": "attach",
+        "seq": 2,
+        "type": "request"
       }
     },
     {
@@ -104,20 +93,20 @@
       "message": {
         "body": {
           "category": "console",
-          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource search path is: ${workspaceFolder}\\test-targets\\testapp\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}\\test-targets\\testapp\n\n************* Preparing the environment for Debugger Extensions Gallery repositories **************\n   ExtensionRepository : Implicit\n   UseExperimentalFeatureForNugetShare : true\n   AllowNugetExeUpdate : true\n   NonInteractiveNuget : true\n   AllowNugetMSCredentialProviderInstall : true\n   AllowParallelInitializationOfLocalRepositories : true\n\n   EnableRedirectToV8JsProvider : false\n\n   -- Configuring repositories\n      ----> Repository : LocalInstalled, Enabled: true\n      ----> Repository : UserExtensions, Enabled: true\n\n>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds\n\n************* Waiting for Debugger Extensions Gallery to Initialize **************\n\n>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds\n   ----> Repository : UserExtensions, Enabled: true, Packages count: 0\n   ----> Repository : LocalInstalled, Enabled: true, Packages count: 29\n\nMicrosoft (R) Windows Debugger Version 10.0.26100.6584 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\n*** wait with pending attach\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nOK                                             ${workspaceFolder}/build/windows-x64/test-targets\nSymbol search path is: ${workspaceFolder}/build/windows-x64/test-targets\nExecutable search path is: \nModLoad: 00007ff6`7df70000 00007ff6`7df86000   ${workspaceFolder}\\build\\windows-x64\\test-targets\\test_attach.exe\n"
+          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\n\n************* Preparing the environment for Debugger Extensions Gallery repositories **************\n   ExtensionRepository : Implicit\n   UseExperimentalFeatureForNugetShare : true\n   AllowNugetExeUpdate : true\n   NonInteractiveNuget : true\n   AllowNugetMSCredentialProviderInstall : true\n   AllowParallelInitializationOfLocalRepositories : true\n   EnableRedirectToChakraJsProvider : false\n\n   -- Configuring repositories\n      ----> Repository : LocalInstalled, Enabled: true\n      ----> Repository : UserExtensions, Enabled: true\n\n>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.016 seconds\n\n************* Waiting for Debugger Extensions Gallery to Initialize **************\n\n>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.000 seconds\n   ----> Repository : UserExtensions, Enabled: true, Packages count: 0\n   ----> Repository : LocalInstalled, Enabled: true, Packages count: 30\n\nMicrosoft (R) Windows Debugger Version 10.0.28000.2526 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\n*** wait with pending attach\n\n************* Path validation summary **************\nResponse                         Time (ms)     Location\nDeferred                                       srv*\nSymbol search path is: srv*\nExecutable search path is: \nModLoad: 00007ff6`4ed30000 00007ff6`4ed47000   ${workspaceFolder}\\build\\windows-x64\\test-targets\\test_attach.exe\n"
         },
         "event": "output",
-        "seq": 43,
+        "seq": 35,
         "type": "event"
       }
     },
     {
       "direction": "out",
       "message": {
-        "request_seq": 2,
-        "success": true,
         "command": "attach",
-        "seq": 44,
+        "request_seq": 2,
+        "seq": 36,
+        "success": true,
         "type": "response"
       }
     },
@@ -125,115 +114,23 @@
       "direction": "out",
       "message": {
         "body": {
-          "name": "process 18000",
-          "systemProcessId": 18000,
           "isLocalProcess": true,
-          "startMethod": "attach"
+          "name": "process 12656",
+          "startMethod": "attach",
+          "systemProcessId": 12656
         },
         "event": "process",
-        "seq": 45,
+        "seq": 37,
         "type": "event"
       }
     },
     {
       "direction": "in",
       "message": {
-        "command": "setBreakpoints",
-        "arguments": {
-          "source": {
-            "name": "attach.cpp",
-            "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
-          },
-          "lines": [
-            18
-          ],
-          "breakpoints": [
-            {
-              "line": 18
-            }
-          ],
-          "sourceModified": false
-        },
-        "type": "request",
-        "seq": 3
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "breakpoints": [
-            {
-              "id": 0,
-              "verified": true,
-              "source": {
-                "name": "attach.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
-              },
-              "line": 18
-            }
-          ]
-        },
-        "request_seq": 3,
-        "success": true,
-        "command": "setBreakpoints",
-        "seq": 47,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "setBreakpoints",
-        "arguments": {
-          "source": {
-            "name": "launch.cpp",
-            "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
-          },
-          "lines": [
-            8
-          ],
-          "breakpoints": [
-            {
-              "line": 8
-            }
-          ],
-          "sourceModified": false
-        },
-        "type": "request",
-        "seq": 4
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "breakpoints": [
-            {
-              "verified": false,
-              "message": "Unable to resolve breakpoint at '${workspaceFolder}\\test-targets\\testapp\\launch.cpp:8'.",
-              "source": {
-                "name": "launch.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\launch.cpp"
-              },
-              "line": 8,
-              "reason": "failed"
-            }
-          ]
-        },
-        "request_seq": 4,
-        "success": true,
-        "command": "setBreakpoints",
-        "seq": 48,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
+        "arguments": {},
         "command": "threads",
-        "type": "request",
-        "seq": 5
+        "seq": 3,
+        "type": "request"
       }
     },
     {
@@ -242,33 +139,34 @@
         "body": {
           "threads": [
             {
-              "id": 8808,
-              "name": "Thread 8808 (current)"
+              "id": 17372,
+              "name": "Thread 17372 (current)"
             }
           ]
         },
-        "request_seq": 5,
-        "success": true,
         "command": "threads",
-        "seq": 49,
+        "request_seq": 3,
+        "seq": 38,
+        "success": true,
         "type": "response"
       }
     },
     {
       "direction": "in",
       "message": {
+        "arguments": {},
         "command": "configurationDone",
-        "type": "request",
-        "seq": 6
+        "seq": 4,
+        "type": "request"
       }
     },
     {
       "direction": "out",
       "message": {
-        "request_seq": 6,
-        "success": true,
         "command": "configurationDone",
-        "seq": 50,
+        "request_seq": 4,
+        "seq": 39,
+        "success": true,
         "type": "response"
       }
     },
@@ -276,25 +174,99 @@
       "direction": "out",
       "message": {
         "body": {
-          "threadId": 8808,
-          "allThreadsContinued": true
+          "allThreadsContinued": true,
+          "threadId": 17372
         },
         "event": "continued",
+        "seq": 40,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "ModLoad: 00007fff`1bc80000 00007fff`1bee6000   C:\\WINDOWS\\SYSTEM32\\ntdll.dll\nModLoad: 00007fff`1ab60000 00007fff`1ac29000   C:\\WINDOWS\\System32\\KERNEL32.DLL\nModLoad: 00007fff`195a0000 00007fff`1999e000   C:\\WINDOWS\\System32\\KERNELBASE.dll\nModLoad: 00007ffe`e3cd0000 00007ffe`e3db1000   C:\\WINDOWS\\SYSTEM32\\MSVCP140D.dll\nModLoad: 00007fff`084d0000 00007fff`08500000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140D.dll\nModLoad: 00007fff`0eee0000 00007fff`0eeef000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140_1D.dll\nModLoad: 00007ffe`e25a0000 00007ffe`e27a4000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\n(3170.4b44): Break instruction exception - code 80000003 (first chance)\n"
+        },
+        "event": "output",
+        "seq": 49,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 15900
+        },
+        "event": "thread",
+        "seq": 50,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 1820
+        },
+        "event": "thread",
         "seq": 51,
         "type": "event"
       }
     },
     {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 18236
+        },
+        "event": "thread",
+        "seq": 52,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "reason": "started",
+          "threadId": 19268
+        },
+        "event": "thread",
+        "seq": 53,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsStopped": true,
+          "description": "Paused on exception 0x80000003.",
+          "reason": "exception",
+          "threadId": 19268
+        },
+        "event": "stopped",
+        "seq": 54,
+        "type": "event"
+      }
+    },
+    {
       "direction": "in",
       "message": {
-        "command": "stackTrace",
         "arguments": {
-          "threadId": 8808,
+          "levels": 1,
           "startFrame": 0,
-          "levels": 1
+          "threadId": 17372
         },
-        "type": "request",
-        "seq": 7
+        "command": "stackTrace",
+        "seq": 5,
+        "type": "request"
       }
     },
     {
@@ -302,51 +274,10 @@
       "message": {
         "body": {
           "category": "console",
-          "output": "ModLoad: 00007fff`61660000 00007fff`618c7000   C:\\WINDOWS\\SYSTEM32\\ntdll.dll\nModLoad: 00007fff`60eb0000 00007fff`60f79000   C:\\WINDOWS\\System32\\KERNEL32.DLL\nModLoad: 00007fff`5edb0000 00007fff`5f1a7000   C:\\WINDOWS\\System32\\KERNELBASE.dll\nModLoad: 00007fff`33440000 00007fff`33521000   C:\\WINDOWS\\SYSTEM32\\MSVCP140D.dll\nModLoad: 00007fff`44f10000 00007fff`44f1f000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140_1D.dll\nModLoad: 00007fff`442c0000 00007fff`442f0000   C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140D.dll\nModLoad: 00007ffe`e3b50000 00007ffe`e3d54000   C:\\WINDOWS\\SYSTEM32\\ucrtbased.dll\nModLoad: 00007ffe`fabb0000 00007ffe`fad4d000   C:\\Program Files (x86)\\Citrix\\ICA Client\\ctxapclient64.dll\nModLoad: 00007fff`60870000 00007fff`60a36000   C:\\WINDOWS\\System32\\USER32.dll\nModLoad: 00007fff`5f300000 00007fff`5f327000   C:\\WINDOWS\\System32\\win32u.dll\nModLoad: 00007fff`5f4b0000 00007fff`5f4db000   C:\\WINDOWS\\System32\\GDI32.dll\nModLoad: 00007fff`5e350000 00007fff`5e47c000   C:\\WINDOWS\\System32\\gdi32full.dll\nModLoad: 00007fff`5f330000 00007fff`5f3d3000   C:\\WINDOWS\\System32\\msvcp_win.dll\nModLoad: 00007fff`5f1b0000 00007fff`5f2fb000   C:\\WINDOWS\\System32\\ucrtbase.dll\nModLoad: 00007fff`5f890000 00007fff`5fc13000   C:\\WINDOWS\\System32\\combase.dll\nModLoad: 00007fff`60f80000 00007fff`61098000   C:\\WINDOWS\\System32\\RPCRT4.dll\nModLoad: 00007fff`5df80000 00007fff`5dfaa000   C:\\WINDOWS\\SYSTEM32\\bcrypt.dll\nModLoad: 00007fff`61310000 00007fff`613b7000   C:\\WINDOWS\\System32\\sechost.dll\nModLoad: 00007fff`56d00000 00007fff`56d0b000   C:\\WINDOWS\\SYSTEM32\\VERSION.dll\nModLoad: 00007fff`611a0000 00007fff`61249000   C:\\WINDOWS\\System32\\msvcrt.dll\nModLoad: 00007fff`5f470000 00007fff`5f4a2000   C:\\WINDOWS\\System32\\IMM32.DLL\nModLoad: 00007fff`61250000 00007fff`61306000   C:\\WINDOWS\\System32\\ADVAPI32.dll\nModLoad: 00007fff`5d020000 00007fff`5d056000   C:\\WINDOWS\\SYSTEM32\\ntmarta.dll\nModLoad: 00007fff`5e2a0000 00007fff`5e348000   C:\\WINDOWS\\System32\\bcryptprimitives.dll\nBreakpoint 0 hit\n"
+          "output": "*** WARNING: Unable to verify checksum for test_attach.exe\n"
         },
         "event": "output",
-        "seq": 76,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "reason": "started",
-          "threadId": 40332
-        },
-        "event": "thread",
-        "seq": 77,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "reason": "started",
-          "threadId": 14232
-        },
-        "event": "thread",
-        "seq": 78,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "reason": "breakpoint",
-          "description": "Paused on breakpoint 0.",
-          "threadId": 8808,
-          "allThreadsStopped": true,
-          "hitBreakpointIds": [
-            0
-          ]
-        },
-        "event": "stopped",
-        "seq": 79,
+        "seq": 57,
         "type": "event"
       }
     },
@@ -356,32 +287,107 @@
         "body": {
           "stackFrames": [
             {
-              "id": 115135201,
-              "name": "test_attach!main+0x32",
-              "source": {
-                "name": "attach.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
-              },
-              "line": 18,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF71702"
+              "column": 0,
+              "id": 740176264,
+              "instructionPointerReference": "0x7FFF1BDE0684",
+              "line": 0,
+              "name": "ntdll!NtQueryPerformanceCounter+0x14"
             }
           ],
-          "totalFrames": 7
+          "totalFrames": 13
         },
+        "command": "stackTrace",
+        "request_seq": 5,
+        "seq": 58,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {},
+        "command": "threads",
+        "seq": 6,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "threads": [
+            {
+              "id": 17372,
+              "name": "Thread 17372 (current)"
+            },
+            {
+              "id": 15900,
+              "name": "Thread 15900"
+            },
+            {
+              "id": 1820,
+              "name": "Thread 1820"
+            },
+            {
+              "id": 18236,
+              "name": "Thread 18236"
+            },
+            {
+              "id": 19268,
+              "name": "Thread 19268"
+            }
+          ]
+        },
+        "command": "threads",
+        "request_seq": 6,
+        "seq": 59,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "levels": 1,
+          "startFrame": 0,
+          "threadId": 19268
+        },
+        "command": "stackTrace",
+        "seq": 7,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "stackFrames": [
+            {
+              "column": 0,
+              "id": 1762016328,
+              "instructionPointerReference": "0x7FFF1BD9ED10",
+              "line": 0,
+              "name": "ntdll!DbgBreakPoint"
+            }
+          ],
+          "totalFrames": 4
+        },
+        "command": "stackTrace",
         "request_seq": 7,
+        "seq": 60,
         "success": true,
-        "command": "stackTrace",
-        "seq": 80,
         "type": "response"
       }
     },
     {
       "direction": "in",
       "message": {
+        "arguments": {},
         "command": "threads",
-        "type": "request",
-        "seq": 8
+        "seq": 8,
+        "type": "request"
       }
     },
     {
@@ -390,322 +396,1176 @@
         "body": {
           "threads": [
             {
-              "id": 8808,
-              "name": "Thread 8808 (current)"
+              "id": 17372,
+              "name": "Thread 17372"
             },
             {
-              "id": 40332,
-              "name": "Thread 40332"
+              "id": 15900,
+              "name": "Thread 15900"
             },
             {
-              "id": 14232,
-              "name": "Thread 14232"
+              "id": 1820,
+              "name": "Thread 1820"
+            },
+            {
+              "id": 18236,
+              "name": "Thread 18236"
+            },
+            {
+              "id": 19268,
+              "name": "Thread 19268 (current)"
             }
           ]
         },
+        "command": "threads",
         "request_seq": 8,
+        "seq": 61,
         "success": true,
-        "command": "threads",
-        "seq": 81,
         "type": "response"
       }
     },
     {
       "direction": "in",
       "message": {
-        "command": "threads",
-        "type": "request",
-        "seq": 9
+        "arguments": {
+          "frameId": 1762016328
+        },
+        "command": "scopes",
+        "seq": 9,
+        "type": "request"
       }
     },
     {
       "direction": "out",
       "message": {
         "body": {
-          "threads": [
+          "scopes": [
             {
-              "id": 8808,
-              "name": "Thread 8808 (current)"
+              "expensive": false,
+              "name": "Locals",
+              "namedVariables": 0,
+              "presentationHint": "locals",
+              "variablesReference": 0
             },
             {
-              "id": 40332,
-              "name": "Thread 40332"
-            },
-            {
-              "id": 14232,
-              "name": "Thread 14232"
+              "expensive": false,
+              "name": "Registers",
+              "namedVariables": 168,
+              "presentationHint": "registers",
+              "variablesReference": 1
             }
           ]
         },
+        "command": "scopes",
         "request_seq": 9,
+        "seq": 62,
         "success": true,
-        "command": "threads",
-        "seq": 82,
         "type": "response"
       }
     },
     {
       "direction": "in",
       "message": {
-        "command": "stackTrace",
         "arguments": {
-          "threadId": 8808,
-          "startFrame": 0,
-          "levels": 1
+          "variablesReference": 1
         },
-        "type": "request",
-        "seq": 10
+        "command": "variables",
+        "seq": 10,
+        "type": "request"
       }
     },
     {
       "direction": "out",
       "message": {
         "body": {
-          "stackFrames": [
+          "variables": [
             {
-              "id": 115135201,
-              "name": "test_attach!main+0x32",
-              "source": {
-                "name": "attach.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
-              },
-              "line": 18,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF71702"
+              "evaluateName": "rax",
+              "name": "rax",
+              "value": "0000002d80535000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rcx",
+              "name": "rcx",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rdx",
+              "name": "rdx",
+              "value": "00007fff1bdb0df0",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rbx",
+              "name": "rbx",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rsp",
+              "name": "rsp",
+              "value": "0000002d809ffd38",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rbp",
+              "name": "rbp",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rsi",
+              "name": "rsi",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rdi",
+              "name": "rdi",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r8",
+              "name": "r8",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r9",
+              "name": "r9",
+              "value": "00007fff1bdb0df0",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r10",
+              "name": "r10",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r11",
+              "name": "r11",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r12",
+              "name": "r12",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r13",
+              "name": "r13",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r14",
+              "name": "r14",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "r15",
+              "name": "r15",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "rip",
+              "name": "rip",
+              "value": "00007fff1bd9ed10",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "efl",
+              "name": "efl",
+              "value": "00000244",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "cs",
+              "name": "cs",
+              "value": "0033",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ds",
+              "name": "ds",
+              "value": "002b",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "es",
+              "name": "es",
+              "value": "002b",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "fs",
+              "name": "fs",
+              "value": "0053",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "gs",
+              "name": "gs",
+              "value": "002b",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ss",
+              "name": "ss",
+              "value": "002b",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr0",
+              "name": "dr0",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr1",
+              "name": "dr1",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr2",
+              "name": "dr2",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr3",
+              "name": "dr3",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr6",
+              "name": "dr6",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "dr7",
+              "name": "dr7",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "fpcw",
+              "name": "fpcw",
+              "value": "027f",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "fpsw",
+              "name": "fpsw",
+              "value": "0000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "fptw",
+              "name": "fptw",
+              "value": "0000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "mxcsr",
+              "name": "mxcsr",
+              "value": "00001f80",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm0/0",
+              "name": "xmm0/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm0/1",
+              "name": "xmm0/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm0/2",
+              "name": "xmm0/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm0/3",
+              "name": "xmm0/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm1/0",
+              "name": "xmm1/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm1/1",
+              "name": "xmm1/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm1/2",
+              "name": "xmm1/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm1/3",
+              "name": "xmm1/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm2/0",
+              "name": "xmm2/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm2/1",
+              "name": "xmm2/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm2/2",
+              "name": "xmm2/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm2/3",
+              "name": "xmm2/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm3/0",
+              "name": "xmm3/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm3/1",
+              "name": "xmm3/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm3/2",
+              "name": "xmm3/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm3/3",
+              "name": "xmm3/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm4/0",
+              "name": "xmm4/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm4/1",
+              "name": "xmm4/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm4/2",
+              "name": "xmm4/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm4/3",
+              "name": "xmm4/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm5/0",
+              "name": "xmm5/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm5/1",
+              "name": "xmm5/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm5/2",
+              "name": "xmm5/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm5/3",
+              "name": "xmm5/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm6/0",
+              "name": "xmm6/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm6/1",
+              "name": "xmm6/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm6/2",
+              "name": "xmm6/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm6/3",
+              "name": "xmm6/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm7/0",
+              "name": "xmm7/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm7/1",
+              "name": "xmm7/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm7/2",
+              "name": "xmm7/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm7/3",
+              "name": "xmm7/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm8/0",
+              "name": "xmm8/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm8/1",
+              "name": "xmm8/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm8/2",
+              "name": "xmm8/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm8/3",
+              "name": "xmm8/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm9/0",
+              "name": "xmm9/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm9/1",
+              "name": "xmm9/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm9/2",
+              "name": "xmm9/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm9/3",
+              "name": "xmm9/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm10/0",
+              "name": "xmm10/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm10/1",
+              "name": "xmm10/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm10/2",
+              "name": "xmm10/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm10/3",
+              "name": "xmm10/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm11/0",
+              "name": "xmm11/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm11/1",
+              "name": "xmm11/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm11/2",
+              "name": "xmm11/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm11/3",
+              "name": "xmm11/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm12/0",
+              "name": "xmm12/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm12/1",
+              "name": "xmm12/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm12/2",
+              "name": "xmm12/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm12/3",
+              "name": "xmm12/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm13/0",
+              "name": "xmm13/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm13/1",
+              "name": "xmm13/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm13/2",
+              "name": "xmm13/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm13/3",
+              "name": "xmm13/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm14/0",
+              "name": "xmm14/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm14/1",
+              "name": "xmm14/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm14/2",
+              "name": "xmm14/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm14/3",
+              "name": "xmm14/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm15/0",
+              "name": "xmm15/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm15/1",
+              "name": "xmm15/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm15/2",
+              "name": "xmm15/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "xmm15/3",
+              "name": "xmm15/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm0/0",
+              "name": "ymm0/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm0/1",
+              "name": "ymm0/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm0/2",
+              "name": "ymm0/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm0/3",
+              "name": "ymm0/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm1/0",
+              "name": "ymm1/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm1/1",
+              "name": "ymm1/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm1/2",
+              "name": "ymm1/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm1/3",
+              "name": "ymm1/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm2/0",
+              "name": "ymm2/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm2/1",
+              "name": "ymm2/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm2/2",
+              "name": "ymm2/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm2/3",
+              "name": "ymm2/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm3/0",
+              "name": "ymm3/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm3/1",
+              "name": "ymm3/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm3/2",
+              "name": "ymm3/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm3/3",
+              "name": "ymm3/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm4/0",
+              "name": "ymm4/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm4/1",
+              "name": "ymm4/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm4/2",
+              "name": "ymm4/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm4/3",
+              "name": "ymm4/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm5/0",
+              "name": "ymm5/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm5/1",
+              "name": "ymm5/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm5/2",
+              "name": "ymm5/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm5/3",
+              "name": "ymm5/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm6/0",
+              "name": "ymm6/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm6/1",
+              "name": "ymm6/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm6/2",
+              "name": "ymm6/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm6/3",
+              "name": "ymm6/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm7/0",
+              "name": "ymm7/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm7/1",
+              "name": "ymm7/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm7/2",
+              "name": "ymm7/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm7/3",
+              "name": "ymm7/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm8/0",
+              "name": "ymm8/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm8/1",
+              "name": "ymm8/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm8/2",
+              "name": "ymm8/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm8/3",
+              "name": "ymm8/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm9/0",
+              "name": "ymm9/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm9/1",
+              "name": "ymm9/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm9/2",
+              "name": "ymm9/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm9/3",
+              "name": "ymm9/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm10/0",
+              "name": "ymm10/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm10/1",
+              "name": "ymm10/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm10/2",
+              "name": "ymm10/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm10/3",
+              "name": "ymm10/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm11/0",
+              "name": "ymm11/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm11/1",
+              "name": "ymm11/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm11/2",
+              "name": "ymm11/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm11/3",
+              "name": "ymm11/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm12/0",
+              "name": "ymm12/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm12/1",
+              "name": "ymm12/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm12/2",
+              "name": "ymm12/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm12/3",
+              "name": "ymm12/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm13/0",
+              "name": "ymm13/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm13/1",
+              "name": "ymm13/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm13/2",
+              "name": "ymm13/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm13/3",
+              "name": "ymm13/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm14/0",
+              "name": "ymm14/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm14/1",
+              "name": "ymm14/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm14/2",
+              "name": "ymm14/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm14/3",
+              "name": "ymm14/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm15/0",
+              "name": "ymm15/0",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm15/1",
+              "name": "ymm15/1",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm15/2",
+              "name": "ymm15/2",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ymm15/3",
+              "name": "ymm15/3",
+              "value": "00000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "exfrom",
+              "name": "exfrom",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "exto",
+              "name": "exto",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "brfrom",
+              "name": "brfrom",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "brto",
+              "name": "brto",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "ssp",
+              "name": "ssp",
+              "value": "0000000000000000",
+              "variablesReference": 0
+            },
+            {
+              "evaluateName": "cetumsr",
+              "name": "cetumsr",
+              "value": "0000000000000000",
+              "variablesReference": 0
             }
-          ],
-          "totalFrames": 7
+          ]
         },
+        "command": "variables",
         "request_seq": 10,
+        "seq": 63,
         "success": true,
-        "command": "stackTrace",
-        "seq": 83,
         "type": "response"
       }
     },
     {
       "direction": "in",
       "message": {
-        "command": "threads",
-        "type": "request",
-        "seq": 11
+        "arguments": {
+          "levels": 19,
+          "startFrame": 1,
+          "threadId": 19268
+        },
+        "command": "stackTrace",
+        "seq": 11,
+        "type": "request"
       }
     },
     {
       "direction": "out",
       "message": {
         "body": {
-          "threads": [
+          "stackFrames": [
             {
-              "id": 8808,
-              "name": "Thread 8808 (current)"
+              "column": 0,
+              "id": 959609689,
+              "instructionPointerReference": "0x7FFF1BDB0E3E",
+              "line": 0,
+              "name": "ntdll!DbgUiRemoteBreakin+0x4E"
             },
             {
-              "id": 40332,
-              "name": "Thread 40332"
+              "column": 0,
+              "id": 157203050,
+              "instructionPointerReference": "0x7FFF1AB8E957",
+              "line": 0,
+              "name": "KERNEL32!BaseThreadInitThunk+0x17"
             },
             {
-              "id": 14232,
-              "name": "Thread 14232"
+              "column": 0,
+              "id": 1502280059,
+              "instructionPointerReference": "0x7FFF1BD2AD6C",
+              "line": 0,
+              "name": "ntdll!RtlUserThreadStart+0x2C"
             }
-          ]
+          ],
+          "totalFrames": 4
         },
+        "command": "stackTrace",
         "request_seq": 11,
+        "seq": 64,
         "success": true,
-        "command": "threads",
-        "seq": 84,
         "type": "response"
       }
     },
     {
       "direction": "in",
       "message": {
-        "command": "scopes",
         "arguments": {
-          "frameId": 115135201
+          "threadId": 19268
         },
-        "type": "request",
-        "seq": 12
+        "command": "continue",
+        "seq": 12,
+        "type": "request"
       }
     },
     {
       "direction": "out",
       "message": {
         "body": {
-          "scopes": [
-            {
-              "name": "Locals",
-              "presentationHint": "locals",
-              "variablesReference": 1,
-              "namedVariables": 2,
-              "expensive": false,
-              "source": {
-                "name": "attach.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
-              },
-              "line": 18,
-              "column": 1
-            },
-            {
-              "name": "Registers",
-              "presentationHint": "registers",
-              "variablesReference": 2,
-              "namedVariables": 26,
-              "expensive": false
-            }
-          ]
+          "allThreadsContinued": true
         },
+        "command": "continue",
         "request_seq": 12,
+        "seq": 65,
         "success": true,
-        "command": "scopes",
-        "seq": 85,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "stackTrace",
-        "arguments": {
-          "threadId": 8808,
-          "startFrame": 1,
-          "levels": 19
-        },
-        "type": "request",
-        "seq": 13
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "stackFrames": [
-            {
-              "id": 1375772234,
-              "name": "test_attach!invoke_main+0x39",
-              "source": {
-                "name": "exe_common.inl",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
-              },
-              "line": 79,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF73789"
-            },
-            {
-              "id": 1547207189,
-              "name": "test_attach!__scrt_common_main_seh+0x132",
-              "source": {
-                "name": "exe_common.inl",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
-              },
-              "line": 288,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF73632"
-            },
-            {
-              "id": 1688788683,
-              "name": "test_attach!__scrt_common_main+0xe",
-              "source": {
-                "name": "exe_common.inl",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
-              },
-              "line": 331,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF734EE"
-            },
-            {
-              "id": 700769586,
-              "name": "test_attach!mainCRTStartup+0xe",
-              "source": {
-                "name": "exe_main.cpp",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
-              },
-              "line": 17,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF7381E"
-            },
-            {
-              "id": 1621446745,
-              "name": "KERNEL32!BaseThreadInitThunk+0x17",
-              "line": 0,
-              "column": 0,
-              "instructionPointerReference": "0x7FFF60EDE957"
-            },
-            {
-              "id": 792043409,
-              "name": "ntdll!RtlUserThreadStart+0x2c",
-              "line": 0,
-              "column": 0,
-              "instructionPointerReference": "0x7FFF6166427C"
-            }
-          ],
-          "totalFrames": 7
-        },
-        "request_seq": 13,
-        "success": true,
-        "command": "stackTrace",
-        "seq": 86,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "variables",
-        "arguments": {
-          "variablesReference": 1
-        },
-        "type": "request",
-        "seq": 14
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "variables": [
-            {
-              "name": "argc",
-              "value": "1",
-              "evaluateName": "argc",
-              "variablesReference": 0
-            },
-            {
-              "name": "argv",
-              "value": "0x00000218`39f7f1d0",
-              "evaluateName": "argv",
-              "variablesReference": 0
-            }
-          ]
-        },
-        "request_seq": 14,
-        "success": true,
-        "command": "variables",
-        "seq": 87,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "continue",
-        "arguments": {
-          "threadId": 8808
-        },
-        "type": "request",
-        "seq": 15
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "allThreadsContinued": true
-        },
-        "request_seq": 15,
-        "success": true,
-        "command": "continue",
-        "seq": 88,
         "type": "response"
       }
     },
@@ -713,619 +1573,56 @@
       "direction": "out",
       "message": {
         "body": {
-          "threadId": 8808,
-          "allThreadsContinued": true
+          "allThreadsContinued": true,
+          "threadId": 19268
         },
         "event": "continued",
-        "seq": 89,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "category": "console",
-          "output": "Breakpoint 0 hit\n"
-        },
-        "event": "output",
-        "seq": 90,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "reason": "breakpoint",
-          "description": "Paused on breakpoint 0.",
-          "threadId": 8808,
-          "allThreadsStopped": true,
-          "hitBreakpointIds": [
-            0
-          ]
-        },
-        "event": "stopped",
-        "seq": 91,
+        "seq": 66,
         "type": "event"
       }
     },
     {
       "direction": "in",
       "message": {
-        "command": "threads",
-        "type": "request",
-        "seq": 16
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "threads": [
-            {
-              "id": 8808,
-              "name": "Thread 8808 (current)"
-            },
-            {
-              "id": 40332,
-              "name": "Thread 40332"
-            },
-            {
-              "id": 14232,
-              "name": "Thread 14232"
-            }
-          ]
-        },
-        "request_seq": 16,
-        "success": true,
-        "command": "threads",
-        "seq": 92,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "stackTrace",
-        "arguments": {
-          "threadId": 8808,
-          "startFrame": 0,
-          "levels": 1
-        },
-        "type": "request",
-        "seq": 17
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "stackFrames": [
-            {
-              "id": 115135201,
-              "name": "test_attach!main+0x32",
-              "source": {
-                "name": "attach.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
-              },
-              "line": 18,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF71702"
-            }
-          ],
-          "totalFrames": 7
-        },
-        "request_seq": 17,
-        "success": true,
-        "command": "stackTrace",
-        "seq": 93,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "scopes",
-        "arguments": {
-          "frameId": 115135201
-        },
-        "type": "request",
-        "seq": 18
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "scopes": [
-            {
-              "name": "Locals",
-              "presentationHint": "locals",
-              "variablesReference": 1,
-              "namedVariables": 2,
-              "expensive": false,
-              "source": {
-                "name": "attach.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
-              },
-              "line": 18,
-              "column": 1
-            },
-            {
-              "name": "Registers",
-              "presentationHint": "registers",
-              "variablesReference": 2,
-              "namedVariables": 26,
-              "expensive": false
-            }
-          ]
-        },
-        "request_seq": 18,
-        "success": true,
-        "command": "scopes",
-        "seq": 94,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "variables",
-        "arguments": {
-          "variablesReference": 1
-        },
-        "type": "request",
-        "seq": 19
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "variables": [
-            {
-              "name": "argc",
-              "value": "1",
-              "evaluateName": "argc",
-              "variablesReference": 0
-            },
-            {
-              "name": "argv",
-              "value": "0x00000218`39f7f1d0",
-              "evaluateName": "argv",
-              "variablesReference": 0
-            }
-          ]
-        },
-        "request_seq": 19,
-        "success": true,
-        "command": "variables",
-        "seq": 95,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "stackTrace",
-        "arguments": {
-          "threadId": 8808,
-          "startFrame": 1,
-          "levels": 19
-        },
-        "type": "request",
-        "seq": 20
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "stackFrames": [
-            {
-              "id": 1375772234,
-              "name": "test_attach!invoke_main+0x39",
-              "source": {
-                "name": "exe_common.inl",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
-              },
-              "line": 79,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF73789"
-            },
-            {
-              "id": 1547207189,
-              "name": "test_attach!__scrt_common_main_seh+0x132",
-              "source": {
-                "name": "exe_common.inl",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
-              },
-              "line": 288,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF73632"
-            },
-            {
-              "id": 1688788683,
-              "name": "test_attach!__scrt_common_main+0xe",
-              "source": {
-                "name": "exe_common.inl",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
-              },
-              "line": 331,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF734EE"
-            },
-            {
-              "id": 700769586,
-              "name": "test_attach!mainCRTStartup+0xe",
-              "source": {
-                "name": "exe_main.cpp",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
-              },
-              "line": 17,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF7381E"
-            },
-            {
-              "id": 1621446745,
-              "name": "KERNEL32!BaseThreadInitThunk+0x17",
-              "line": 0,
-              "column": 0,
-              "instructionPointerReference": "0x7FFF60EDE957"
-            },
-            {
-              "id": 792043409,
-              "name": "ntdll!RtlUserThreadStart+0x2c",
-              "line": 0,
-              "column": 0,
-              "instructionPointerReference": "0x7FFF6166427C"
-            }
-          ],
-          "totalFrames": 7
-        },
-        "request_seq": 20,
-        "success": true,
-        "command": "stackTrace",
-        "seq": 96,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "continue",
-        "arguments": {
-          "threadId": 8808
-        },
-        "type": "request",
-        "seq": 21
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "allThreadsContinued": true
-        },
-        "request_seq": 21,
-        "success": true,
-        "command": "continue",
-        "seq": 97,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "threadId": 8808,
-          "allThreadsContinued": true
-        },
-        "event": "continued",
-        "seq": 98,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "category": "console",
-          "output": "Breakpoint 0 hit\n"
-        },
-        "event": "output",
-        "seq": 99,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "reason": "exited",
-          "threadId": 14232
-        },
-        "event": "thread",
-        "seq": 100,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "reason": "breakpoint",
-          "description": "Paused on breakpoint 0.",
-          "threadId": 8808,
-          "allThreadsStopped": true,
-          "hitBreakpointIds": [
-            0
-          ]
-        },
-        "event": "stopped",
-        "seq": 101,
-        "type": "event"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "threads",
-        "type": "request",
-        "seq": 22
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "threads": [
-            {
-              "id": 8808,
-              "name": "Thread 8808 (current)"
-            },
-            {
-              "id": 40332,
-              "name": "Thread 40332"
-            }
-          ]
-        },
-        "request_seq": 22,
-        "success": true,
-        "command": "threads",
-        "seq": 102,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "stackTrace",
-        "arguments": {
-          "threadId": 8808,
-          "startFrame": 0,
-          "levels": 1
-        },
-        "type": "request",
-        "seq": 23
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "stackFrames": [
-            {
-              "id": 115135201,
-              "name": "test_attach!main+0x32",
-              "source": {
-                "name": "attach.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
-              },
-              "line": 18,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF71702"
-            }
-          ],
-          "totalFrames": 7
-        },
-        "request_seq": 23,
-        "success": true,
-        "command": "stackTrace",
-        "seq": 103,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "scopes",
-        "arguments": {
-          "frameId": 115135201
-        },
-        "type": "request",
-        "seq": 24
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "scopes": [
-            {
-              "name": "Locals",
-              "presentationHint": "locals",
-              "variablesReference": 1,
-              "namedVariables": 2,
-              "expensive": false,
-              "source": {
-                "name": "attach.cpp",
-                "path": "${workspaceFolder}\\test-targets\\testapp\\attach.cpp"
-              },
-              "line": 18,
-              "column": 1
-            },
-            {
-              "name": "Registers",
-              "presentationHint": "registers",
-              "variablesReference": 2,
-              "namedVariables": 26,
-              "expensive": false
-            }
-          ]
-        },
-        "request_seq": 24,
-        "success": true,
-        "command": "scopes",
-        "seq": 104,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "variables",
-        "arguments": {
-          "variablesReference": 1
-        },
-        "type": "request",
-        "seq": 25
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "variables": [
-            {
-              "name": "argc",
-              "value": "1",
-              "evaluateName": "argc",
-              "variablesReference": 0
-            },
-            {
-              "name": "argv",
-              "value": "0x00000218`39f7f1d0",
-              "evaluateName": "argv",
-              "variablesReference": 0
-            }
-          ]
-        },
-        "request_seq": 25,
-        "success": true,
-        "command": "variables",
-        "seq": 105,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "stackTrace",
-        "arguments": {
-          "threadId": 8808,
-          "startFrame": 1,
-          "levels": 19
-        },
-        "type": "request",
-        "seq": 26
-      }
-    },
-    {
-      "direction": "out",
-      "message": {
-        "body": {
-          "stackFrames": [
-            {
-              "id": 1375772234,
-              "name": "test_attach!invoke_main+0x39",
-              "source": {
-                "name": "exe_common.inl",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
-              },
-              "line": 79,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF73789"
-            },
-            {
-              "id": 1547207189,
-              "name": "test_attach!__scrt_common_main_seh+0x132",
-              "source": {
-                "name": "exe_common.inl",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
-              },
-              "line": 288,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF73632"
-            },
-            {
-              "id": 1688788683,
-              "name": "test_attach!__scrt_common_main+0xe",
-              "source": {
-                "name": "exe_common.inl",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl"
-              },
-              "line": 331,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF734EE"
-            },
-            {
-              "id": 700769586,
-              "name": "test_attach!mainCRTStartup+0xe",
-              "source": {
-                "name": "exe_main.cpp",
-                "path": "D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_main.cpp"
-              },
-              "line": 17,
-              "column": 1,
-              "instructionPointerReference": "0x7FF67DF7381E"
-            },
-            {
-              "id": 1621446745,
-              "name": "KERNEL32!BaseThreadInitThunk+0x17",
-              "line": 0,
-              "column": 0,
-              "instructionPointerReference": "0x7FFF60EDE957"
-            },
-            {
-              "id": 792043409,
-              "name": "ntdll!RtlUserThreadStart+0x2c",
-              "line": 0,
-              "column": 0,
-              "instructionPointerReference": "0x7FFF6166427C"
-            }
-          ],
-          "totalFrames": 7
-        },
-        "request_seq": 26,
-        "success": true,
-        "command": "stackTrace",
-        "seq": 106,
-        "type": "response"
-      }
-    },
-    {
-      "direction": "in",
-      "message": {
-        "command": "disconnect",
         "arguments": {
           "restart": false,
-          "terminateDebuggee": false
+          "terminateDebuggee": true
         },
-        "type": "request",
-        "seq": 27
+        "command": "disconnect",
+        "seq": 13,
+        "type": "request"
       }
     },
     {
       "direction": "out",
       "message": {
-        "request_seq": 27,
-        "success": true,
+        "body": {
+          "category": "console",
+          "output": "(3170.304c): Break instruction exception - code 80000003 (first chance)\n"
+        },
+        "event": "output",
+        "seq": 68,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
         "command": "disconnect",
-        "seq": 107,
+        "request_seq": 13,
+        "seq": 69,
+        "success": true,
         "type": "response"
       }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "terminated",
+        "seq": 70,
+        "type": "event"
+      }
     }
-  ]
+  ],
+  "version": 1
 }

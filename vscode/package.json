@@ -1,7 +1,7 @@
 {
     "name": "vscode-dap-dbgeng",
     "displayName": "Native Windows Debugging (dbgeng)",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "publisher": "svnscha",
     "description": "Debug native Windows code - C and C++ programs, services, and even the Windows kernel - straight from VS Code, using the same engine that powers WinDbg.",
     "author": {
@@ -17,9 +17,10 @@
         "Debuggers"
     ],
     "private": true,
-    "main": "./extension.js",
+    "main": "./out/extension.js",
     "activationEvents": [
-        "onDebugResolve:dbgeng"
+        "onDebugResolve:dbgeng",
+        "onCommand:dap-dbgeng.scriptsPath"
     ],
     "repository": {
         "type": "git",
@@ -29,13 +30,41 @@
         "url": "https://github.com/svnscha/dap-dbgeng/issues"
     },
     "scripts": {
+        "compile": "tsc -p ./",
+        "watch": "tsc -w -p ./",
+        "vscode:prepublish": "npm run compile",
         "build": "vsce package --out vscode-dap-dbgeng.vsix"
     },
     "dependencies": {},
     "devDependencies": {
-        "@vscode/vsce": "^3.9.2"
+        "@types/node": "^20.19.0",
+        "@types/vscode": "^1.120.0",
+        "@vscode/vsce": "^3.9.2",
+        "typescript": "^5.7.0"
     },
     "contributes": {
+        "commands": [
+            {
+                "command": "dap-dbgeng.runHook",
+                "title": "Run Target Hook",
+                "category": "dap-dbgeng",
+                "icon": "$(play)"
+            },
+            {
+                "command": "dap-dbgeng.redeployAndRestart",
+                "title": "Redeploy and Restart Target",
+                "category": "dap-dbgeng",
+                "icon": "$(sync)"
+            }
+        ],
+        "menus": {
+            "debug/toolbar": [
+                {
+                    "command": "dap-dbgeng.redeployAndRestart",
+                    "when": "debugType == dbgeng"
+                }
+            ]
+        },
         "configuration": {
             "title": "Native Windows Debugging (dbgeng)",
             "properties": {
@@ -50,10 +79,6 @@
             {
                 "type": "dbgeng",
                 "label": "Native Windows Debugging (dbgeng)",
-                "variables": {
-                    "FileBasenameNoExt": "code-debug.getFileBasenameNoExt",
-                    "FileNameNoExt": "code-debug.getFileNameNoExt"
-                },
                 "configurationAttributes": {
                     "launch": {
                         "properties": {
@@ -72,9 +97,56 @@
                                 "type": "string",
                                 "description": "Optional path to dbgeng.dll. When omitted, the adapter uses a dbgeng.dll bundled next to it or the installed Windows SDK Debugging Tools, and errors if none is found."
                             },
+                            "connectionString": {
+                                "type": "string",
+                                "description": "Optional dbgsrv process-server string, e.g. 'tcp:port=5005,server=HOST'. When set, the process is created on that server's machine: 'program' and 'cwd' are then paths on the target. Run 'dbgsrv -t tcp:port=5005' on the target, or add an Ensure-ProcessServer.ps1 command to the 'target.hooks.beforeSession' hook to start it automatically."
+                            },
                             "cwd": {
                                 "type": "string",
                                 "description": "Working directory for the launched process. Defaults to the program's directory when omitted."
+                            },
+                            "target": {
+                                "type": "object",
+                                "description": "Command hooks around the session, run by the extension (the adapter ignores this). Each hook is an ordered list of PowerShell command lines bound to a session-lifecycle moment. The bundled general-purpose scripts (Sign-Driver.ps1, Deploy-Binary.ps1, Start/Stop-RemoteService.ps1, Ensure-ProcessServer.ps1) are the recommended building blocks, reachable via ${dbgengScripts} here or ${command:dap-dbgeng.scriptsPath} anywhere else (e.g. tasks.json). Tokens: ${dbgengScripts}, ${host}. Commands signal failure by throwing or exiting non-zero.",
+                                "properties": {
+                                    "host": {
+                                        "type": "string",
+                                        "description": "The value of the ${host} token in hook commands - typically the SSH destination the bundled scripts take as -HostName, e.g. 'user@host'."
+                                    },
+                                    "hooks": {
+                                        "type": "object",
+                                        "properties": {
+                                            "beforeSession": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "description": "After the preLaunchTask, before the debug adapter starts - sign, deploy, ensure dbgsrv here. A failure aborts the session."
+                                            },
+                                            "onAttachRequest": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "description": "When the attach request goes out. Start a user-mode service here, so the adapter's 'processName' poll finds the spawning process."
+                                            },
+                                            "afterConfigurationDone": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "description": "Breakpoints are armed. Start a kernel driver service here, so a DriverEntry breakpoint hits."
+                                            },
+                                            "afterSessionEnd": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "description": "The session ended - teardown (stop services). Failures are logged, not surfaced."
+                                            }
+                                        }
+                                    }
+                                }
                             },
                             "sources": {
                                 "type": "array",
@@ -107,6 +179,15 @@
                                     "string"
                                 ],
                                 "description": "The system process ID to attach to (for remote attach, the PID on the machine running dbgsrv). Set to \"${command:dap-dbgeng.pickProcess}\" to choose interactively at debug time; the picker lists local processes, or processes on the dbgsrv host when 'connectionString' is set."
+                            },
+                            "processName": {
+                                "type": "string",
+                                "description": "Attach by executable name, e.g. 'myservice.exe', instead of 'processId'. The adapter polls until a matching process appears (locally, or on the dbgsrv host when 'connectionString' is set) - made for processes that are just spawning, like a service being started."
+                            },
+                            "processNameTimeout": {
+                                "type": "integer",
+                                "description": "How long to wait (milliseconds) for 'processName' to appear before the attach fails.",
+                                "default": 15000
                             },
                             "dumpFile": {
                                 "type": "string",
@@ -145,6 +226,49 @@
                             "trace": {
                                 "type": "string",
                                 "description": "Optional path to record the DAP session to, for creating replay fixtures, e.g. '${workspaceFolder}/recordings/attach.session.json'. Omit to disable tracing."
+                            },
+                            "target": {
+                                "type": "object",
+                                "description": "Command hooks around the session, run by the extension (the adapter ignores this). Each hook is an ordered list of PowerShell command lines bound to a session-lifecycle moment. The bundled general-purpose scripts (Sign-Driver.ps1, Deploy-Binary.ps1, Start/Stop-RemoteService.ps1, Ensure-ProcessServer.ps1) are the recommended building blocks, reachable via ${dbgengScripts} here or ${command:dap-dbgeng.scriptsPath} anywhere else (e.g. tasks.json). Tokens: ${dbgengScripts}, ${host}. Commands signal failure by throwing or exiting non-zero.",
+                                "properties": {
+                                    "host": {
+                                        "type": "string",
+                                        "description": "The value of the ${host} token in hook commands - typically the SSH destination the bundled scripts take as -HostName, e.g. 'user@host'."
+                                    },
+                                    "hooks": {
+                                        "type": "object",
+                                        "properties": {
+                                            "beforeSession": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "description": "After the preLaunchTask, before the debug adapter starts - sign, deploy, ensure dbgsrv here. A failure aborts the session."
+                                            },
+                                            "onAttachRequest": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "description": "When the attach request goes out. Start a user-mode service here, so the adapter's 'processName' poll finds the spawning process."
+                                            },
+                                            "afterConfigurationDone": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "description": "Breakpoints are armed. Start a kernel driver service here, so a DriverEntry breakpoint hits."
+                                            },
+                                            "afterSessionEnd": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "description": "The session ended - teardown (stop services). Failures are logged, not surfaced."
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -155,6 +279,63 @@
                         "type": "dbgeng",
                         "request": "launch",
                         "program": "${workspaceFolder}/build/windows-x64/myapp.exe"
+                    }
+                ],
+                "configurationSnippets": [
+                    {
+                        "label": "dbgeng: Kernel driver (deploy + start on F5)",
+                        "description": "Attach over KDNET; hooks sign and deploy the driver, then start its registered service once breakpoints are armed.",
+                        "body": {
+                            "name": "Debug driver (KDNET)",
+                            "type": "dbgeng",
+                            "request": "attach",
+                            "kernel": true,
+                            "connectionString": "^\"net:port=50005,key=${1:1.2.3.4}\"",
+                            "stopAtEntry": false,
+                            "preLaunchTask": "^\"${2:Build driver}\"",
+                            "target": {
+                                "host": "^\"${3:user@testbox}\"",
+                                "hooks": {
+                                    "beforeSession": [
+                                        "^\"\\${dbgengScripts}/Sign-Driver.ps1 -Binary '\\${workspaceFolder}/${4:build/Debug/mydriver.sys}' -CertSubject 'CN=${5:my-test-signer}' -OutCertificate '\\${workspaceFolder}/build/test-signer.cer'\"",
+                                        "^\"\\${dbgengScripts}/Deploy-Binary.ps1 -HostName '\\${host}' -Binary '\\${workspaceFolder}/${4:build/Debug/mydriver.sys}' -CertificateFile '\\${workspaceFolder}/build/test-signer.cer' -ServiceName ${6:mydriver} -CheckTestSigning\""
+                                    ],
+                                    "afterConfigurationDone": [
+                                        "^\"\\${dbgengScripts}/Start-RemoteService.ps1 -HostName '\\${host}' -ServiceName ${6:mydriver}\""
+                                    ],
+                                    "afterSessionEnd": [
+                                        "^\"\\${dbgengScripts}/Stop-RemoteService.ps1 -HostName '\\${host}' -ServiceName ${6:mydriver}\""
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "label": "dbgeng: Remote service (deploy + start + attach by name)",
+                        "description": "Attach by process name via dbgsrv; hooks deploy the service binary, ensure dbgsrv, and start the service as the attach goes out.",
+                        "body": {
+                            "name": "Debug service (remote)",
+                            "type": "dbgeng",
+                            "request": "attach",
+                            "connectionString": "^\"tcp:port=5005,server=${1:testbox}\"",
+                            "processName": "^\"${2:myservice}.exe\"",
+                            "preLaunchTask": "^\"${3:Build}\"",
+                            "target": {
+                                "host": "^\"${4:user@testbox}\"",
+                                "hooks": {
+                                    "beforeSession": [
+                                        "^\"\\${dbgengScripts}/Deploy-Binary.ps1 -HostName '\\${host}' -Binary '\\${workspaceFolder}/${5:build/Debug/myservice.exe}' -ServiceName ${2:myservice}\"",
+                                        "^\"\\${dbgengScripts}/Ensure-ProcessServer.ps1 -HostName '\\${host}' -Transport 'tcp:port=5005' -DbgsrvPath '${6:C:\\\\Debuggers\\\\dbgsrv.exe}'\""
+                                    ],
+                                    "onAttachRequest": [
+                                        "^\"\\${dbgengScripts}/Start-RemoteService.ps1 -HostName '\\${host}' -ServiceName ${2:myservice}\""
+                                    ],
+                                    "afterSessionEnd": [
+                                        "^\"\\${dbgengScripts}/Stop-RemoteService.ps1 -HostName '\\${host}' -ServiceName ${2:myservice}\""
+                                    ]
+                                }
+                            }
+                        }
                     }
                 ]
             }

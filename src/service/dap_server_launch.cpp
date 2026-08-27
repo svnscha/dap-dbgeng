@@ -26,6 +26,7 @@ void dap_server::handle_launch_request(const protocol::LaunchRequest &request)
     const std::optional<std::string> command_line_arguments = reader::try_get_command_line_arguments(arguments);
     const std::string working_directory = reader::resolve_working_directory(arguments);
     const std::optional<std::string> dbgeng_path = reader::try_get_string(arguments, "dbgengPath");
+    const std::optional<std::string> connection_string = reader::try_get_string(arguments, "connectionString");
     const bool stop_at_entry = reader::try_get_boolean(arguments, "stopAtEntry").value_or(false);
     session_configuration configuration{reader::try_get_string_list(arguments, "symbolPath"),
                                         reader::try_get_string_list(arguments, "sources")};
@@ -51,7 +52,16 @@ void dap_server::handle_launch_request(const protocol::LaunchRequest &request)
     apply_session_configuration(session, configuration);
     run_with_suppressed_session_events([&]() {
         dispatcher_.invoke([&]() {
-            session.launch(*executable_path, command_line_arguments, working_directory);
+            // With a connectionString the process is created on that dbgsrv
+            // process server; 'program' and 'cwd' are then paths on its host.
+            if (!util::is_blank(connection_string))
+            {
+                session.launch_remote(*connection_string, *executable_path, command_line_arguments, working_directory);
+            }
+            else
+            {
+                session.launch(*executable_path, command_line_arguments, working_directory);
+            }
             return 0;
         });
     });

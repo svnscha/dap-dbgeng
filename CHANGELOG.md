@@ -5,6 +5,42 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `launch` accepts `connectionString`, creating the process through a `dbgsrv`
+  process server (`CreateProcessAndAttach2`). `program` and `cwd` are then paths
+  on the target machine, and `stopAtEntry` works for a remote launch the same way
+  it does locally.
+- `attach` accepts `processName` (with `processNameTimeout`), waiting locally or
+  on a process server until a process with that name appears and then attaching.
+  This is what makes catching a service at startup possible, where no process id
+  exists to name up front.
+- Error responses carry the reason the request actually failed instead of
+  "Failed to handle command: <name>", unwrapped so it does not read as a
+  dispatcher-thread failure.
+
+### Fixed
+
+- Connecting to a process server no longer fails with `ERROR_SERVER_DISABLED`.
+  The engine loads `dbghelp` by name and the loader supplied System32's older,
+  unmatched copy; the adapter now loads the engine's own `dbghelp.dll` by full
+  path first. A packaged (Store) WinDbg cannot be used this way at all, and now
+  says so rather than returning the raw HRESULT.
+- A kernel attach honors `stopAtEntry: false` instead of always stopping, so
+  driver sessions no longer need one manual continue before they run.
+- Requests that need the engine while the target runs (VS Code asks for
+  `stackTrace` right after `configurationDone`) report nothing instead of
+  queueing behind the engine's wait loop. They used to park the transport
+  thread until the target next stopped, which for a running kernel machine, a
+  service, or any idle process meant never: the `pause` that would have broken
+  in sat unread in the same stalled queue, and the adapter had to be killed.
+- The adapter exits after a kernel session. Disconnecting leaves the worker
+  inside `WaitForEvent` on a machine that is running again and will not report
+  anything, and joining it there hung the process, so its trace was never
+  written and the kernel connection was held against the next session.
+
 ## [0.2.0] - 2026-07-23
 
 ### Added

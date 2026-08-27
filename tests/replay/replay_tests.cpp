@@ -241,6 +241,52 @@ TEST(Replay, AttachRemoteViaProcessServer)
     assert_positive_attach_replay(replay);
 }
 
+// The same hazard in user mode: this fixture asks for a stack while the target
+// runs, which used to park the transport thread until the target next stopped.
+// test_attach never stops on its own, so "until it stops" meant "never".
+TEST(Replay, RequestsWhileUserModeTargetRuns)
+{
+    SKIP_IF_LIVE_ATTACH_DISABLED();
+    REPLAY_OR_SKIP(replay, "attach-remote-process.json");
+    // Asked before configurationDone, again while running, and again at the stop.
+    EXPECT_EQ(3u, count_responses(replay.non_output, "threads"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "disconnect"));
+    EXPECT_FALSE(has_error_response(replay.all));
+}
+
+// A running kernel target must stay answerable. Every one of these reaches the
+// engine through the dispatcher, which is parked in wait_for_event while the
+// machine runs: before, the first one blocked the transport thread and the
+// adapter never read another request - including the pause that would have
+// freed it. What they answer matters less than that they answer at all.
+TEST(Replay, KernelRequestsWhileRunning)
+{
+    REPLAY_OR_SKIP(replay, "kernel-running-requests.json");
+    EXPECT_EQ(1u, count_responses(replay.non_output, "threads"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "stackTrace"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "setBreakpoints"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "pause"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "disconnect"));
+}
+
+// The kernel path, against a machine booted for kernel debugging and reachable
+// on DAP_DBGENG_KERNEL_CONNECTION; the harness skips when there is none. The
+// session attaches to the whole machine, so there is no process id and nothing
+// to terminate: it breaks in, and disconnecting leaves the target running.
+TEST(Replay, KernelAttachAndDisconnect)
+{
+    REPLAY_OR_SKIP(replay, "kernel-attach.json");
+    EXPECT_GT(replay.non_output.size(), 0u);
+    EXPECT_EQ(1u, count_responses(replay.non_output, "initialize"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "attach"));
+    EXPECT_EQ(1u, count_responses(replay.non_output, "disconnect"));
+    EXPECT_FALSE(has_error_response(replay.all));
+
+    const nlohmann::json *process = single_process_event(replay.non_output);
+    ASSERT_NE(process, nullptr);
+    EXPECT_EQ("attach", process->at("body").value("startMethod", std::string{}));
+}
+
 TEST(Replay, LaunchSetVariable)
 {
     REPLAY_OR_SKIP(replay, "launch-setVariable.json");

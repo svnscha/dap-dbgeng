@@ -29,6 +29,9 @@ battle-tested Windows debugger underneath.
 - **[Debug a Windows driver](scenarios/driver-debugging.md)** - attach to a
   kernel-debug-enabled target (a VM or second machine) to debug kernel-mode
   drivers.
+- **[Deploy and start on F5](reference/attach.md#target)** - hook commands into
+  the session so one keystroke ships your driver or service to the test machine,
+  starts it with breakpoints already armed, and tears it down afterwards.
 
 ---
 
@@ -66,6 +69,7 @@ writing that file for each scenario.
 | **The Native Windows Debugging (dbgeng) extension** | Bundles the adapter, so there's nothing extra to build or install. See [Getting started](getting-started.md). |
 | **Debugging Tools for Windows** | Provides `dbgeng.dll` (and `dbgsrv.exe` for remote debugging). Installed with the Windows SDK / WDK, or as a standalone component. |
 | **PDB symbols for your target** | So the debugger can map addresses back to your source and variables. |
+| **An OpenSSH client** (optional) | Only for the bundled [target hook](reference/attach.md#target) scripts, which deploy and start drivers and services over SSH. |
 
 !!! note "What this guide does *not* cover"
     This is a **usage** guide - how to configure and run debugging sessions. It

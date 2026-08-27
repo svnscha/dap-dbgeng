@@ -160,7 +160,9 @@ The options you will reach for most (see the reference for the full set and defa
 | `cwd` | launch | Working directory; defaults to the program's directory. |
 | `stopAtEntry` | launch / attach | Break at the entry point on launch (default `false`), or break in on attach (default `true`). |
 | `processId` | attach | PID to attach to. Use `"${command:dap-dbgeng.pickProcess}"` to pick interactively. |
-| `connectionString` | attach | A `dbgsrv` string for remote attach, or a kernel transport when `kernel` is `true`. |
+| `processName` | attach | Attach by executable name, polling until the process appears (a service being started). |
+| `connectionString` | launch / attach | A `dbgsrv` string - on launch the process is created on that machine; on attach it connects to it. A kernel transport when `kernel` is `true`. |
+| `target` | launch / attach | Command hooks run around the session: deploy, start, stop (see below). |
 | `kernel` | attach | Set `true` for kernel / driver debugging. |
 | `dumpFile` | attach | Open a crash dump (`.dmp`) instead of attaching to a live process. |
 | `symbolPath` | both | Symbol (PDB) search paths (local folders or a symbol-server string). |
@@ -171,6 +173,41 @@ Extension setting:
 
 - `dap-dbgeng.adapterPath` - absolute path to a `dap-dbgeng.exe` to use instead of the
   bundled adapter. Leave empty to use the bundled one.
+
+## One-key remote debugging
+
+A `target` block turns F5 into the whole loop for drivers and services on a test
+machine: build, deploy, attach, start the payload once breakpoints are armed, and tear
+down when the session ends. It is a list of PowerShell command lines per lifecycle
+moment (`beforeSession`, `onAttachRequest`, `afterConfigurationDone`, `afterSessionEnd`),
+so nothing is hidden - what F5 does is what the configuration says.
+
+The extension ships general-purpose scripts for the usual steps (`Sign-Driver.ps1`,
+`Deploy-Binary.ps1`, `Start-RemoteService.ps1`, `Stop-RemoteService.ps1`,
+`Ensure-ProcessServer.ps1`), reachable as `${dbgengScripts}` in a hook or
+`${command:dap-dbgeng.scriptsPath}` anywhere else, including `tasks.json`. Swap any of
+them for your own script.
+
+```json
+"target": {
+  "host": "user@testbox",
+  "hooks": {
+    "beforeSession": [
+      "${dbgengScripts}/Deploy-Binary.ps1 -HostName '${host}' -Binary '${workspaceFolder}/build/Debug/hello.sys' -ServiceName hello -CheckTestSigning"
+    ],
+    "afterConfigurationDone": [
+      "${dbgengScripts}/Start-RemoteService.ps1 -HostName '${host}' -ServiceName hello"
+    ],
+    "afterSessionEnd": [
+      "${dbgengScripts}/Stop-RemoteService.ps1 -HostName '${host}' -ServiceName hello"
+    ]
+  }
+}
+```
+
+"Add Configuration..." in `launch.json` offers ready-made kernel-driver and
+remote-service templates. The commands **dap-dbgeng: Run Target Hook** and **Redeploy
+and Restart Target** run the same hooks on demand.
 
 ## What is supported
 

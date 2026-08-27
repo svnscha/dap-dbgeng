@@ -66,19 +66,27 @@ void debugger_session::connect_process_server(const std::string &connection_stri
     throw_if_disposed();
     throw_if_null_or_whitespace(connection_string, "connectionString");
 
+    // Process servers need the engine paired with its own dbghelp. When that
+    // could not be loaded the engine falls back to the one in System32 and the
+    // connection fails deep inside with an opaque error, so say it up front.
+    // The packaged (Store) WinDbg is the case that hits this: it does not allow
+    // loading DLLs out of its install directory.
+    if (dbghelp_module_ == nullptr)
+    {
+        throw std::runtime_error(
+            "This debug engine cannot be used for remote (dbgsrv) debugging: its dbghelp.dll could not be loaded, "
+            "which the engine needs for process-server connections. The Store version of WinDbg does not allow it. "
+            "Install the Debugging Tools for Windows and point 'dbgengPath' at that dbgeng.dll (or omit it).");
+    }
+
     ULONG64 server = 0;
     check_hr(client_->ConnectProcessServer(connection_string.c_str(), &server),
              fmt::format("Could not connect to the process server '{}'", connection_string));
     process_server_handle_ = server;
 }
 
+// Runs as part of disposal, so it tolerates a session that is already torn down.
 void debugger_session::disconnect_process_server()
-{
-    throw_if_disposed();
-    disconnect_process_server_core();
-}
-
-void debugger_session::disconnect_process_server_core()
 {
     if (process_server_handle_ == 0 || client_ == nullptr)
     {
@@ -170,12 +178,55 @@ void debugger_session::launch(const std::string &executable_path, std::optional<
     wait_for_event();
 }
 
+void debugger_session::launch_remote(const std::string &connection_string, const std::string &executable_path,
+                                     std::optional<std::string> arguments, std::optional<std::string> working_directory)
+{
+    throw_if_disposed();
+    throw_if_null_or_whitespace(executable_path, "executablePath");
+
+    connect_process_server(connection_string);
+
+    DEBUG_CREATE_PROCESS_OPTIONS options{};
+    options.CreateFlags = DEBUG_ONLY_THIS_PROCESS;
+
+    // executable_path and cwd are paths on the process-server host; with no cwd
+    // the engine defaults it there, so nothing is resolved locally.
+    std::string command_line = build_command_line(executable_path, arguments);
+    std::string initial_directory;
+    if (working_directory && !trim_both(*working_directory).empty())
+    {
+        initial_directory = *working_directory;
+    }
+
+    check_hr(client_->CreateProcessAndAttach2(
+                 process_server_handle_, command_line.data(), &options, static_cast<ULONG>(sizeof(options)),
+                 initial_directory.empty() ? nullptr : initial_directory.c_str(), nullptr, 0, DEBUG_ATTACH_DEFAULT),
+             fmt::format("Could not launch target on the process server '{}'", connection_string));
+    wait_for_event();
+}
+
 void debugger_session::attach(int process_id)
 {
     throw_if_disposed();
     check_hr(control_->AddEngineOptions(DEBUG_ENGOPT_INITIAL_BREAK), "Could not enable initial break");
-    attach_process_native(0, process_id);
+    // process_server_handle_ is 0 unless a process server was connected, which
+    // is exactly what a local attach needs.
+    attach_process_native(process_server_handle_, process_id);
     wait_for_event();
+}
+
+std::optional<std::uint32_t> debugger_session::try_find_process_id_by_executable_name(
+    const std::string &executable_name)
+{
+    throw_if_disposed();
+    ULONG id = 0;
+    const HRESULT hr = client_->GetRunningProcessSystemIdByExecutableName(
+        process_server_handle_, executable_name.c_str(), DEBUG_GET_PROC_DEFAULT, &id);
+    if (FAILED(hr) || id == 0)
+    {
+        return std::nullopt;
+    }
+    return static_cast<std::uint32_t>(id);
 }
 
 void debugger_session::attach_process_native(std::uint64_t process_server_handle, int process_id)
@@ -189,13 +240,8 @@ void debugger_session::attach_process_native(std::uint64_t process_server_handle
 
 void debugger_session::attach_remote(const std::string &connection_string, int process_id)
 {
-    throw_if_disposed();
-    throw_if_null_or_whitespace(connection_string, "connectionString");
-
-    check_hr(control_->AddEngineOptions(DEBUG_ENGOPT_INITIAL_BREAK), "Could not enable initial break");
     connect_process_server(connection_string);
-    attach_process_native(process_server_handle_, process_id);
-    wait_for_event();
+    attach(process_id);
 }
 
 void debugger_session::attach_kernel(const std::string &connection_string)
@@ -214,6 +260,12 @@ void debugger_session::attach_kernel(const std::string &connection_string)
     terminate_debuggee_on_dispose_ = false;
     is_kernel_ = true;
 
+    // AttachKernel only configures the transport; the connection happens when
+    // the target sends its first packet, and this waits for it. A target that
+    // never answers therefore hangs the attach request and holds the dispatcher
+    // thread with it - see the note in docs/development/f5-experience.md. The
+    // wait cannot simply be bounded: the engine rejects a finite timeout here
+    // with E_NOTIMPL, kernel WaitForEvent only accepts INFINITE.
     wait_for_event();
 }
 

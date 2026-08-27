@@ -36,25 +36,31 @@ class debugger_session
 
     // Process server (dbgsrv) -------------------------------------------------
     void connect_process_server(const std::string &connection_string);
-    void disconnect_process_server();
 
     // Enumerate running processes via the engine. With no process server connected
     // this lists local processes; after connect_process_server it lists processes
     // on the remote (dbgsrv) host. Used by the adapter's --list-processes mode.
     std::vector<process_info> list_processes();
-    bool is_remote() const
-    {
-        return process_server_handle_ != 0;
-    }
     std::uint64_t process_server_handle() const;
 
     // Targets -----------------------------------------------------------------
     void launch(const std::string &executable_path, std::optional<std::string> arguments = std::nullopt,
                 std::optional<std::string> working_directory = std::nullopt);
+    // Create the process on a dbgsrv process server host. Paths (program, cwd)
+    // are paths on that host.
+    void launch_remote(const std::string &connection_string, const std::string &executable_path,
+                       std::optional<std::string> arguments = std::nullopt,
+                       std::optional<std::string> working_directory = std::nullopt);
+    // Attach through whatever process server is currently connected; with none
+    // connected (the default) this attaches to a local process. The attach-by-name
+    // flow uses this after connecting the server itself to resolve the pid there.
     void attach(int process_id);
     void attach_remote(const std::string &connection_string, int process_id);
     void attach_kernel(const std::string &connection_string);
     void open_dump_file(const std::string &dump_file_path);
+    // Resolve a pid from an executable basename (e.g. "myservice.exe"), locally
+    // or on the connected process server. Empty when no such process exists.
+    std::optional<std::uint32_t> try_find_process_id_by_executable_name(const std::string &executable_name);
 
     // Execution ---------------------------------------------------------------
     void continue_();
@@ -167,7 +173,7 @@ class debugger_session
     void throw_if_disposed() const;
 
     void attach_process_native(std::uint64_t process_server_handle, int process_id);
-    void disconnect_process_server_core();
+    void disconnect_process_server();
 
     void set_current_thread_user(std::uint32_t system_thread_id);
     void set_current_thread_kernel(std::uint32_t system_thread_id);
@@ -208,6 +214,9 @@ class debugger_session
 
     // The engine handle (QI'd into every IDebugXxx interface we need).
     HMODULE dbgeng_module_ = nullptr;
+    // The engine's own dbghelp, loaded ahead of it so the engine does not bind
+    // to the System32 copy (see the constructor).
+    HMODULE dbghelp_module_ = nullptr;
     IDebugClient5 *client_ = nullptr;
     IDebugControl7 *control_ = nullptr;
     IDebugSymbols3 *symbols_ = nullptr;

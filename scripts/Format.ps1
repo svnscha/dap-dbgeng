@@ -29,12 +29,25 @@ function Resolve-ClangFormat {
         return $command.Source
     }
 
-    $candidates = @(
-        'C:\Program Files\LLVM\bin\clang-format.exe',
-        'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\bin\clang-format.exe',
-        'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\x64\bin\clang-format.exe',
-        'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\Llvm\ARM64\bin\clang-format.exe'
-    )
+    # Visual Studio ships clang-format with the C++ workload, but the install root is named
+    # by year up to VS 2022 and by major version from VS 2026 (18) on, and the edition
+    # folder varies. Ask vswhere for the real install paths instead of guessing at them.
+    $vsInstallPaths = @()
+    $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+    if (Test-Path -LiteralPath $vswhere -PathType Leaf) {
+        $vsInstallPaths = @(& $vswhere -products * -prerelease -property installationPath)
+    }
+
+    $candidates = @('C:\Program Files\LLVM\bin\clang-format.exe')
+    foreach ($installPath in $vsInstallPaths) {
+        if ([string]::IsNullOrWhiteSpace($installPath)) {
+            continue
+        }
+
+        foreach ($architecture in @('bin', 'x64\bin', 'ARM64\bin')) {
+            $candidates += (Join-Path $installPath "VC\Tools\Llvm\$architecture\clang-format.exe")
+        }
+    }
 
     foreach ($candidate in $candidates) {
         if (Test-Path -LiteralPath $candidate -PathType Leaf) {

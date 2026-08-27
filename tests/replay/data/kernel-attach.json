@@ -1,0 +1,215 @@
+{
+  "messages": [
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "adapterID": "dbgeng"
+        },
+        "command": "initialize",
+        "seq": 1,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "exceptionBreakpointFilters": [
+            {
+              "default": false,
+              "description": "Break when a C++ exception is thrown (first chance).",
+              "filter": "cpp",
+              "label": "C++ exceptions"
+            }
+          ],
+          "supportSuspendDebuggee": false,
+          "supportTerminateDebuggee": true,
+          "supportsClipboardContext": true,
+          "supportsConditionalBreakpoints": true,
+          "supportsConfigurationDoneRequest": true,
+          "supportsDataBreakpoints": true,
+          "supportsDelayedStackTraceLoading": true,
+          "supportsDisassembleRequest": true,
+          "supportsEvaluateForHovers": false,
+          "supportsExceptionInfoRequest": true,
+          "supportsFunctionBreakpoints": true,
+          "supportsHitConditionalBreakpoints": false,
+          "supportsInstructionBreakpoints": true,
+          "supportsLogPoints": false,
+          "supportsModulesRequest": true,
+          "supportsReadMemoryRequest": true,
+          "supportsRestartFrame": false,
+          "supportsRestartRequest": false,
+          "supportsSetExpression": true,
+          "supportsSetVariable": true,
+          "supportsSingleThreadExecutionRequests": false,
+          "supportsStepBack": false,
+          "supportsSteppingGranularity": true,
+          "supportsTerminateRequest": true,
+          "supportsValueFormattingOptions": false,
+          "supportsWriteMemoryRequest": true
+        },
+        "command": "initialize",
+        "request_seq": 1,
+        "seq": 1,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "initialized",
+        "seq": 2,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {
+          "connectionString": "${kernelConnection}",
+          "kernel": true,
+          "stopAtEntry": false,
+          "trace": "C:/Users/svnscha/AppData/Local/Temp/claude/C--Users-svnscha-Code-dap-dbgeng/7952ee74-2023-4601-a979-611b08be9b41/scratchpad/kfix1.session.json"
+        },
+        "command": "attach",
+        "seq": 2,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "WARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nLine number information will be loaded\nWARNING: The debugger does not have a current process or thread\nWARNING: Many commands will not work\nSource options are 1:\n     1/t - Step/trace by source line\n\n************* Preparing the environment for Debugger Extensions Gallery repositories **************\n   ExtensionRepository : Implicit\n   UseExperimentalFeatureForNugetShare : true\n   AllowNugetExeUpdate : true\n   NonInteractiveNuget : true\n   AllowNugetMSCredentialProviderInstall : true\n   AllowParallelInitializationOfLocalRepositories : true\n   EnableRedirectToChakraJsProvider : false\n\n   -- Configuring repositories\n      ----> Repository : LocalInstalled, Enabled: true\n      ----> Repository : UserExtensions, Enabled: true\n\n>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.000 seconds\n\n************* Waiting for Debugger Extensions Gallery to Initialize **************\n\n>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds\n   ----> Repository : UserExtensions, Enabled: true, Packages count: 0\n   ----> Repository : LocalInstalled, Enabled: true, Packages count: 30\n\nMicrosoft (R) Windows Debugger Version 10.0.28000.2526 AMD64\nCopyright (c) Microsoft Corporation. All rights reserved.\n\nUsing NET for debugging\nOpened WinSock 2.0\nWaiting to reconnect...\nConnected to target 172.16.2.189 on port 50005 on local IP 172.16.2.183.\nYou can get the target MAC address by running .kdtargetmac command.\nConnected to Windows 10 26100 x64 target at (Sat Jul 25 01:34:34.086 2026 (UTC + 2:00)), ptr64 TRUE\nKernel Debugger connection established.  (Initial Breakpoint requested)\nSymbol search path is: srv*\nExecutable search path is: \nWindows 10 Kernel Version 26100 MP (4 procs) Free x64\nProduct: WinNt, suite: TerminalServer SingleUserTS\nEdition build lab: 26100.1.amd64fre.ge_release.240331-1435\nKernel base = 0xfffff801`79200000 PsLoadedModuleList = 0xfffff801`7a0f5350\nDebug session time: Sat Jul 25 01:34:33.498 2026 (UTC + 2:00)\nSystem Uptime: 0 days 0:08:01.119\nBreak instruction exception - code 80000003 (first chance)\n*******************************************************************************\n*                                                                             *\n*   You are seeing this message because you pressed either                    *\n*       CTRL+C (if you run console kernel debugger) or,                       *\n*       CTRL+BREAK (if you run GUI kernel debugger),                          *\n*   on your debugger machine's keyboard.                                      *\n*                                                                             *\n*                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *\n*                                                                             *\n* If you did not intend to break into the debugger, press the \"g\" key, then   *\n* press the \"Enter\" key now.  This message might immediately reappear.  If it *\n* does, press \"g\" and \"Enter\" again.                                          *\n*                                                                             *\n*******************************************************************************\n"
+        },
+        "event": "output",
+        "seq": 74,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "attach",
+        "request_seq": 2,
+        "seq": 75,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "isLocalProcess": true,
+          "name": "kernel target ${kernelConnection}",
+          "startMethod": "attach"
+        },
+        "event": "process",
+        "seq": 76,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {},
+        "command": "configurationDone",
+        "seq": 3,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "configurationDone",
+        "request_seq": 3,
+        "seq": 77,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsContinued": true,
+          "threadId": 4
+        },
+        "event": "continued",
+        "seq": 78,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "Break instruction exception - code 80000003 (first chance)\n*******************************************************************************\n*                                                                             *\n*   You are seeing this message because you pressed either                    *\n*       CTRL+C (if you run console kernel debugger) or,                       *\n*       CTRL+BREAK (if you run GUI kernel debugger),                          *\n*   on your debugger machine's keyboard.                                      *\n*                                                                             *\n*                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *\n*                                                                             *\n* If you did not intend to break into the debugger, press the \"g\" key, then   *\n* press the \"Enter\" key now.  This message might immediately reappear.  If it *\n* does, press \"g\" and \"Enter\" again.                                          *\n*                                                                             *\n*******************************************************************************\n*******************************************************************************\n*                                                                             *\n*   You are seeing this message because you pressed either                    *\n*       CTRL+C (if you run console kernel debugger) or,                       *\n*       CTRL+BREAK (if you run GUI kernel debugger),                          *\n*   on your debugger machine's keyboard.                                      *\n*                                                                             *\n*                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *\n*                                                                             *\n* If you did not intend to break into the debugger, press the \"g\" key, then   *\n* press the \"Enter\" key now.  This message might immediately reappear.  If it *\n* does, press \"g\" and \"Enter\" again.                                          *\n*                                                                             *\n*******************************************************************************\n"
+        },
+        "event": "output",
+        "seq": 108,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "in",
+      "message": {
+        "arguments": {},
+        "command": "disconnect",
+        "seq": 4,
+        "type": "request"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "category": "console",
+          "output": "Break instruction exception - code 80000003 (first chance)\n*******************************************************************************\n*                                                                             *\n*   You are seeing this message because you pressed either                    *\n*       CTRL+C (if you run console kernel debugger) or,                       *\n*       CTRL+BREAK (if you run GUI kernel debugger),                          *\n*   on your debugger machine's keyboard.                                      *\n*                                                                             *\n*                   THIS IS NOT A BUG OR A SYSTEM CRASH                       *\n*                                                                             *\n* If you did not intend to break into the debugger, press the \"g\" key, then   *\n* press the \"Enter\" key now.  This message might immediately reappear.  If it *\n* does, press \"g\" and \"Enter\" again.                                          *\n*                                                                             *\n*******************************************************************************\n"
+        },
+        "event": "output",
+        "seq": 124,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "body": {
+          "allThreadsStopped": true,
+          "description": "Paused on exception 0x80000003.",
+          "reason": "exception",
+          "threadId": 4
+        },
+        "event": "stopped",
+        "seq": 125,
+        "type": "event"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "command": "disconnect",
+        "request_seq": 4,
+        "seq": 126,
+        "success": true,
+        "type": "response"
+      }
+    },
+    {
+      "direction": "out",
+      "message": {
+        "event": "terminated",
+        "seq": 127,
+        "type": "event"
+      }
+    }
+  ],
+  "version": 1
+}

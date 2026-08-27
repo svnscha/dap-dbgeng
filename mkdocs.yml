@@ -91,6 +91,7 @@ nav:
   - Development:
       - Request coverage: development/request-coverage.md
       - Recording fixtures: development/recording-fixtures.md
+      - F5 experience design: development/f5-experience.md
 
 plugins:
   - search

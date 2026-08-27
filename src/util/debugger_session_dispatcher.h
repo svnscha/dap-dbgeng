@@ -12,7 +12,8 @@ namespace dap_dbgeng::util
 // rethrowing any exception (wrapped). When already on the worker thread it
 // short-circuits and calls directly (the dispatcher thread itself runs the
 // event callbacks, which may re-enter session calls). The worker
-// thread starts in the constructor and is stopped and joined in the destructor.
+// thread starts in the constructor; the destructor stops it and joins it, or
+// gives up on one parked in the engine and detaches it (see there).
 class debugger_session_dispatcher
 {
   public:
@@ -45,7 +46,7 @@ class debugger_session_dispatcher
             return function();
         }
 
-        std::future<result_t> future = queue_.submit(std::forward<F>(function));
+        std::future<result_t> future = state_->queue.submit(std::forward<F>(function));
         try
         {
             return future.get();
@@ -86,7 +87,24 @@ class debugger_session_dispatcher
     static std::string unwrap_failure_message(const std::exception &exception, const std::string &fallback);
 
   private:
-    core::task_queue queue_;
+    // How long the destructor waits for the worker before giving up on it, see
+    // the comment there.
+    static constexpr std::chrono::milliseconds kWorkerShutdownGrace{2000};
+
+    // Everything the worker touches, in a block the worker co-owns. A detached
+    // worker outlives the dispatcher and keeps running the queue loop, so this
+    // cannot be plain members: the parked engine call eventually returns, the
+    // thread goes back to popping from the channel and then signals that it
+    // finished, both on storage the destructor would already have reclaimed.
+    struct worker_state
+    {
+        core::task_queue queue;
+        // Signalled when the worker's queue loop returns, so the destructor can
+        // tell "still working" from "parked in the engine forever".
+        std::promise<void> finished;
+    };
+
+    std::shared_ptr<worker_state> state_ = std::make_shared<worker_state>();
     std::atomic<std::thread::id> worker_id_;
     std::thread worker_;
 };

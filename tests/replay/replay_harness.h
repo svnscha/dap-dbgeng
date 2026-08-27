@@ -75,6 +75,7 @@ std::string read_fixture_text(const std::string &file_name);
 
 bool requires_attach_target(const std::string &file_name);
 bool requires_process_server(const std::string &file_name);
+bool requires_kernel_target(const std::string &file_name);
 
 // Load + de-normalize a fixture, applying ${token} -> value text substitutions
 // before JSON parsing.

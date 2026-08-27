@@ -14,6 +14,7 @@ extension is installed and a launch target is selected (then it is used automati
 | [`program`](#program) | Yes* | Path to the executable to launch (*optional with CMake Tools). |
 | [`args`](#args) | - | Command-line arguments (string or array). |
 | [`cwd`](#cwd) | - | Working directory for the program. |
+| [`connectionString`](#connectionstring) | - | Launch on a remote `dbgsrv` process server. |
 | [`dbgengPath`](#dbgengpath) | - | Path to `dbgeng.dll`; auto-resolved when omitted. |
 | [`stopAtEntry`](#stopatentry) | - | Break at the entry point (default `false`). |
 | [`sources`](#sources) | - | Folders searched for source files. |
@@ -66,6 +67,24 @@ from CMake Tools, the working directory defaults to
 
 ```json
 "cwd": "${workspaceFolder}/build/Debug"
+```
+
+---
+
+### `connectionString`
+
+- **Type:** string · Optional
+
+A `dbgsrv` process-server string. When set, the adapter **creates the process on
+that server's machine** - `program` and `cwd` are then paths on the target, and
+`stopAtEntry` works like a local launch. Run `dbgsrv -t tcp:port=5005` on the
+target, or add an `Ensure-ProcessServer.ps1` hook to
+[`target.hooks`](attach.md#target) so the extension starts it automatically
+(the `target` block works on launch configurations too). See
+[Debug a remote process](../scenarios/remote-debugging.md).
+
+```json
+"connectionString": "tcp:port=5005,server=TARGETPC"
 ```
 
 ---

@@ -4,6 +4,60 @@ All notable changes to the Native Windows Debugging (dbgeng) extension are docum
 here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-07-24
+
+### Added
+
+- One-key debugging for drivers and services, local or on a test machine: a `target`
+  block in a launch configuration runs PowerShell command lines at the moments only
+  the debugger knows - `beforeSession` (after the build task, before the adapter
+  starts), `onAttachRequest`, `afterConfigurationDone` (breakpoints are armed), and
+  `afterSessionEnd`. F5 can now deploy a driver to the target, start it so a
+  `DriverEntry` breakpoint hits, and stop it again, with no manual step in between.
+  Nothing is implicit: every command, its output, and its duration are logged to the
+  dap-dbgeng output channel.
+- General-purpose scripts for the usual steps ship with the extension:
+  `Sign-Driver.ps1`, `Deploy-Binary.ps1` (replaces a registered service's binary in a
+  single SSH round trip), `Start-RemoteService.ps1`, `Stop-RemoteService.ps1`, and
+  `Ensure-ProcessServer.ps1`. Each takes `-HostName`, so the same command works
+  against a machine over SSH or against this one with `localhost`. Use them from a
+  hook via `${dbgengScripts}`, from anywhere else (`tasks.json` included) via
+  `${command:dap-dbgeng.scriptsPath}`, or from a terminal - and replace any of them
+  with your own script. None of them creates services: they replace the binary of one
+  that is already registered, and say so when it is not.
+- `Ensure-ProcessServer.ps1` also deploys the debugger to the target: when no
+  `dbgsrv` is there, it copies the local Debugging Tools to `~\.dap-dbgeng\tools`
+  (about 33 MB, once) and starts the process server from it, so remote user-mode
+  debugging needs nothing installed on the target beyond SSH. Locally it is how a
+  Windows service can be debugged without running the editor elevated: an elevated
+  dbgsrv holds the rights the attach needs.
+- Configuration snippets for kernel-driver and remote-service debugging in
+  "Add Configuration...", plus the commands "Run Target Hook" and "Redeploy and
+  Restart Target" (the latter also in the debug toolbar: stop, redeploy, and start
+  again without detaching the debugger).
+- Remote launch: `connectionString` on a launch configuration creates the process
+  through a `dbgsrv` process server, so `program` and `cwd` are paths on the target
+  and `stopAtEntry` works as it does locally.
+- Attach by executable name: `processName` waits (up to `processNameTimeout`) for a
+  matching process to appear, locally or on the `dbgsrv` host, which is what makes
+  attaching to a service as it starts work.
+
+### Fixed
+
+- Kernel attach honors `stopAtEntry: false`: the target keeps running once the session
+  is configured instead of always stopping, so driver debugging no longer needs a
+  manual "continue" after every F5.
+- Debugging through a `dbgsrv` process server failed with a bare
+  `HRESULT=0x8007053D` (ERROR_SERVER_DISABLED). The engine loads `dbghelp.dll` by
+  name at runtime and the loader hands it the older copy from System32, which the
+  engine's process-server support does not work with; the adapter now loads the
+  engine's own `dbghelp.dll` first so the pair matches. This also explains why the
+  same engine worked when the debugger ran from the debugger's own directory.
+- Pointing `dbgengPath` at the Store version of WinDbg and then debugging remotely
+  now says what is wrong - it cannot load its own `dbghelp.dll`, so install the
+  Debugging Tools for Windows - instead of failing with that HRESULT. Local and
+  kernel debugging with it are unaffected.
+
 ## [0.2.0] - 2026-07-23
 
 ### Added
@@ -83,6 +137,7 @@ Initial release.
   host.
 - `dap-dbgeng.adapterPath` setting to override the bundled adapter.
 
+[0.3.0]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.3.0
 [0.2.0]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.2.0
 [0.1.2]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.2
 [0.1.1]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.1
