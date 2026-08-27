@@ -8,17 +8,17 @@ debugger_session_dispatcher::debugger_session_dispatcher()
     // short-circuit check (the promise blocks the ctor until the id is set).
     std::promise<std::thread::id> started;
     std::future<std::thread::id> ready = started.get_future();
-    worker_ = std::thread([this, &started] {
+    worker_ = std::thread([state = state_, &started] {
         started.set_value(std::this_thread::get_id());
-        queue_.run();
-        finished_.set_value();
+        state->queue.run();
+        state->finished.set_value();
     });
     worker_id_.store(ready.get());
 }
 
 debugger_session_dispatcher::~debugger_session_dispatcher()
 {
-    queue_.stop();
+    state_->queue.stop();
     if (!worker_.joinable())
     {
         return;
@@ -30,8 +30,9 @@ debugger_session_dispatcher::~debugger_session_dispatcher()
     // report anything. Joining unconditionally hangs the adapter there: the
     // process never exits, its trace is never written, and it keeps the kernel
     // connection, so the next session cannot attach at all. Wait briefly for an
-    // orderly finish, then leave the thread to the process teardown.
-    if (finished_.get_future().wait_for(kWorkerShutdownGrace) == std::future_status::ready)
+    // orderly finish, then leave the thread to the process teardown - it holds
+    // its own reference to the state it is still using.
+    if (state_->finished.get_future().wait_for(kWorkerShutdownGrace) == std::future_status::ready)
     {
         worker_.join();
     }
