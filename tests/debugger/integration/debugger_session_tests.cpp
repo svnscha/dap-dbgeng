@@ -14,13 +14,19 @@ using namespace dap_dbgeng::test_support;
 namespace fs = std::filesystem;
 
 // Best-effort teardown of a launched session: detach, then destroy.
+// Ends the debuggee rather than detaching from it. Detaching hands the process
+// back to the system, and a debuggee launched by the engine is a child of this
+// test binary that inherited its stdout - so an orphan holds the pipe open after
+// the tests are done, and ctest waits on it until the suite times out even
+// though every test passed. Detaching also drops the session's ownership, which
+// is what stops the destructor's terminate-on-dispose from cleaning up.
 void cleanup_launched_session(std::unique_ptr<debugger_session> &session)
 {
     if (session)
     {
         try
         {
-            session->detach_all_processes();
+            session->terminate_current_process();
         }
         catch (const std::exception &)
         {
