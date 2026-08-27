@@ -18,6 +18,33 @@ issues first.
 - Node.js (only for the `npm run` task runner) and Python 3 (for the protocol generator).
 - The `npm` scripts enter the VS developer environment automatically, so they run from any shell.
 
+## Branches and releases
+
+`develop` is the default branch and where work lands. Branch from it, name the branch for what
+it does (`feat/...`, `fix/...`, `chore/...`), and open the pull request against `develop`.
+
+`main` is not developed on. It is fast-forwarded to whatever was last released, so it always
+names the published state.
+
+Releases are cut by [release-please](https://github.com/googleapis/release-please), which reads
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). It keeps a release pull
+request open against `develop` listing everything since the last tag; merging that pull request
+is the release: it bumps the versions, writes `CHANGELOG.md`, tags `vX.Y.Z`, advances `main`, and
+publishes the VSIX. Nothing else creates a tag.
+
+This makes the pull request title load-bearing, because the repository squash-merges and the
+title becomes the commit subject release-please reads:
+
+- `feat: ...` for a user-visible feature (bumps the minor while we are pre-1.0)
+- `fix: ...` for a bug fix (bumps the patch)
+- `docs:`, `ci:`, `build:`, `test:`, `refactor:`, `chore:` for everything that does not ship
+  behavior - these appear in no release notes and trigger no release on their own
+- add `!` (`feat!: ...`) or a `BREAKING CHANGE:` footer for an incompatible change
+
+`CHANGELOG.md` is generated from those subjects, so write them for the person reading the
+release notes. `vscode/CHANGELOG.md` stays hand-written: it describes the same release in terms
+of what changes in VS Code.
+
 ## Workflow
 
 ```powershell
