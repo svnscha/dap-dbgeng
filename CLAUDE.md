@@ -11,7 +11,7 @@ The Ninja build needs the MSVC toolchain on the environment. The npm scripts ent
 developer shell automatically (via `scripts/With-DevEnv.ps1`), so they work from any shell:
 
 ```powershell
-npm run configure     # cmake --preset windows-x64 (Ninja, auto-finds vcpkg)
+npm run configure     # cmake --preset windows-x64 (Ninja, vcpkg from VCPKG_ROOT)
 npm run build         # cmake --build --preset windows-debug
 npm test              # ctest --preset windows-debug  (unit + integration + replay)
 npm run generate      # regenerate src/protocol from the DAP schema
@@ -29,7 +29,7 @@ The request coverage matrix is generated, not hand-maintained: `npm run matrix` 
 handler or a replay fixture.
 
 Running `cmake`/`ctest` directly works too, but only from a VS developer environment (e.g. the
-"x64 Native Tools" prompt) so `cl`/`link` are on PATH. Windows-only (dbgeng). vcpkg deps
+"x64 Native Tools" prompt) so `cl`/`link` are on PATH and `VCPKG_ROOT` points at the bundled vcpkg. Windows-only (dbgeng). vcpkg deps
 (`vcpkg.json`): `fmt`, `nlohmann-json`, `spdlog`, `gtest`. vcpkg is pinned via `builtin-baseline`
 in `vcpkg.json`; bump that commit deliberately to move dependency versions (the manifest lists no
 per-package version constraints).

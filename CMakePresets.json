@@ -7,13 +7,30 @@
     },
     "configurePresets": [
         {
+            "name": "vs2022",
+            "hidden": true,
+            "description": "Use the vcpkg bundled with Visual Studio 2022.",
+            "environment": {
+                "VCPKG_ROOT": "C:/Program Files/Microsoft Visual Studio/2022/Professional/VC/vcpkg"
+            }
+        },
+        {
+            "name": "vs2026",
+            "hidden": true,
+            "description": "Use the vcpkg bundled with Visual Studio 2026 (installs under version directory 18).",
+            "environment": {
+                "VCPKG_ROOT": "C:/Program Files/Microsoft Visual Studio/18/Professional/VC/vcpkg"
+            }
+        },
+        {
             "name": "windows-x64",
             "displayName": "Windows x64 (Ninja, Debug)",
-            "description": "Windows x64 configure using Ninja and the default vcpkg triplet. Run from a VS developer environment (or via scripts/With-DevEnv.ps1) so the MSVC toolchain is on PATH.",
+            "description": "Windows x64 configure using Ninja and the default vcpkg triplet. Uses VCPKG_ROOT from the environment. Run from a VS developer environment (or via scripts/With-DevEnv.ps1) so the MSVC toolchain is on PATH.",
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/windows-x64",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
                 "VCPKG_TARGET_TRIPLET": "x64-windows"
             },
             "condition": {
@@ -21,6 +38,26 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             }
+        },
+        {
+            "name": "windows-x64-vs2022",
+            "displayName": "Windows x64 (Ninja, Debug, VS 2022)",
+            "description": "Debug configure using the vcpkg bundled with Visual Studio 2022",
+            "inherits": [
+                "vs2022",
+                "windows-x64"
+            ],
+            "binaryDir": "${sourceDir}/build/windows-x64"
+        },
+        {
+            "name": "windows-x64-vs2026",
+            "displayName": "Windows x64 (Ninja, Debug, VS 2026)",
+            "description": "Debug configure using the vcpkg bundled with Visual Studio 2026",
+            "inherits": [
+                "vs2026",
+                "windows-x64"
+            ],
+            "binaryDir": "${sourceDir}/build/windows-x64"
         },
         {
             "name": "windows-x64-release",
@@ -31,6 +68,26 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "VCPKG_TARGET_TRIPLET": "x64-windows-static"
             }
+        },
+        {
+            "name": "windows-x64-release-vs2022",
+            "displayName": "Windows x64 (Ninja, Release, static, VS 2022)",
+            "description": "Release configure using the vcpkg bundled with Visual Studio 2022",
+            "inherits": [
+                "vs2022",
+                "windows-x64-release"
+            ],
+            "binaryDir": "${sourceDir}/build/windows-x64-release"
+        },
+        {
+            "name": "windows-x64-release-vs2026",
+            "displayName": "Windows x64 (Ninja, Release, static, VS 2026)",
+            "description": "Release configure using the vcpkg bundled with Visual Studio 2026",
+            "inherits": [
+                "vs2026",
+                "windows-x64-release"
+            ],
+            "binaryDir": "${sourceDir}/build/windows-x64-release"
         }
     ],
     "buildPresets": [
