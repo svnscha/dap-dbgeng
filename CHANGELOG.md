@@ -12,8 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * deploy and start the target on F5 ([#14](https://github.com/svnscha/dap-dbgeng/issues/14)) ([44ba2a7](https://github.com/svnscha/dap-dbgeng/commit/44ba2a79658703c81838b48d6c21a0975f1737e6))
 
-## [Unreleased]
-
 ### Added
 
 - `launch` accepts `connectionString`, creating the process through a `dbgsrv`
@@ -120,6 +118,5 @@ native Windows debugging: launch and attach (including remote via `dbgsrv` and
 kernel), breakpoints, stepping, stack traces, scopes and variables, registers,
 disassembly, memory, and expression evaluation.
 
-[Unreleased]: https://github.com/svnscha/dap-dbgeng/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/svnscha/dap-dbgeng/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/svnscha/dap-dbgeng/releases/tag/v0.1.2
