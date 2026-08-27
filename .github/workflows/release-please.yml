@@ -1,0 +1,71 @@
+name: Release Please
+
+# Releases are cut from develop. release-please keeps a release pull request
+# open there, accumulating every conventional commit since the last tag;
+# merging it is the "release now" signal. main is not developed on - it is
+# fast-forwarded to whatever was just released, so it always names the
+# published state.
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-please
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    name: Release pull request
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      sha: ${{ steps.release.outputs.sha }}
+    steps:
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          target-branch: develop
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  promote:
+    name: Promote and publish
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      # Needed to dispatch the VSIX release workflow below.
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: develop
+
+      # main only ever moves forward to a released commit, so this is always a
+      # fast-forward. Pushing the exact released sha rather than develop's tip
+      # keeps commits that landed after the release out of it.
+      - name: Fast-forward main to the released commit
+        run: git push origin ${{ needs.release-please.outputs.sha }}:refs/heads/main
+
+      # A tag pushed by GITHUB_TOKEN does not start a workflow run, so the tag
+      # trigger in release.yml never fires for a release-please tag. Dispatch it
+      # explicitly instead - workflow_dispatch is the documented exception to
+      # that rule, so this does run.
+      - name: Build and publish the VSIX
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh workflow run release.yml --ref main
+          -f release_tag='${{ needs.release-please.outputs.tag_name }}'

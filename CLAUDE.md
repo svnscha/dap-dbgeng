@@ -34,6 +34,19 @@ Running `cmake`/`ctest` directly works too, but only from a VS developer environ
 in `vcpkg.json`; bump that commit deliberately to move dependency versions (the manifest lists no
 per-package version constraints).
 
+## Branches and releases
+
+`develop` is the default branch and where work lands; branch from it (`feat/...`, `fix/...`,
+`chore/...`) and target pull requests at it. `main` is fast-forwarded to the last released commit
+and is never developed on.
+
+The repository squash-merges, so the pull request title becomes the commit subject that
+release-please reads: use Conventional Commits (`feat:`, `fix:`, `docs:`, `ci:`, `chore:`, `!` or
+a `BREAKING CHANGE:` footer). release-please keeps a release pull request open against `develop`;
+merging it bumps `package.json` / `vscode/package.json`, writes the generated `CHANGELOG.md`, tags
+`vX.Y.Z`, advances `main`, and publishes the VSIX. Do not hand-edit `CHANGELOG.md` or the version
+fields, and do not tag by hand. `vscode/CHANGELOG.md` stays hand-written.
+
 ## Targets
 
 Shared production code lives in an internal CMake `OBJECT` library (`dap-dbgeng-objects`) that
